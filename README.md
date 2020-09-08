@@ -1,4 +1,6 @@
 # Catan Leaderboard
+![build and test](https://github.com/acodcha/CatanLeaderboard/workflows/build%20and%20test/badge.svg?branch=master)
+
 Leaderboard for Catan games with friends.
 
 ## Dependencies
