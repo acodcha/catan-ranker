@@ -1,0 +1,22 @@
+#pragma once
+
+#include <algorithm>
+#include <array>
+#include <cctype>
+#include <climits>
+#include <cmath>
+#include <cstdlib>
+#include <experimental/filesystem>
+#include <fstream>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <iterator>
+#include <limits>
+#include <map>
+#include <optional>
+#include <set>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
