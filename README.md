@@ -53,11 +53,10 @@ Run with no arguments or with the `--help` argument to obtain usage information.
 Otherwise, for regular use, run with:
 
 ```
-catan_leaderboard --games <path> --players <path> --results <path>
+catan_leaderboard --data <path> --results <path>
 ```
 
-- `--games <path>` specifies the path to the games data file to be read. Required.
-- `--players <path>` specifies the path to the players list file to be read. Required.
+- `--data <path>` specifies the path to the game data file to be read. Required.
 - `--results <path>` specifies the prefix to the results files to be written. Optional. If omitted, the current working directory is used.
 
 ## License

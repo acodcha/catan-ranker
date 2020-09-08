@@ -1,4 +1,4 @@
 #!/bin/sh
 cd "${0%/*}"
-../build/bin/catan_leaderboard --games ../data/games.txt --players ../data/players.txt --results ../results/
+../build/bin/catan_leaderboard --data ../GameData.txt --results ../results/
 
