@@ -2,6 +2,6 @@
 
 int main(int argc, char *argv[]) {
   const CatanLeaderboard::Instructions instructions(argc, argv);
-  std::cout << "End of program." << std::endl;
+  CatanLeaderboard::message("End of " + CatanLeaderboard::Program::Title + ".");
   return EXIT_SUCCESS;
 }
