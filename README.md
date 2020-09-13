@@ -55,10 +55,10 @@ Run with no arguments or with the `--help` argument to obtain usage information.
 Otherwise, for regular use, run with:
 
 ```
-catan_leaderboard --data <path> --results <path>
+catan_leaderboard --games <path> --results <path>
 ```
 
-- `--data <path>` specifies the path to the game data file to be read. Required.
+- `--games <path>` specifies the path to the games file to be read. Required.
 - `--results <path>` specifies the prefix to the results files to be written. Optional. If omitted, the current working directory is used.
 
 ## License
