@@ -19,7 +19,7 @@ make
 ```
 
 ## Installation
-Install the executable to the system from the build directory with CMake:
+Install the executable to the system from the `build` directory with CMake:
 
 ```
 sudo make install
