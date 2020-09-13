@@ -20,9 +20,9 @@ namespace Arguments {
 
 const std::string UsageInformation{"--help"};
 
-const std::string GameDataFileKey{"--data"};
+const std::string GamesFileKey{"--games"};
 
-const std::string GameDataFilePattern{GameDataFileKey + " <path>"};
+const std::string GamesFilePattern{GamesFileKey + " <path>"};
 
 const std::string ResultsPrefixKey{"--results"};
 
@@ -44,8 +44,8 @@ public:
     check();
   }
 
-  constexpr const std::experimental::filesystem::path& game_data_file() const noexcept {
-    return game_data_file_;
+  constexpr const std::experimental::filesystem::path& games_file() const noexcept {
+    return games_file_;
   }
 
   constexpr const std::experimental::filesystem::path& results_prefix() const noexcept {
@@ -58,7 +58,7 @@ protected:
 
   std::vector<std::string> arguments_;
 
-  std::experimental::filesystem::path game_data_file_;
+  std::experimental::filesystem::path games_file_;
 
   std::experimental::filesystem::path results_prefix_;
 
@@ -78,8 +78,8 @@ protected:
         message_header_information();
         message_usage_information();
         exit(EXIT_SUCCESS);
-      } else if (*argument == Arguments::GameDataFileKey && argument + 1 < arguments_.cend()) {
-        game_data_file_ = {*(argument + 1)};
+      } else if (*argument == Arguments::GamesFileKey && argument + 1 < arguments_.cend()) {
+        games_file_ = {*(argument + 1)};
       } else if (*argument == Arguments::ResultsPrefixKey && argument + 1 < arguments_.cend()) {
         results_prefix_ = {*(argument + 1)};
       }
@@ -95,15 +95,15 @@ protected:
   void message_usage_information() const noexcept {
     const std::string space{"  "};
     message("Usage:");
-    message(space + executable_name_ + " " + Arguments::GameDataFilePattern + " " + Arguments::ResultsPrefixPattern);
+    message(space + executable_name_ + " " + Arguments::GamesFilePattern + " " + Arguments::ResultsPrefixPattern);
     const uint_least64_t length{std::max({
       Arguments::UsageInformation.length(),
-      Arguments::GameDataFilePattern.length(),
+      Arguments::GamesFilePattern.length(),
       Arguments::ResultsPrefixPattern.length()
     })};
     message("Arguments:");
     message(space + pad_to_length(Arguments::UsageInformation, length) + space + "Displays this information and exits.");
-    message(space + pad_to_length(Arguments::GameDataFilePattern, length) + space + "Path to the game data file to be read. Required.");
+    message(space + pad_to_length(Arguments::GamesFilePattern, length) + space + "Path to the games file to be read. Required.");
     message(space + pad_to_length(Arguments::ResultsPrefixPattern, length) + space + "Prefix for results files to be written. Optional. If omitted, the current working directory is used.");
     message("");
   }
@@ -121,8 +121,8 @@ protected:
   }
 
   void message_start_information() const noexcept {
-    if (!game_data_file_.empty()) {
-      message("The game data will be read from: " + game_data_file_.string());
+    if (!games_file_.empty()) {
+      message("The games will be read from: " + games_file_.string());
     }
     if (!results_prefix_.empty()) {
       message("The results files will be written to: " + results_prefix_.string());
@@ -132,9 +132,9 @@ protected:
   }
 
   void check() const {
-    if (game_data_file_.empty()) {
+    if (games_file_.empty()) {
       message_usage_information();
-      error("The game data file (" + Arguments::GameDataFilePattern + ") is missing.");
+      error("The games file (" + Arguments::GamesFilePattern + ") is missing.");
     }
   }
 

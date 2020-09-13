@@ -19,12 +19,21 @@ inline void error(const std::string &text) {
   throw std::runtime_error(text);
 }
 
-template <class Type> class Sort {
+template <typename Enumeration> const std::map<Enumeration, std::string> labels;
 
-public:
+template <typename Enumeration> std::string print(const Enumeration enumeration) noexcept {
+  return labels<Enumeration>.find(enumeration)->second;
+}
 
-  virtual bool operator()(const Type& object_1, const Type& object_2) const noexcept = 0;
+template <typename Enumeration> const std::unordered_map<std::string, Enumeration> spellings;
 
-};
+template <typename Enumeration> std::optional<Enumeration> parse(const std::string& spelling) noexcept {
+  const typename std::unordered_map<std::string, Enumeration>::const_iterator enumeration{spellings<Enumeration>.find(spelling)};
+  if (enumeration != spellings<Enumeration>.cend()) {
+    return {enumeration->second};
+  } else {
+    return {};
+  }
+}
 
 } // namespace CatanLeaderboard

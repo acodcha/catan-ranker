@@ -4,6 +4,28 @@
 
 namespace CatanLeaderboard {
 
+std::vector<std::string> split_by_whitespace(const std::string& text) noexcept {
+  std::istringstream stream{text};
+  std::vector<std::string> words{std::istream_iterator<std::string>{stream}, std::istream_iterator<std::string>{}};
+  return words;
+}
+
+std::string remove_whitespace(const std::string& text) noexcept {
+  std::string new_text{text};
+  new_text.erase(remove_if(new_text.begin(), new_text.end(), ::isspace), new_text.end());
+  return new_text;
+}
+
+/// \brief Pad a string to a given length using trailing spaces.
+/// \details If the string is already longer than the given length, nothing is changed.
+std::string pad_to_length(const std::string& text, uint_least64_t length) noexcept {
+  std::string padded_text{text};
+  if (length > padded_text.length()) {
+    padded_text.append(length - padded_text.length(), ' ');
+  }
+  return padded_text;
+}
+
 std::string real_number_to_string(const double value) noexcept {
   if (value == 0.0) {
     return {"0"};
@@ -66,22 +88,6 @@ std::optional<double> string_to_real_number(const std::string& text) noexcept {
   }
   const std::optional<double> no_value;
   return no_value;
-}
-
-std::vector<std::string> split_by_whitespace(const std::string& text) noexcept {
-  std::istringstream stream{text};
-  std::vector<std::string> words{std::istream_iterator<std::string>{stream}, std::istream_iterator<std::string>{}};
-  return words;
-}
-
-/// \brief Pad a string to a given length using trailing spaces.
-/// \details If the string is already longer than the given length, nothing is changed.
-inline std::string pad_to_length(const std::string& text, uint_least64_t length) noexcept {
-  std::string padded_text{text};
-  if (length > padded_text.length()) {
-    padded_text.append(length - padded_text.length(), ' ');
-  }
-  return padded_text;
 }
 
 } // namespace CatanLeaderboard

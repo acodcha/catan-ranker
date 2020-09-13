@@ -1,3 +1,4 @@
+#include "../include/Game.hpp"
 #include "../include/Instructions.hpp"
 
 int main(int argc, char *argv[]) {
