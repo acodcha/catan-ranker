@@ -10,6 +10,16 @@ std::vector<std::string> split_by_whitespace(const std::string& text) noexcept {
   return words;
 }
 
+std::vector<std::string> split(const std::string& text, const char delimiter) noexcept {
+  std::stringstream stream(text);
+  std::string word;
+  std::vector<std::string> words;
+  while (std::getline(stream, word, delimiter)) {
+    words.push_back(word);
+  }
+  return words;
+}
+
 std::string remove_whitespace(const std::string& text) noexcept {
   std::string new_text{text};
   new_text.erase(remove_if(new_text.begin(), new_text.end(), ::isspace), new_text.end());

@@ -9,7 +9,7 @@ The following packages are required:
 - **CMake:** On Ubuntu, install with `sudo apt install cmake`.
 
 ## Configuration and Build
-Configure and build the program with CMake:
+Configure and build the program with:
 
 ```
 mkdir build
@@ -19,13 +19,13 @@ make
 ```
 
 ## Installation
-Install the executable to the system from the `build` directory with CMake:
+Once you have configured and built the program, install it from the `build` directory with:
 
 ```
 sudo make install
 ```
 
-This copies the executable to `/usr/local/bin/catan_leaderboard`. To uninstall the executable, simply delete it.
+This installs the program to `/usr/local/bin/catan_leaderboard`. To uninstall the program, simply delete it.
 
 ## Documentation
 Building the documentation is optional and requires additional packages:
@@ -33,7 +33,7 @@ Building the documentation is optional and requires additional packages:
 - **Graphviz:** On Ubuntu, install with `sudo apt install graphviz`.
 - **TeX Live:** On Ubuntu, install with `sudo apt install texlive texlive-fonts-extra`.
 
-Documentation is disabled by default but can be generated from the `build` directory with CMake:
+Documentation is disabled by default but can be generated from the `build` directory with:
 
 ```
 cmake .. -DBUILD_DOCS=ON
@@ -43,7 +43,7 @@ make docs
 This generates HTML documentation using Doxygen. The documentation is located in `docs/html`. Open the `docs/html/index.html` file in any web browser to view the documentation.
 
 ## Testing
-Run tests from the `build` directory with CMake:
+Once you have configured and built the program, run tests from the `build` directory with:
 
 ```
 make test
