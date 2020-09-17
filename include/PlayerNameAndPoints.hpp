@@ -56,27 +56,23 @@ public:
     return player_name_ != other.player_name_ || points_ != other.points_;
   }
 
+  struct sort_by_descending_points {
+    bool operator()(const PlayerNameAndPoints& player_name_and_points_1, const PlayerNameAndPoints& player_name_and_points_2) const noexcept {
+      if (player_name_and_points_1.points() > player_name_and_points_2.points()) {
+        return true;
+      } else if (player_name_and_points_1.points() < player_name_and_points_2.points()) {
+        return false;
+      } else {
+        return player_name_and_points_1.player_name() < player_name_and_points_2.player_name();
+      }
+    }
+  };
+
 protected:
 
   std::string player_name_;
 
   uint_least8_t points_{0};
-
-};
-
-class sort_by_descending_points {
-
-public:
-
-  bool operator()(const PlayerNameAndPoints& player_name_and_points_1, const PlayerNameAndPoints& player_name_and_points_2) const noexcept {
-    if (player_name_and_points_1.points() > player_name_and_points_2.points()) {
-      return true;
-    } else if (player_name_and_points_1.points() < player_name_and_points_2.points()) {
-      return false;
-    } else {
-      return player_name_and_points_1.player_name() < player_name_and_points_2.player_name();
-    }
-  }
 
 };
 
