@@ -26,6 +26,26 @@ std::string remove_whitespace(const std::string& text) noexcept {
   return new_text;
 }
 
+std::string remove_non_alphanumeric_characters(const std::string& text) noexcept {
+  std::string new_text;
+  for (const char character : text) {
+    if (::isalnum(character)) {
+      new_text += character;
+    }
+  }
+  return new_text;
+}
+
+std::string remove_non_alphabetic_characters(const std::string& text) noexcept {
+  std::string new_text;
+  for (const char character : text) {
+    if (::isalpha(character)) {
+      new_text += character;
+    }
+  }
+  return new_text;
+}
+
 /// \brief Pad a string to a given length using trailing spaces.
 /// \details If the string is already longer than the given length, nothing is changed.
 std::string pad_to_length(const std::string& text, uint_least64_t length) noexcept {
