@@ -111,7 +111,7 @@ protected:
   std::string command() const noexcept {
     std::string text{executable_name_};
     for (const std::string& argument : arguments_) {
-      text.append(" " + argument);
+      text += " " + argument;
     }
     return text;
   }

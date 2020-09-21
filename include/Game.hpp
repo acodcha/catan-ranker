@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Date.hpp"
-#include "PlayerNameAndPoints.hpp"
+#include "Place.hpp"
+#include "PlayerName.hpp"
+#include "Points.hpp"
 
 namespace CatanLeaderboard {
 
@@ -11,32 +13,20 @@ public:
 
   Game() noexcept {}
 
-  Game(const Date& date, const std::set<PlayerNameAndPoints, PlayerNameAndPoints::sort_by_descending_points>& player_names_and_points) noexcept : date_(date), player_names_and_points_(player_names_and_points) {
-    initialize_player_names();
-  }
-
   /// \brief Constructor that takes a string containing a date and a list of player names and numbers of points such as "2020-03-15 : Alice 10 , Bob 8 , Claire 7 , David 6".
   Game(const std::string& date_with_player_names_and_points) {
     const std::string initialization_error_message{"Cannot parse '" + date_with_player_names_and_points + "' into a date with player names and numbers of points. Expected a format such as '2020-03-15 : Alice 10 , Bob 8 , Claire 7 , David 5'."};
     const std::vector<std::string> date_and_the_rest{split_date_from_the_rest(date_with_player_names_and_points, initialization_error_message)};
     date_ = {date_and_the_rest[0]};
     initialize_player_names_and_points(date_and_the_rest[1], initialization_error_message);
-    initialize_player_names();
+    initialize_player_names_and_places(initialization_error_message);
   }
 
   constexpr const Date& date() const noexcept {
     return date_;
   }
 
-  constexpr const std::set<PlayerNameAndPoints, PlayerNameAndPoints::sort_by_descending_points>& player_names_and_points() const noexcept {
-    return player_names_and_points_;
-  }
-
-  constexpr const std::set<std::string>& player_names() const noexcept {
-    return player_names_;
-  }
-
-  bool participant(const std::string& player_name) const noexcept {
+  bool participant(const PlayerName& player_name) const noexcept {
     if (player_names_.find(player_name) != player_names_.cend()) {
       return true;
     } else {
@@ -44,23 +34,59 @@ public:
     }
   }
 
-  std::optional<uint_least8_t> points(const std::string& player_name) const noexcept {
-    for (const PlayerNameAndPoints& player_name_and_points : player_names_and_points_) {
-      if (player_name_and_points.player_name() == player_name) {
-        return player_name_and_points.points();
-      }
+  std::optional<Points> points(const PlayerName& player_name) const noexcept {
+    const std::map<PlayerName, Points, PlayerName::sort_alphabetical>::const_iterator element{player_names_to_points_.find(player_name)};
+    if (element != player_names_to_points_.cend()) {
+      return element->second;
+    } else {
+      std::optional<Points> no_data;
+      return no_data;
     }
-    std::optional<uint_least8_t> no_data;
-    return no_data;
+  }
+
+  std::optional<Place> place(const PlayerName& player_name) const noexcept {
+    const std::map<PlayerName, Place, PlayerName::sort_alphabetical>::const_iterator element{player_names_to_places_.find(player_name)};
+    if (element != player_names_to_places_.cend()) {
+      return element->second;
+    } else {
+      std::optional<Place> no_data;
+      return no_data;
+    }
+  }
+
+  uint_least8_t number_of_players() const noexcept {
+    return (uint_least8_t)player_names_.size();
+  }
+
+  const std::set<PlayerName, PlayerName::sort_alphabetical>& player_names() const noexcept {
+    return player_names_;
+  }
+
+  std::set<PlayerName, PlayerName::sort_alphabetical> player_names(const Points& points) const noexcept {
+    const auto range{points_to_player_names_.equal_range(points)};
+    std::set<PlayerName, PlayerName::sort_alphabetical> data;
+    for (auto element = range.first; element != range.second; ++element) {
+      data.insert(element->second);
+    }
+    return data;
+  }
+
+  std::set<PlayerName, PlayerName::sort_alphabetical> player_names(const Place& place) const noexcept {
+    const auto range{places_to_player_names_.equal_range(place)};
+    std::set<PlayerName, PlayerName::sort_alphabetical> data;
+    for (auto element = range.first; element != range.second; ++element) {
+      data.insert(element->second);
+    }
+    return data;
   }
 
   std::string print() const noexcept {
     std::string text{date_.print() + " : "};
     std::size_t counter{0};
-    for (const PlayerNameAndPoints& player_name_and_points : player_names_and_points_) {
-      text.append(player_name_and_points.print());
-      if (counter + 1 < player_names_and_points_.size()) {
-        text.append(" , ");
+    for (const std::pair<Points, PlayerName>& datum : points_to_player_names_) {
+      text += player_names_to_places_.find(datum.second)->second.print() + " " + datum.second.value() + " " + datum.first.print();
+      if (counter + 1 < points_to_player_names_.size()) {
+        text += " , ";
       }
       ++counter;
     }
@@ -77,9 +103,15 @@ protected:
 
   Date date_;
 
-  std::set<PlayerNameAndPoints, PlayerNameAndPoints::sort_by_descending_points> player_names_and_points_;
+  std::set<PlayerName, PlayerName::sort_alphabetical> player_names_;
 
-  std::set<std::string> player_names_;
+  std::map<PlayerName, Points, PlayerName::sort_alphabetical> player_names_to_points_;
+
+  std::multimap<Points, PlayerName, Points::sort_descending> points_to_player_names_;
+
+  std::map<PlayerName, Place, PlayerName::sort_alphabetical> player_names_to_places_;
+
+  std::multimap<Place, PlayerName, Place::sort_ascending> places_to_player_names_;
 
   std::vector<std::string> split_date_from_the_rest(const std::string& date_with_player_names_and_points, const std::string& initialization_error_message) const {
     const std::vector<std::string> date_and_the_rest{split(remove_whitespace(date_with_player_names_and_points), ':')};
@@ -95,13 +127,46 @@ protected:
       error(initialization_error_message);
     }
     for (const std::string& player_name_and_points : player_names_and_points_vector) {
-      player_names_and_points_.emplace(player_name_and_points);
+      std::string player_name_string;
+      std::string points_string;
+      for (const char character : player_name_and_points) {
+        if (isdigit(character) || character == '.') {
+          points_string += character;
+        } else {
+          player_name_string += character;
+        }
+      }
+      if (player_name_string.empty()) {
+        error(initialization_error_message);
+      }
+      const PlayerName player_name{player_name_string};
+      const std::optional<double> points_optional_number{string_to_real_number(points_string)};
+      if (!points_optional_number.has_value()) {
+        error(initialization_error_message);
+      }
+      const Points points{points_optional_number.value()};
+      const std::pair<std::set<PlayerName>::iterator, bool> player_names_insert_outcome{player_names_.insert(player_name)};
+      if (!player_names_insert_outcome.second) {
+        error(initialization_error_message);
+      }
+      const std::pair<std::map<PlayerName, Points>::iterator, bool> player_names_to_points_outcome{player_names_to_points_.emplace(player_name, points)};
+      if (!player_names_to_points_outcome.second) {
+        error(initialization_error_message);
+      }
+      points_to_player_names_.emplace(points, player_name);
     }
   }
 
-  void initialize_player_names() noexcept {
-    for (const PlayerNameAndPoints& player_name_and_points : player_names_and_points_) {
-      player_names_.insert(player_name_and_points.player_name());
+  void initialize_player_names_and_places(const std::string& initialization_error_message) {
+    Points latest_points{100.0};
+    Place latest_place{0};
+    for (const auto& element : points_to_player_names_) {
+      if (latest_points > element.first) {
+        latest_points = element.first;
+        ++latest_place;
+      }
+      player_names_to_places_.emplace(element.second, latest_place);
+      places_to_player_names_.emplace(latest_place, element.second);
     }
   }
 
