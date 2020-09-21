@@ -31,8 +31,8 @@ public:
   };
 
   struct hash {
-    std::size_t operator()(const std::string& value) const {
-      return std::hash<std::string>()(value);
+    std::size_t operator()(const PlayerName& player_name) const {
+      return std::hash<std::string>()(player_name.value());
     }
   };
 

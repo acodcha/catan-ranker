@@ -85,8 +85,8 @@ public:
   };
 
   struct hash {
-    std::size_t operator()(const uint_least8_t value) const {
-      return std::hash<uint_least8_t>()(value);
+    std::size_t operator()(const Place& place) const {
+      return std::hash<uint_least8_t>()(place.value());
     }
   };
 

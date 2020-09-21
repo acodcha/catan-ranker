@@ -51,8 +51,8 @@ public:
   };
 
   struct hash {
-    std::size_t operator()(const double value) const {
-      return std::hash<double>()(value);
+    std::size_t operator()(const Points& points) const {
+      return std::hash<double>()(points.value());
     }
   };
 
