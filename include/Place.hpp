@@ -84,12 +84,6 @@ public:
     }
   };
 
-  struct hash {
-    std::size_t operator()(const Place& place) const {
-      return std::hash<uint_least8_t>()(place.value());
-    }
-  };
-
 protected:
 
   uint_least8_t value_{0};
@@ -97,3 +91,15 @@ protected:
 };
 
 } // namespace CatanLeaderboard
+
+namespace std {
+
+  template <> struct hash<CatanLeaderboard::Place> {
+
+    size_t operator()(const CatanLeaderboard::Place& place) const {
+      return hash<uint_least8_t>()(place.value());
+    }
+
+  };
+
+} // namespace std

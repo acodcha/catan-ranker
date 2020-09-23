@@ -30,12 +30,6 @@ public:
     }
   };
 
-  struct hash {
-    std::size_t operator()(const PlayerName& player_name) const {
-      return std::hash<std::string>()(player_name.value());
-    }
-  };
-
 protected:
 
   std::string value_;
@@ -43,3 +37,15 @@ protected:
 };
 
 } // namespace CatanLeaderboard
+
+namespace std {
+
+  template <> struct hash<CatanLeaderboard::PlayerName> {
+
+    size_t operator()(const CatanLeaderboard::PlayerName& player_name) const {
+      return hash<string>()(player_name.value());
+    }
+
+  };
+
+} // namespace std
