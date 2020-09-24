@@ -24,7 +24,7 @@ public:
     return value_ != other.value_;
   }
 
-  struct sort_alphabetical {
+  struct sort {
     bool operator()(const PlayerName& player_name_1, const PlayerName& player_name_2) const noexcept {
       return player_name_1.value() < player_name_2.value();
     }

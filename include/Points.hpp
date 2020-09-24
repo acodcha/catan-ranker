@@ -92,7 +92,7 @@ public:
     value_ /= real;
   }
 
-  struct sort_descending {
+  struct sort {
     bool operator()(const Points& points_1, const Points& points_2) const noexcept {
       return points_1.value() > points_2.value();
     }
