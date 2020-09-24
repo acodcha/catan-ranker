@@ -14,7 +14,7 @@ public:
   Player(const PlayerName& name) noexcept : name_(name) {}
 
   Player(const PlayerName& name, const Games& games) noexcept : name_(name) {
-    for (const Game& game : games.data()) {
+    for (const Game& game : games) {
       if (game.participant(name_)) {
         insert(game, game_category(game.number_of_players()));
         insert(game, GameCategory::AnyNumberOfPlayers);
@@ -48,6 +48,30 @@ public:
       return PlayerName::sort()(player_1.name(), player_2.name());
     }
   };
+
+  struct const_iterator : public std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator {
+    const_iterator(const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator i) noexcept : std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator(i) {}
+  };
+
+  std::size_t size() const noexcept {
+    return data_.size();
+  }
+
+  const_iterator cbegin() const noexcept {
+   return const_iterator(data_.cbegin());
+  }
+
+  const_iterator begin() const noexcept {
+   return cbegin();
+  }
+
+  const_iterator cend() const noexcept {
+   return const_iterator(data_.cend());
+  }
+
+  const_iterator end() const noexcept {
+   return cend();
+  }
 
 protected:
 

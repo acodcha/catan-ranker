@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Game.hpp"
+#include "TextFileReader.hpp"
 
 namespace CatanLeaderboard {
 
@@ -8,10 +9,15 @@ class Games {
 
 public:
 
-  Games(const std::vector<Game>& data) noexcept : data_(data) {}
-
-  constexpr const std::vector<Game>& data() const noexcept {
-    return data_;
+  Games(const TextFileReader& file) noexcept {
+    message("Reading the games file...");
+    for (const std::string& line : file) {
+      if (!remove_whitespace(line).empty()) {
+        data_.emplace_back(line);
+      }
+    }
+    std::sort(data_.begin(), data_.end(), Game::sort());
+    message(print());
   }
 
   std::string print() const noexcept {
@@ -31,8 +37,28 @@ public:
     return stream.str();
   }
 
-  void message() const noexcept {
-    CatanLeaderboard::message(print());
+  struct const_iterator : public std::vector<Game>::const_iterator {
+    const_iterator(const std::vector<Game>::const_iterator i) noexcept : std::vector<Game>::const_iterator(i) {}
+  };
+
+  std::size_t size() const noexcept {
+    return data_.size();
+  }
+
+  const_iterator cbegin() const noexcept {
+   return const_iterator(data_.cbegin());
+  }
+
+  const_iterator begin() const noexcept {
+   return cbegin();
+  }
+
+  const_iterator cend() const noexcept {
+   return const_iterator(data_.cend());
+  }
+
+  const_iterator end() const noexcept {
+   return cend();
   }
 
 protected:
