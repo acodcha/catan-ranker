@@ -68,4 +68,11 @@
 2020-09-11 : Jessica 10 , Scott 9 , Mic 6 , Rachel 5
 2020-09-14 : Scott 10 , Jessica 8 , Alex 7 , Phil 7 , Mic 6
 2020-09-14 : Jessica 10 , Mic 6 , Alex 4 , Phil 4 , Scott 4
+2020-09-17 : Sean 10.1 , Jessica 10 , Rachel 9 , Scott 8 , Laura 7 , Mic 6
+2020-09-21 : Jessica 10 , Scott 9 , Mic 8 , Alex 6 , Rachel 5
+2020-09-22 : Rachel 10 , Mic 5 , Phil 4
+2020-09-22 : Phil 10 , Mic 6 , Rachel 4
+2020-09-22 : Rachel 10 , Phil 7 , Mic 6
+2020-09-23 : Sean 10 , Jessica 6 , Mic 6 , Rachel 4
+2020-09-23 : Scott 10 , Jessica 8 , Phil 8 , Sean 7 , Mic 6 , Rachel 6
 
