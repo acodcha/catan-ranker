@@ -33,13 +33,13 @@ public:
     return average_points_per_game_;
   }
 
-  const std::map<Place, uint_least64_t, Place::sort_ascending>& place_counts() const noexcept {
+  const std::map<Place, uint_least64_t, Place::sort>& place_counts() const noexcept {
     return place_counts_;
   }
 
   /// \brief Number of Nth place finishes.
   uint_least64_t place_count(const Place place) const noexcept {
-    const std::map<Place, uint_least64_t, Place::sort_ascending>::const_iterator found{place_counts_.find(place)};
+    const std::map<Place, uint_least64_t, Place::sort>::const_iterator found{place_counts_.find(place)};
     if (found != place_counts_.cend()) {
       return found->second;
     } else {
@@ -49,7 +49,7 @@ public:
 
   /// \brief Ratio of Nth place finishes.
   double place_ratio(const Place place) const noexcept {
-    const std::map<Place, double, Place::sort_ascending>::const_iterator found{place_ratios_.find(place)};
+    const std::map<Place, double, Place::sort>::const_iterator found{place_ratios_.find(place)};
     if (found != place_ratios_.cend()) {
       return found->second;
     } else {
@@ -62,7 +62,7 @@ public:
     return std::to_string((uint_least64_t)std::round(place_ratio(place) * 100)) + "%";
   }
 
-  struct sort_by_ascending_game_index {
+  struct sort {
     bool operator()(const PlayerProperties& player_properties_1, const PlayerProperties& player_properties_2) const noexcept {
       return player_properties_1.game_index() < player_properties_2.game_index();
     }
@@ -76,9 +76,9 @@ protected:
 
   double average_points_per_game_{0.0};
 
-  std::map<Place, uint_least64_t, Place::sort_ascending> place_counts_;
+  std::map<Place, uint_least64_t, Place::sort> place_counts_;
 
-  std::map<Place, double, Place::sort_ascending> place_ratios_;
+  std::map<Place, double, Place::sort> place_ratios_;
 
   void initialize_game_index(const std::optional<PlayerProperties>& previous) noexcept {
     if (previous.has_value()) {
@@ -108,7 +108,7 @@ protected:
     }
     const std::optional<Place> found_place{game.place(name)};
     if (found_place.has_value()) {
-      const std::map<Place, uint_least64_t, Place::sort_ascending>::iterator element{place_counts_.find(found_place.value())};
+      const std::map<Place, uint_least64_t, Place::sort>::iterator element{place_counts_.find(found_place.value())};
       if (element != place_counts_.end()) {
         ++(element->second);
       } else {

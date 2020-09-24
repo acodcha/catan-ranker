@@ -9,18 +9,23 @@ class Players {
 public:
 
   Players(const Games& games) noexcept {
-    std::set<PlayerName, PlayerName::sort_alphabetical> games_player_names;
+    std::set<PlayerName, PlayerName::sort> games_player_names;
     for (const Game& game : games.data()) {
-      const std::set<PlayerName, PlayerName::sort_alphabetical> game_player_names{game.player_names()};
+      const std::set<PlayerName, PlayerName::sort> game_player_names{game.player_names()};
       games_player_names.insert(game_player_names.cbegin(), game_player_names.cend());
     }
     for (const PlayerName& player_name : games_player_names) {
-      data_.emplace(player_name, games);
+      data_.insert({player_name, {player_name, games}});
     }
   }
 
-  const std::set<Player, Player::sort_by_alphabetical_name>& data() const noexcept {
-    return data_;
+  const Player& player(const PlayerName& name) const {
+    const std::map<PlayerName, Player, PlayerName::sort>::const_iterator datum{data_.find(name)};
+    if (datum != data_.cend()) {
+      return datum->second;
+    } else {
+      error(name.value() + " is not a player.");
+    }
   }
 
   std::string print() const noexcept {
@@ -39,7 +44,7 @@ public:
 
 protected:
 
-  std::set<Player, Player::sort_by_alphabetical_name> data_;
+  std::map<PlayerName, Player, PlayerName::sort> data_;
 
   std::string print(const GameCategory game_category) const noexcept {
     std::stringstream stream;
@@ -57,8 +62,8 @@ protected:
         stream << "7-8 player games:";
         break;
     }
-    for (const Player& player : data_) {
-      const std::string text{player.print(game_category)};
+    for (const std::pair<PlayerName, Player>& datum : data_) {
+      const std::string text{datum.second.print(game_category)};
       if (!text.empty()) {
         stream << std::endl << "- " << text;
       }

@@ -78,7 +78,7 @@ public:
     return result;
   }
 
-  struct sort_ascending {
+  struct sort {
     bool operator()(const Place& place_1, const Place& place_2) const noexcept {
       return place_1.value() < place_2.value();
     }

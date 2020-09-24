@@ -43,9 +43,9 @@ public:
     return name_ != other.name_;
   }
 
-  struct sort_by_alphabetical_name {
+  struct sort {
     bool operator()(const Player& player_1, const Player& player_2) const noexcept {
-      return PlayerName::sort_alphabetical()(player_1.name(), player_2.name());
+      return PlayerName::sort()(player_1.name(), player_2.name());
     }
   };
 

@@ -35,7 +35,7 @@ public:
   }
 
   std::optional<Points> points(const PlayerName& player_name) const noexcept {
-    const std::map<PlayerName, Points, PlayerName::sort_alphabetical>::const_iterator element{player_names_to_points_.find(player_name)};
+    const std::map<PlayerName, Points, PlayerName::sort>::const_iterator element{player_names_to_points_.find(player_name)};
     if (element != player_names_to_points_.cend()) {
       return element->second;
     } else {
@@ -45,7 +45,7 @@ public:
   }
 
   std::optional<Place> place(const PlayerName& player_name) const noexcept {
-    const std::map<PlayerName, Place, PlayerName::sort_alphabetical>::const_iterator element{player_names_to_places_.find(player_name)};
+    const std::map<PlayerName, Place, PlayerName::sort>::const_iterator element{player_names_to_places_.find(player_name)};
     if (element != player_names_to_places_.cend()) {
       return element->second;
     } else {
@@ -58,22 +58,22 @@ public:
     return (uint_least8_t)player_names_.size();
   }
 
-  const std::set<PlayerName, PlayerName::sort_alphabetical>& player_names() const noexcept {
+  const std::set<PlayerName, PlayerName::sort>& player_names() const noexcept {
     return player_names_;
   }
 
-  std::set<PlayerName, PlayerName::sort_alphabetical> player_names(const Points& points) const noexcept {
+  std::set<PlayerName, PlayerName::sort> player_names(const Points& points) const noexcept {
     const auto range{points_to_player_names_.equal_range(points)};
-    std::set<PlayerName, PlayerName::sort_alphabetical> data;
+    std::set<PlayerName, PlayerName::sort> data;
     for (auto element = range.first; element != range.second; ++element) {
       data.insert(element->second);
     }
     return data;
   }
 
-  std::set<PlayerName, PlayerName::sort_alphabetical> player_names(const Place& place) const noexcept {
+  std::set<PlayerName, PlayerName::sort> player_names(const Place& place) const noexcept {
     const auto range{places_to_player_names_.equal_range(place)};
-    std::set<PlayerName, PlayerName::sort_alphabetical> data;
+    std::set<PlayerName, PlayerName::sort> data;
     for (auto element = range.first; element != range.second; ++element) {
       data.insert(element->second);
     }
@@ -93,7 +93,7 @@ public:
     return text;
   }
 
-  struct sort_by_ascending_date {
+  struct sort {
     bool operator()(const Game& game_1, const Game& game_2) const noexcept {
       return game_1.date() < game_2.date();
     }
@@ -103,15 +103,15 @@ protected:
 
   Date date_;
 
-  std::set<PlayerName, PlayerName::sort_alphabetical> player_names_;
+  std::set<PlayerName, PlayerName::sort> player_names_;
 
-  std::map<PlayerName, Points, PlayerName::sort_alphabetical> player_names_to_points_;
+  std::map<PlayerName, Points, PlayerName::sort> player_names_to_points_;
 
-  std::multimap<Points, PlayerName, Points::sort_descending> points_to_player_names_;
+  std::multimap<Points, PlayerName, Points::sort> points_to_player_names_;
 
-  std::map<PlayerName, Place, PlayerName::sort_alphabetical> player_names_to_places_;
+  std::map<PlayerName, Place, PlayerName::sort> player_names_to_places_;
 
-  std::multimap<Place, PlayerName, Place::sort_ascending> places_to_player_names_;
+  std::multimap<Place, PlayerName, Place::sort> places_to_player_names_;
 
   std::vector<std::string> split_date_from_the_rest(const std::string& date_with_player_names_and_points, const std::string& initialization_error_message) const {
     const std::vector<std::string> date_and_the_rest{split(remove_whitespace(date_with_player_names_and_points), ':')};

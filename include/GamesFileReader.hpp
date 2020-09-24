@@ -20,7 +20,7 @@ public:
         data.emplace_back(line);
       }
     }
-    std::sort(data.begin(), data.end(), Game::sort_by_ascending_date());
+    std::sort(data.begin(), data.end(), Game::sort());
     return {data};
   }
 
