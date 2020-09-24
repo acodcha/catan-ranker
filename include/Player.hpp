@@ -16,28 +16,8 @@ public:
   Player(const PlayerName& name, const Games& games) noexcept : name_(name) {
     for (const Game& game : games.data()) {
       if (game.participant(name_)) {
-        if (game.number_of_players() <= 4) {
-          if (three_to_four_player_games_.empty()) {
-            three_to_four_player_games_.emplace_back(name_, game);
-          } else {
-            three_to_four_player_games_.emplace_back(name_, game, three_to_four_player_games_.back());
-          }
-          all_games_.push_back(three_to_four_player_games_.back());
-        } else if (game.number_of_players() <= 6) {
-          if (five_to_six_player_games_.empty()) {
-            five_to_six_player_games_.emplace_back(name_, game);
-          } else {
-            five_to_six_player_games_.emplace_back(name_, game, five_to_six_player_games_.back());
-          }
-          all_games_.push_back(five_to_six_player_games_.back());
-        } else {
-          if (seven_to_eight_player_games_.empty()) {
-            seven_to_eight_player_games_.emplace_back(name_, game);
-          } else {
-            seven_to_eight_player_games_.emplace_back(name_, game, seven_to_eight_player_games_.back());
-          }
-          all_games_.push_back(seven_to_eight_player_games_.back());
-        }
+        insert(game, game_category(game.number_of_players()));
+        insert(game, GameCategory::AnyNumberOfPlayers);
       }
     }
   }
@@ -46,35 +26,12 @@ public:
     return name_;
   }
 
-  std::string print_all_games() const noexcept {
-    if (all_games_.empty()) {
-      return {};
+  std::string print(const GameCategory game_category) const noexcept {
+    const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator category_history{data_.find(game_category)};
+    if (category_history != data_.cend() && !category_history->second.empty()) {
+      return name_.value() + " : " + std::to_string(category_history->second.back().game_number()) + " games , " + real_number_to_string(category_history->second.back().average_points_per_game()) + " pts , " + category_history->second.back().place_percentage({1}) + " 1st , " + category_history->second.back().place_percentage({2}) + " 2nd , " + category_history->second.back().place_percentage({3}) + " 3rd";
     } else {
-      return name_.value() + " : " + std::to_string(all_games_.back().game_number()) + " games , " + real_number_to_string(all_games_.back().average_points_per_game()) + " points/game , " + all_games_.back().place_percentage({1}) + " 1st , " + all_games_.back().place_percentage({2}) + " 2nd , " + all_games_.back().place_percentage({3}) + " 3rd";
-    }
-  }
-
-  std::string print_three_to_four_player_games() const noexcept {
-    if (three_to_four_player_games_.empty()) {
       return {};
-    } else {
-      return name_.value() + " : " + std::to_string(three_to_four_player_games_.back().game_number()) + " games , " + real_number_to_string(three_to_four_player_games_.back().average_points_per_game()) + " points/game , " + three_to_four_player_games_.back().place_percentage({1}) + " 1st , " + three_to_four_player_games_.back().place_percentage({2}) + " 2nd , " + three_to_four_player_games_.back().place_percentage({3}) + " 3rd";
-    }
-  }
-
-  std::string print_five_to_six_player_games() const noexcept {
-    if (five_to_six_player_games_.empty()) {
-      return {};
-    } else {
-      return name_.value() + " : " + std::to_string(five_to_six_player_games_.back().game_number()) + " games , " + real_number_to_string(five_to_six_player_games_.back().average_points_per_game()) + " points/game , " + five_to_six_player_games_.back().place_percentage({1}) + " 1st , " + five_to_six_player_games_.back().place_percentage({2}) + " 2nd , " + five_to_six_player_games_.back().place_percentage({3}) + " 3rd";
-    }
-  }
-
-  std::string print_seven_to_eight_player_games() const noexcept {
-    if (seven_to_eight_player_games_.empty()) {
-      return {};
-    } else {
-      return name_.value() + " : " + std::to_string(seven_to_eight_player_games_.back().game_number()) + " games , " + real_number_to_string(seven_to_eight_player_games_.back().average_points_per_game()) + " points/game , " + seven_to_eight_player_games_.back().place_percentage({1}) + " 1st , " + seven_to_eight_player_games_.back().place_percentage({2}) + " 2nd , " + seven_to_eight_player_games_.back().place_percentage({3}) + " 3rd";
     }
   }
 
@@ -96,13 +53,23 @@ protected:
 
   PlayerName name_;
 
-  std::vector<PlayerProperties> all_games_;
+  std::map<GameCategory, std::vector<PlayerProperties>> data_{
+    {GameCategory::AnyNumberOfPlayers, {}},
+    {GameCategory::ThreeToFourPlayers, {}},
+    {GameCategory::FiveToSixPlayers, {}},
+    {GameCategory::SevenToEightPlayers, {}}
+  };
 
-  std::vector<PlayerProperties> three_to_four_player_games_;
-
-  std::vector<PlayerProperties> five_to_six_player_games_;
-
-  std::vector<PlayerProperties> seven_to_eight_player_games_;
+  void insert(const Game& game, const GameCategory game_category) noexcept {
+    const std::map<GameCategory, std::vector<PlayerProperties>>::iterator history{data_.find(game_category)};
+    if (history != data_.end()) {
+      if (history->second.empty()) {
+        history->second.emplace_back(name_, game);
+      } else {
+        history->second.emplace_back(name_, game, history->second.back());
+      }
+    }
+  }
 
 };
 

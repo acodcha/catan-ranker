@@ -26,10 +26,10 @@ public:
   std::string print() const noexcept {
     std::stringstream stream;
     stream << "There are " << data_.size() << " players.";
-    stream << std::endl << print_all_games();
-    stream << std::endl << print_three_to_four_player_games();
-    stream << std::endl << print_five_to_six_player_games();
-    stream << std::endl << print_seven_to_eight_player_games();
+    stream << std::endl << print(GameCategory::AnyNumberOfPlayers);
+    stream << std::endl << print(GameCategory::ThreeToFourPlayers);
+    stream << std::endl << print(GameCategory::FiveToSixPlayers);
+    stream << std::endl << print(GameCategory::SevenToEightPlayers);
     return stream.str();
   }
 
@@ -41,47 +41,24 @@ protected:
 
   std::set<Player, Player::sort_by_alphabetical_name> data_;
 
-  std::string print_all_games() const noexcept {
+  std::string print(const GameCategory game_category) const noexcept {
     std::stringstream stream;
-    stream << "All games:";
-    for (const Player& player : data_) {
-      const std::string text{player.print_all_games()};
-      if (!text.empty()) {
-        stream << std::endl << "- " << text;
-      }
+    switch (game_category) {
+      case GameCategory::AnyNumberOfPlayers:
+        stream << "All games:";
+        break;
+      case GameCategory::ThreeToFourPlayers:
+        stream << "3-4 player games:";
+        break;
+      case GameCategory::FiveToSixPlayers:
+        stream << "5-6 player games:";
+        break;
+      case GameCategory::SevenToEightPlayers:
+        stream << "7-8 player games:";
+        break;
     }
-    return stream.str();
-  }
-
-  std::string print_three_to_four_player_games() const noexcept {
-    std::stringstream stream;
-    stream << "3-4 player games:";
     for (const Player& player : data_) {
-      const std::string text{player.print_three_to_four_player_games()};
-      if (!text.empty()) {
-        stream << std::endl << "- " << text;
-      }
-    }
-    return stream.str();
-  }
-
-  std::string print_five_to_six_player_games() const noexcept {
-    std::stringstream stream;
-    stream << "5-6 player games:";
-    for (const Player& player : data_) {
-      const std::string text{player.print_five_to_six_player_games()};
-      if (!text.empty()) {
-        stream << std::endl << "- " << text;
-      }
-    }
-    return stream.str();
-  }
-
-  std::string print_seven_to_eight_player_games() const noexcept {
-    std::stringstream stream;
-    stream << "7-8 player games:";
-    for (const Player& player : data_) {
-      const std::string text{player.print_seven_to_eight_player_games()};
+      const std::string text{player.print(game_category)};
       if (!text.empty()) {
         stream << std::endl << "- " << text;
       }

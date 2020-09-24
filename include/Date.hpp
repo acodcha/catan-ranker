@@ -133,7 +133,7 @@ public:
 
 protected:
 
-  /// \brief AD year, e.g. 2020.
+  /// \brief CE year, e.g. 2020.
   uint_least16_t year_{0};
 
   /// \brief Month number. Ranges from 1 to 12, where 1 is January and 12 is December.
