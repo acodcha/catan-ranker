@@ -29,7 +29,7 @@ public:
   std::string print(const GameCategory game_category) const noexcept {
     const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator category_history{data_.find(game_category)};
     if (category_history != data_.cend() && !category_history->second.empty()) {
-      return name_.value() + " : " + std::to_string(category_history->second.back().game_number()) + " games , " + real_number_to_string(category_history->second.back().average_points_per_game()) + " pts , " + category_history->second.back().place_percentage({1}) + " 1st , " + category_history->second.back().place_percentage({2}) + " 2nd , " + category_history->second.back().place_percentage({3}) + " 3rd";
+      return name_.value() + " : " + std::to_string(category_history->second.back().game_number()) + " games , " + real_number_to_string(category_history->second.back().average_points_per_game(), 2) + " pts , " + real_number_to_percentage_string(category_history->second.back().place_ratio({1})) + " 1st , " + real_number_to_percentage_string(category_history->second.back().place_ratio({2})) + " 2nd , " + real_number_to_percentage_string(category_history->second.back().place_ratio({3})) + " 3rd";
     } else {
       return {};
     }

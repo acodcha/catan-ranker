@@ -33,10 +33,6 @@ public:
     return average_points_per_game_;
   }
 
-  const std::map<Place, uint_least64_t, Place::sort>& place_counts() const noexcept {
-    return place_counts_;
-  }
-
   /// \brief Number of Nth place finishes.
   uint_least64_t place_count(const Place place) const noexcept {
     const std::map<Place, uint_least64_t, Place::sort>::const_iterator found{place_counts_.find(place)};
@@ -55,11 +51,6 @@ public:
     } else {
       return 0.0;
     }
-  }
-
-  /// \brief Percentage of Nth place finishes. Returned as a string, such as "30%".
-  std::string place_percentage(const Place place) const noexcept {
-    return std::to_string((uint_least64_t)std::round(place_ratio(place) * 100)) + "%";
   }
 
   struct sort {
