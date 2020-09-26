@@ -60,7 +60,7 @@ protected:
 
   std::experimental::filesystem::path games_file_;
 
-  std::experimental::filesystem::path results_prefix_;
+  std::experimental::filesystem::path results_prefix_{"results"};
 
   void assign_arguments(int argc, char *argv[]) noexcept {
     if (argc > 1) {
@@ -104,7 +104,7 @@ protected:
     message("Arguments:");
     message(space + pad_to_length(Arguments::UsageInformation, length) + space + "Displays this information and exits.");
     message(space + pad_to_length(Arguments::GamesFilePattern, length) + space + "Path to the games file to be read. Required.");
-    message(space + pad_to_length(Arguments::ResultsPrefixPattern, length) + space + "Prefix for results files to be written. Optional. If omitted, the current working directory is used.");
+    message(space + pad_to_length(Arguments::ResultsPrefixPattern, length) + space + "Prefix for results files to be written. Default value: 'results'.");
     message("");
   }
 

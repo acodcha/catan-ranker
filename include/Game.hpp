@@ -19,7 +19,8 @@ public:
     const std::vector<std::string> date_and_the_rest{split_date_from_the_rest(date_with_player_names_and_points, initialization_error_message)};
     date_ = {date_and_the_rest[0]};
     initialize_player_names_and_points(date_and_the_rest[1], initialization_error_message);
-    initialize_player_names_and_places(initialization_error_message);
+    initialize_player_names_and_places();
+    check_number_of_players(date_with_player_names_and_points);
   }
 
   constexpr const Date& date() const noexcept {
@@ -157,7 +158,7 @@ protected:
     }
   }
 
-  void initialize_player_names_and_places(const std::string& initialization_error_message) {
+  void initialize_player_names_and_places() noexcept {
     Points latest_points{100.0};
     Place latest_place{0};
     for (const auto& element : points_to_player_names_) {
@@ -167,6 +168,12 @@ protected:
       }
       player_names_to_places_.emplace(element.second, latest_place);
       places_to_player_names_.emplace(latest_place, element.second);
+    }
+  }
+
+  void check_number_of_players(const std::string& date_with_player_names_and_points) const {
+    if (player_names_.size() < 3 || player_names_.size() > 8) {
+      error("The game '" + date_with_player_names_and_points + "' has an invalid number of players. A Catan game must have 3 to 8 players.");
     }
   }
 

@@ -59,7 +59,7 @@ catan_leaderboard --games <path> --results <path>
 ```
 
 - `--games <path>` specifies the path to the games file to be read. Required.
-- `--results <path>` specifies the prefix to the results files to be written. Optional. If omitted, the current working directory is used.
+- `--results <path>` specifies the prefix to the results files to be written. Default value: 'results'.
 
 ## License
 This work is licensed under the MIT License. For more details, see the [LICENSE](LICENSE) file or <https://mit-license.org/>.
