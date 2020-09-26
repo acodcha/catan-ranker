@@ -43,6 +43,11 @@ public:
     return name_ != other.name_;
   }
 
+  const std::vector<PlayerProperties>& operator[](const GameCategory game_category) const noexcept {
+    const std::map<CatanLeaderboard::GameCategory, std::vector<CatanLeaderboard::PlayerProperties>>::const_iterator found{data_.find(game_category)};
+    return found->second;
+  }
+
   struct sort {
     bool operator()(const Player& player_1, const Player& player_2) const noexcept {
       return PlayerName::sort()(player_1.name(), player_2.name());

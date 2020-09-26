@@ -55,10 +55,18 @@ std::string remove_non_alphabetic_characters(const std::string& text) noexcept {
 /// \details If the string is already longer than the given length, nothing is changed.
 std::string pad_to_length(const std::string& text, uint_least64_t length) noexcept {
   std::string padded_text{text};
-  if (length > padded_text.length()) {
-    padded_text.append(length - padded_text.length(), ' ');
+  if (length > padded_text.size()) {
+    padded_text.append(length - padded_text.size(), ' ');
   }
   return padded_text;
+}
+
+std::string boolean_to_string(const bool value) noexcept {
+  if (value) {
+    return "true";
+  } else {
+    return "false";
+  }
 }
 
 /// \brief Print a real number as a string to a given number of significant digits.
