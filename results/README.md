@@ -1,4 +1,5 @@
-# Summary
+# Results
+Last updated 2020-09-26 02:26:20 local time (2020-09-26 09:26:20 UTC).
 
 ## All Games
 | **Player** | **Games** | **Points** | **1st Place** | **2nd Place** | **3rd Place** |

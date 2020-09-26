@@ -9,7 +9,8 @@ class ResultsSummaryFileWriter : public MarkdownFileWriter {
 
 public:
 
-  ResultsSummaryFileWriter(const std::experimental::filesystem::path& prefix, const Games& games, const Players& players) noexcept : MarkdownFileWriter(prefix / std::experimental::filesystem::path{"README.md"}, "Summary") {
+  ResultsSummaryFileWriter(const std::experimental::filesystem::path& prefix, const Games& games, const Players& players) noexcept : MarkdownFileWriter(prefix / std::experimental::filesystem::path{"README.md"}, "Results") {
+    line("Last updated " + current_local_date_and_time() + " local time (" + current_utc_date_and_time() + ").");
     players_table("All Games", GameCategory::AnyNumberOfPlayers, players);
     players_table("3-4 Player Games", GameCategory::ThreeToFourPlayers, players);
     players_table("5-6 Player Games", GameCategory::FiveToSixPlayers, players);
