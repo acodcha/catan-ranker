@@ -2,11 +2,11 @@
 #include "../include/Results.hpp"
 
 int main(int argc, char *argv[]) {
-  const CatanLeaderboard::Instructions instructions(argc, argv);
-  const CatanLeaderboard::TextFileReader file{instructions.games_file()};
-  const CatanLeaderboard::Games games{file};
-  const CatanLeaderboard::Players players{games};
-  const CatanLeaderboard::Results results{instructions.results_prefix(), games, players};
-  CatanLeaderboard::message("End of " + CatanLeaderboard::Program::Title + ".");
+  const CatanLeaderboardGenerator::Instructions instructions(argc, argv);
+  const CatanLeaderboardGenerator::TextFileReader file{instructions.games_file()};
+  const CatanLeaderboardGenerator::Games games{file};
+  const CatanLeaderboardGenerator::Players players{games};
+  const CatanLeaderboardGenerator::Results results{instructions.results_directory(), games, players};
+  CatanLeaderboardGenerator::message("End of " + CatanLeaderboardGenerator::Program::Title + ".");
   return EXIT_SUCCESS;
 }

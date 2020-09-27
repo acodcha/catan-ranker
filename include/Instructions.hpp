@@ -2,18 +2,7 @@
 
 #include "Base.hpp"
 
-namespace CatanLeaderboard {
-
-/// \brief Namespace containing information about the program and its compilation.
-namespace Program {
-
-const std::string Title{"Catan Leaderboard"};
-
-const std::string CompilationDateAndTime{std::string{__DATE__} + ", " + std::string{__TIME__}};
-
-const std::string Description{"Leaderboard for Catan games with friends."};
-
-} // namespace Program
+namespace CatanLeaderboardGenerator {
 
 /// \brief Namespace listing the program's command-line argument keywords.
 namespace Arguments {
@@ -24,9 +13,9 @@ const std::string GamesFileKey{"--games"};
 
 const std::string GamesFilePattern{GamesFileKey + " <path>"};
 
-const std::string ResultsPrefixKey{"--results"};
+const std::string ResultsDirectoryKey{"--results"};
 
-const std::string ResultsPrefixPattern{ResultsPrefixKey + " <path>"};
+const std::string ResultsDirectoryPattern{ResultsDirectoryKey + " <path>"};
 
 } // namespace Arguments
 
@@ -44,12 +33,12 @@ public:
     check();
   }
 
-  constexpr const std::experimental::filesystem::path& games_file() const noexcept {
+  const std::experimental::filesystem::path& games_file() const noexcept {
     return games_file_;
   }
 
-  constexpr const std::experimental::filesystem::path& results_prefix() const noexcept {
-    return results_prefix_;
+  const std::experimental::filesystem::path& results_directory() const noexcept {
+    return results_directory_;
   }
 
 protected:
@@ -60,7 +49,7 @@ protected:
 
   std::experimental::filesystem::path games_file_;
 
-  std::experimental::filesystem::path results_prefix_{"results"};
+  std::experimental::filesystem::path results_directory_;
 
   void assign_arguments(int argc, char *argv[]) noexcept {
     if (argc > 1) {
@@ -80,8 +69,8 @@ protected:
         exit(EXIT_SUCCESS);
       } else if (*argument == Arguments::GamesFileKey && argument + 1 < arguments_.cend()) {
         games_file_ = {*(argument + 1)};
-      } else if (*argument == Arguments::ResultsPrefixKey && argument + 1 < arguments_.cend()) {
-        results_prefix_ = {*(argument + 1)};
+      } else if (*argument == Arguments::ResultsDirectoryKey && argument + 1 < arguments_.cend()) {
+        results_directory_ = {*(argument + 1)};
       }
     }
   }
@@ -95,16 +84,16 @@ protected:
   void message_usage_information() const noexcept {
     const std::string space{"  "};
     message("Usage:");
-    message(space + executable_name_ + " " + Arguments::GamesFilePattern + " " + Arguments::ResultsPrefixPattern);
+    message(space + executable_name_ + " " + Arguments::GamesFilePattern + " " + Arguments::ResultsDirectoryPattern);
     const uint_least64_t length{std::max({
       Arguments::UsageInformation.length(),
       Arguments::GamesFilePattern.length(),
-      Arguments::ResultsPrefixPattern.length()
+      Arguments::ResultsDirectoryPattern.length()
     })};
     message("Arguments:");
     message(space + pad_to_length(Arguments::UsageInformation, length) + space + "Displays this information and exits.");
     message(space + pad_to_length(Arguments::GamesFilePattern, length) + space + "Path to the games file to be read. Required.");
-    message(space + pad_to_length(Arguments::ResultsPrefixPattern, length) + space + "Prefix for results files to be written. Default value: 'results'.");
+    message(space + pad_to_length(Arguments::ResultsDirectoryPattern, length) + space + "Path to the directory in which results files will be written. Optional.");
     message("");
   }
 
@@ -124,10 +113,10 @@ protected:
     if (!games_file_.empty()) {
       message("The games will be read from: " + games_file_.string());
     }
-    if (!results_prefix_.empty()) {
-      message("The results files will be written to: " + results_prefix_.string());
+    if (!results_directory_.empty()) {
+      message("The results will be written to: " + results_directory_.string());
     } else {
-      message("The results files will be written to the current working directory.");
+      warning("The results directory (" + Arguments::ResultsDirectoryPattern + ") is missing. Results files will not be written.");
     }
   }
 
@@ -140,4 +129,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator

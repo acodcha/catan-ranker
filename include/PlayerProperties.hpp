@@ -2,7 +2,7 @@
 
 #include "Game.hpp"
 
-namespace CatanLeaderboard {
+namespace CatanLeaderboardGenerator {
 
 class PlayerProperties {
 
@@ -118,4 +118,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator

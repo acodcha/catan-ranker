@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace CatanLeaderboard {
+namespace CatanLeaderboardGenerator {
 
 class Place {
 
@@ -90,13 +90,13 @@ protected:
 
 };
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator
 
 namespace std {
 
-  template <> struct hash<CatanLeaderboard::Place> {
+  template <> struct hash<CatanLeaderboardGenerator::Place> {
 
-    size_t operator()(const CatanLeaderboard::Place& place) const {
+    size_t operator()(const CatanLeaderboardGenerator::Place& place) const {
       return hash<uint_least8_t>()(place.value());
     }
 

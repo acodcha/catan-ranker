@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace CatanLeaderboard {
+namespace CatanLeaderboardGenerator {
 
 /// \brief General-purpose column for printing out. All data is stored internally as strings.
 class Column {
@@ -213,4 +213,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "FileWriter.hpp"
+#include "File.hpp"
 
-namespace CatanLeaderboard {
+namespace CatanLeaderboardGenerator {
 
 class TextFileWriter : public FileWriter {
 
@@ -22,4 +22,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator

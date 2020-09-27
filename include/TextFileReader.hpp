@@ -1,8 +1,8 @@
 #pragma once
 
-#include "FileReader.hpp"
+#include "File.hpp"
 
-namespace CatanLeaderboard {
+namespace CatanLeaderboardGenerator {
 
 class TextFileReader : public FileReader {
 
@@ -47,4 +47,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator

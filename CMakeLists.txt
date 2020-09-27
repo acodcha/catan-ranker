@@ -10,12 +10,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_BUILD_TYPE Release)
 
 # Define the CMake project.
-project("CatanLeaderboard" VERSION 1.0.0 LANGUAGES CXX)
+project("CatanLeaderboardGenerator" VERSION 1.0.0 LANGUAGES CXX)
 option(BUILD_DOCS "Build the documentation using Doxygen." OFF)
 option(BUILD_TESTING "Build the tests." ON)
 
 # Build the executable.
-set(EXECUTABLE_NAME "catan_leaderboard")
+set(EXECUTABLE_NAME "catan_leaderboard_generator")
 include_directories(include)
 file(GLOB_RECURSE SOURCE_CPP source/*.cpp)
 add_executable(${EXECUTABLE_NAME} ${SOURCE_CPP})

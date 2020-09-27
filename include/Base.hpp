@@ -2,7 +2,18 @@
 
 #include "String.hpp"
 
-namespace CatanLeaderboard {
+namespace CatanLeaderboardGenerator {
+
+/// \brief Namespace containing information about the program and its compilation.
+namespace Program {
+
+const std::string Title{"Catan Leaderboard Generator"};
+
+const std::string CompilationDateAndTime{std::string{__DATE__} + ", " + std::string{__TIME__}};
+
+const std::string Description{"Generates a simple leaderboard for Catan games."};
+
+} // namespace Program
 
 /// \brief Print a general-purpose message to the console.
 inline void message(const std::string &text) noexcept {
@@ -41,7 +52,7 @@ const std::map<uint_least8_t, GameCategory> game_categories{
 };
 
 GameCategory game_category(const uint_least8_t number_of_players) {
-  const std::map<uint_least8_t, CatanLeaderboard::GameCategory>::const_iterator found_game_category{game_categories.find(number_of_players)};
+  const std::map<uint_least8_t, GameCategory>::const_iterator found_game_category{game_categories.find(number_of_players)};
   if (found_game_category != game_categories.cend()) {
     return found_game_category->second;
   } else {
@@ -75,4 +86,4 @@ std::string current_utc_date_and_time() noexcept {
   return date_and_time(current) + " UTC";
 }
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator
