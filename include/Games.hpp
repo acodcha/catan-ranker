@@ -3,7 +3,7 @@
 #include "Game.hpp"
 #include "TextFileReader.hpp"
 
-namespace CatanLeaderboard {
+namespace CatanLeaderboardGenerator {
 
 class Games {
 
@@ -67,4 +67,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator

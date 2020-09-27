@@ -3,7 +3,7 @@
 #include "Games.hpp"
 #include "PlayerProperties.hpp"
 
-namespace CatanLeaderboard {
+namespace CatanLeaderboardGenerator {
 
 class Player {
 
@@ -44,7 +44,7 @@ public:
   }
 
   const std::vector<PlayerProperties>& operator[](const GameCategory game_category) const noexcept {
-    const std::map<CatanLeaderboard::GameCategory, std::vector<CatanLeaderboard::PlayerProperties>>::const_iterator found{data_.find(game_category)};
+    const std::map<CatanLeaderboardGenerator::GameCategory, std::vector<CatanLeaderboardGenerator::PlayerProperties>>::const_iterator found{data_.find(game_category)};
     return found->second;
   }
 
@@ -102,14 +102,14 @@ protected:
 
 };
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator
 
 namespace std {
 
-  template <> struct hash<CatanLeaderboard::Player> {
+  template <> struct hash<CatanLeaderboardGenerator::Player> {
 
-    size_t operator()(const CatanLeaderboard::Player& player) const {
-      return hash<CatanLeaderboard::PlayerName>()(player.name());
+    size_t operator()(const CatanLeaderboardGenerator::Player& player) const {
+      return hash<CatanLeaderboardGenerator::PlayerName>()(player.name());
     }
 
   };

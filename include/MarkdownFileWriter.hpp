@@ -3,7 +3,7 @@
 #include "Table.hpp"
 #include "TextFileWriter.hpp"
 
-namespace CatanLeaderboard {
+namespace CatanLeaderboardGenerator {
 
 class MarkdownFileWriter : public TextFileWriter {
 
@@ -40,4 +40,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator

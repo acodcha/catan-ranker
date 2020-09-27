@@ -2,7 +2,7 @@
 
 #include "Include.hpp"
 
-namespace CatanLeaderboard {
+namespace CatanLeaderboardGenerator {
 
 /// \brief Split a string into words using whitespace as a delimiter.
 std::vector<std::string> split_by_whitespace(const std::string& text) noexcept {
@@ -130,4 +130,4 @@ std::optional<double> string_to_real_number(const std::string& text) noexcept {
   return no_value;
 }
 
-} // namespace CatanLeaderboard
+} // namespace CatanLeaderboardGenerator
