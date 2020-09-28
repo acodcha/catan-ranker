@@ -60,7 +60,7 @@ catan_leaderboard_generator --games <path> --results <path>
 ```
 
 - `--games <path>` specifies the path to the games file to be read. Required.
-- `--results <path>` specifies the path to the directory in which results files will be written. Optional.
+- `--results <path>` specifies the path to the directory in which results files will be written. Optional. If omitted, no results are written.
 
 ### Games File
 The games file must have the following format:
@@ -77,14 +77,12 @@ The games file must have the following format:
 - Each line represents a game.
 - Each game consists of a date and a list of player names and points.
 - The date must be in the YYYY-MM-DD format.
-- A colon (`:`) separates the date from the list of player names and points.
-- Each player name is case-sensitive and must be followed by that player's number of points at game end.
+- A colon (`:`) is used to separate the date from the list of player names and points.
+- Each player name is case-sensitive and must be followed by that player's points at game end.
 - A comma (`,`) is used to separate players.
 - Except for line endings, all whitespace is ignored. However, as in the above example, the use of whitespace is recommended for readability.
-
-The ordering of players in a game is unimportant; the winning player is simply assumed to be the player with the most points.
-
-However, in 5+ player games, because of the special build phase and because a player can only win during their turn, it is possible for the winning player to be tied for most points or to not have the most points. In such cases, identify the winning player by placing an asterisk (`*`) after their number of points.
+- The ordering of players in a game is unimportant. The winning player is the player with the most points. Players can be tied for 2nd place, 3rd place, and so on, depending on their points.
+- In 5+ player games, because of the special build phase and because a player can only win during their turn, it is possible for the winning player to be tied for most points or to not have the most points. In such cases, identify the winning player by placing an asterisk (`*`) after their points, as in the above example.
 
 ## License
 This work is licensed under the MIT License. For more details, see the [LICENSE](LICENSE) file or <https://mit-license.org/>.
