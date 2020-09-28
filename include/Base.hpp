@@ -30,11 +30,6 @@ inline void error(const std::string &text) {
   throw std::runtime_error(text);
 }
 
-enum class RealNumber : uint_least8_t {
-  FloatingPoint,
-  Percentage
-};
-
 enum class GameCategory : uint_least8_t {
   AnyNumberOfPlayers,
   ThreeToFourPlayers,

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.hpp"
+#include "Percentage.hpp"
 
 namespace CatanLeaderboardGenerator {
 
@@ -25,14 +25,20 @@ public:
     }
   }
 
-  template <RealNumber Type> Column(const std::string& header, const std::vector<double>& rows, const Alignment alignment, const uint_least8_t significant_digits = 7) noexcept : header_(header), alignment_(alignment) {
+  Column(const std::string& header, const std::vector<double>& rows, const Alignment alignment, const uint_least8_t significant_digits) noexcept : header_(header), alignment_(alignment) {
     for (const double row : rows) {
-      add_row<Type>(row, significant_digits);
+      add_row(row, significant_digits);
+    }
+  }
+
+  Column(const std::string& header, const std::vector<Percentage>& rows, const Alignment alignment, const uint_least8_t decimals) noexcept : header_(header), alignment_(alignment) {
+    for (const Percentage& row : rows) {
+      add_row(row, decimals);
     }
   }
 
   Column(const std::string& header, const std::vector<std::string>& rows, const Alignment alignment) noexcept : header_(header), alignment_(alignment) {
-    for (const std::string row : rows) {
+    for (const std::string& row : rows) {
       add_row(row);
     }
   }
@@ -41,7 +47,13 @@ public:
     rows_.push_back(std::to_string(value));
   }
 
-  template <RealNumber Type> void add_row(const double value, const uint_least8_t significant_digits = 7) noexcept;
+  void add_row(const double value, const uint_least8_t significant_digits) noexcept {
+    rows_.push_back(real_number_to_string(value, significant_digits));
+  }
+
+  void add_row(const Percentage& value, const uint_least8_t decimals) noexcept {
+    rows_.push_back(value.print(decimals));
+  }
 
   void add_row(const std::string& value) noexcept {
     rows_.push_back(value);
@@ -120,14 +132,6 @@ protected:
   Alignment alignment_{Alignment::Center};
 
 };
-
-template <> void Column::add_row<RealNumber::FloatingPoint>(const double value, const uint_least8_t significant_digits) noexcept {
-  rows_.push_back(real_number_to_string(value, significant_digits));
-}
-
-template <> void Column::add_row<RealNumber::Percentage>(const double value, const uint_least8_t significant_digits) noexcept {
-  rows_.push_back(real_number_to_percentage_string(value));
-}
 
 /// \brief General-purpose table. All values are stored internally as strings.
 class Table {

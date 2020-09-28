@@ -93,7 +93,7 @@ protected:
     message("Arguments:");
     message(space + pad_to_length(Arguments::UsageInformation, length) + space + "Displays this information and exits.");
     message(space + pad_to_length(Arguments::GamesFilePattern, length) + space + "Path to the games file to be read. Required.");
-    message(space + pad_to_length(Arguments::ResultsDirectoryPattern, length) + space + "Path to the directory in which results files will be written. Optional.");
+    message(space + pad_to_length(Arguments::ResultsDirectoryPattern, length) + space + "Path to the directory in which results files will be written. Optional. If omitted, no results are written.");
     message("");
   }
 

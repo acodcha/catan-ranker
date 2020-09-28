@@ -1,6 +1,6 @@
 #pragma once
 
-#include "File.hpp"
+#include "FileReader.hpp"
 
 namespace CatanLeaderboardGenerator {
 

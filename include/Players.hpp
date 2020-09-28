@@ -74,16 +74,16 @@ protected:
     std::stringstream stream;
     switch (game_category) {
       case GameCategory::AnyNumberOfPlayers:
-        stream << "Player statistics in all games:";
+        stream << "Results for all games:";
         break;
       case GameCategory::ThreeToFourPlayers:
-        stream << "Player statistics in 3-4 player games:";
+        stream << "Results for 3-4 player games:";
         break;
       case GameCategory::FiveToSixPlayers:
-        stream << "Player statistics in 5-6 player games:";
+        stream << "Results for 5-6 player games:";
         break;
       case GameCategory::SevenToEightPlayers:
-        stream << "Player statistics in 7-8 player games:";
+        stream << "Results for 7-8 player games:";
         break;
     }
     for (const Player& datum : data_) {
