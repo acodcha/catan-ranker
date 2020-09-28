@@ -85,18 +85,6 @@ std::string real_number_to_string(const double value, const uint_least8_t signif
   }
 }
 
-/// \brief Print a real number as a percentage rounded to the nearest 1%.
-std::string real_number_to_percentage_string(const double value) noexcept {
-  if (value == 0.0) {
-    return "0%";
-  } else {
-    const double value_100{value * 100};
-    std::ostringstream stream;
-    stream << std::fixed << std::setprecision(0) << value_100 << "%";
-    return stream.str();
-  }
-}
-
 /// \brief Parse a string as a natural number.
 std::optional<uint_least64_t> string_to_natural_number(const std::string& text) noexcept {
   char* end = 0;

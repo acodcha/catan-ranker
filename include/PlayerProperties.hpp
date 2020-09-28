@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Game.hpp"
+#include "Percentage.hpp"
 
 namespace CatanLeaderboardGenerator {
 
@@ -14,7 +15,7 @@ public:
     initialize_game_index(previous);
     initialize_average_points_per_game(name, game, previous);
     initialize_place_counts(name, game, previous);
-    initialize_place_ratios();
+    initialize_place_percentages();
   }
 
   constexpr uint_least8_t game_index() const noexcept {
@@ -44,12 +45,12 @@ public:
   }
 
   /// \brief Ratio of Nth place finishes.
-  double place_ratio(const Place place) const noexcept {
-    const std::map<Place, double, Place::sort>::const_iterator found{place_ratios_.find(place)};
-    if (found != place_ratios_.cend()) {
+  Percentage place_percentage(const Place place) const noexcept {
+    const std::map<Place, Percentage, Place::sort>::const_iterator found{place_percentages_.find(place)};
+    if (found != place_percentages_.cend()) {
       return found->second;
     } else {
-      return 0.0;
+      return {0.0};
     }
   }
 
@@ -69,7 +70,7 @@ protected:
 
   std::map<Place, uint_least64_t, Place::sort> place_counts_;
 
-  std::map<Place, double, Place::sort> place_ratios_;
+  std::map<Place, Percentage, Place::sort> place_percentages_;
 
   void initialize_game_index(const std::optional<PlayerProperties>& previous) noexcept {
     if (previous.has_value()) {
@@ -107,9 +108,9 @@ protected:
     }
   }
 
-  void initialize_place_ratios() noexcept {
+  void initialize_place_percentages() noexcept {
     for (const std::pair<Place, uint_least64_t>& element : place_counts_) {
-      place_ratios_.emplace(element.first, (double)element.second / game_number());
+      place_percentages_.insert({element.first, {(double)element.second / game_number()}});
     }
   }
 

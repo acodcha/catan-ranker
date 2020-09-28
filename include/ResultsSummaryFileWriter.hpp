@@ -33,10 +33,10 @@ protected:
       if (!player[game_category].empty()) {
         player_name.add_row(player.name().value());
         number_of_games.add_row(player[game_category].back().game_number());
-        average_points_per_game.add_row<RealNumber::FloatingPoint>(player[game_category].back().average_points_per_game(), 2);
-        first_place_percentage.add_row<RealNumber::Percentage>(player[game_category].back().place_ratio({1}));
-        second_place_percentage.add_row<RealNumber::Percentage>(player[game_category].back().place_ratio({2}));
-        third_place_percentage.add_row<RealNumber::Percentage>(player[game_category].back().place_ratio({3}));
+        average_points_per_game.add_row(player[game_category].back().average_points_per_game(), 2);
+        first_place_percentage.add_row(player[game_category].back().place_percentage({1}), 0);
+        second_place_percentage.add_row(player[game_category].back().place_percentage({2}), 0);
+        third_place_percentage.add_row(player[game_category].back().place_percentage({3}), 0);
       }
     }
     table({{player_name, number_of_games, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}});
