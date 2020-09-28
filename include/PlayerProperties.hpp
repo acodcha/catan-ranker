@@ -80,13 +80,10 @@ protected:
   void initialize_average_points_per_game(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous) noexcept {
     const std::optional<Points> found_points{game.points(name)};
     if (found_points.has_value()) {
-      // The rounding is used to accommodate points values such as 10.1.
-      // Such values are used to identify the winning player in games where multiple players score 10 points.
-      const Points points{std::round(found_points.value().value())};
       if (previous.has_value()) {
-        average_points_per_game_ = (previous.value().average_points_per_game() * previous.value().game_number() + points.value()) / game_number();
+        average_points_per_game_ = (previous.value().average_points_per_game() * previous.value().game_number() + found_points.value().value()) / game_number();
       } else {
-        average_points_per_game_ = points.value();
+        average_points_per_game_ = (double)found_points.value().value();
       }
     } else {
       error("Player " + name.value() + " is not a participant in the game: " + game.print());
