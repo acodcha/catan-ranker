@@ -7,6 +7,7 @@ Generates a simple leaderboard for Catan games.
 The following packages are required:
 - **C++17 Compiler:** Any C++17 compiler will do, such as GCC or Clang. On Ubuntu, install GCC with `sudo apt install g++` or Clang with `sudo apt install clang`.
 - **CMake:** On Ubuntu, install with `sudo apt install cmake`.
+- **Gnuplot:** On Ubuntu, install with `sudo apt install gnuplot`.
 
 ## Configuration and Build
 Configure and build the program with:
