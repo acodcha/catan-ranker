@@ -130,8 +130,11 @@ protected:
     for (const std::string& player_name_and_points : player_names_and_points_vector) {
       std::string player_name_string;
       std::string points_string;
+      bool special_first_place{false};
       for (const char character : player_name_and_points) {
-        if (isdigit(character) || character == '.') {
+        if (character == '*') {
+          special_first_place = true;
+        } else if (isdigit(character)) {
           points_string += character;
         } else {
           player_name_string += character;
@@ -141,8 +144,8 @@ protected:
         error(initialization_error_message);
       }
       const PlayerName player_name{player_name_string};
-      const std::optional<double> points_optional_number{string_to_real_number(points_string)};
-      if (!points_optional_number.has_value()) {
+      const std::optional<int_least64_t> points_optional_number{string_to_integer_number(points_string)};
+      if (!points_optional_number.has_value() || (points_optional_number.has_value() && (points_optional_number.value() < 2 || points_optional_number.value() > 22))) {
         error(initialization_error_message);
       }
       const Points points{points_optional_number.value()};
@@ -155,19 +158,31 @@ protected:
         error(initialization_error_message);
       }
       points_to_player_names_.emplace(points, player_name);
+      if (special_first_place) {
+        player_names_to_places_.insert({player_name, {1}});
+        places_to_player_names_.insert({{1}, player_name});
+      }
     }
   }
 
   void initialize_player_names_and_places() noexcept {
-    Points latest_points{100.0};
+    Points latest_points{100};
     Place latest_place{0};
+    PlayerName special_first_place_player;
+    const std::multimap<Place, PlayerName, Place::sort>::const_iterator found_special_first_place{places_to_player_names_.find({1})};
+    if (found_special_first_place != places_to_player_names_.cend()) {
+      latest_place = found_special_first_place->first;
+      special_first_place_player = found_special_first_place->second;
+    }
     for (const auto& element : points_to_player_names_) {
-      if (latest_points > element.first) {
-        latest_points = element.first;
-        ++latest_place;
+      if (special_first_place_player != element.second) {
+        if (latest_points > element.first) {
+          latest_points = element.first;
+          ++latest_place;
+        }
+        player_names_to_places_.emplace(element.second, latest_place);
+        places_to_player_names_.emplace(latest_place, element.second);
       }
-      player_names_to_places_.emplace(element.second, latest_place);
-      places_to_player_names_.emplace(latest_place, element.second);
     }
   }
 
