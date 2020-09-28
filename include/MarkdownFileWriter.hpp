@@ -35,7 +35,7 @@ protected:
   }
 
   void table(const Table& table) noexcept {
-    line(table.to_markdown());
+    line(table.print_as_markdown());
   }
 
 };

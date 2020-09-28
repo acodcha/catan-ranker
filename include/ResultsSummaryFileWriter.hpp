@@ -9,20 +9,20 @@ class ResultsSummaryFileWriter : public MarkdownFileWriter {
 
 public:
 
-  ResultsSummaryFileWriter(const std::experimental::filesystem::path& path, const Games& games, const Players& players) noexcept : MarkdownFileWriter(path, "Results") {
+  ResultsSummaryFileWriter(const std::experimental::filesystem::path& path, const Players& players) noexcept : MarkdownFileWriter(path, "Results") {
     line("Last updated " + current_local_date_and_time() + " local time (" + current_utc_date_and_time() + ").");
-    players_table("All Games", GameCategory::AnyNumberOfPlayers, players);
-    players_table("3-4 Player Games", GameCategory::ThreeToFourPlayers, players);
-    players_table("5-6 Player Games", GameCategory::FiveToSixPlayers, players);
-    players_table("7-8 Player Games", GameCategory::SevenToEightPlayers, players);
+    players_table(GameCategory::AnyNumberOfPlayers, players);
+    players_table(GameCategory::ThreeToFourPlayers, players);
+    players_table(GameCategory::FiveToSixPlayers, players);
+    players_table(GameCategory::SevenToEightPlayers, players);
     blank_line();
     message("Wrote the summary file to: " + path_.string());
   }
 
 protected:
 
-  void players_table(const std::string title, const GameCategory game_category, const Players& players) noexcept {
-    section(title);
+  void players_table(const GameCategory game_category, const Players& players) noexcept {
+    section(label(game_category));
     Column player_name{"Player", Column::Alignment::Left};
     Column number_of_games{"Games", Column::Alignment::Center};
     Column average_points_per_game{"Points", Column::Alignment::Center};

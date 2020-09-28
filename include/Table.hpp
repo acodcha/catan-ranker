@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Date.hpp"
 #include "Percentage.hpp"
 
 namespace CatanLeaderboardGenerator {
@@ -19,30 +20,6 @@ public:
 
   Column(const std::string& header, const Alignment alignment) noexcept : header_(header), alignment_(alignment) {}
 
-  Column(const std::string& header, const std::vector<int_least64_t>& rows, const Alignment alignment) noexcept : header_(header), alignment_(alignment) {
-    for (const int_least64_t row : rows) {
-      add_row(row);
-    }
-  }
-
-  Column(const std::string& header, const std::vector<double>& rows, const Alignment alignment, const uint_least8_t significant_digits) noexcept : header_(header), alignment_(alignment) {
-    for (const double row : rows) {
-      add_row(row, significant_digits);
-    }
-  }
-
-  Column(const std::string& header, const std::vector<Percentage>& rows, const Alignment alignment, const uint_least8_t decimals) noexcept : header_(header), alignment_(alignment) {
-    for (const Percentage& row : rows) {
-      add_row(row, decimals);
-    }
-  }
-
-  Column(const std::string& header, const std::vector<std::string>& rows, const Alignment alignment) noexcept : header_(header), alignment_(alignment) {
-    for (const std::string& row : rows) {
-      add_row(row);
-    }
-  }
-
   void add_row(const int_least64_t value) noexcept {
     rows_.push_back(std::to_string(value));
   }
@@ -53,6 +30,10 @@ public:
 
   void add_row(const Percentage& value, const uint_least8_t decimals) noexcept {
     rows_.push_back(value.print(decimals));
+  }
+
+  void add_row(const Date& value) noexcept {
+    rows_.push_back(value.print());
   }
 
   void add_row(const std::string& value) noexcept {
@@ -142,12 +123,22 @@ public:
 
   Table(const std::vector<Column>& columns) noexcept : columns_(columns) {}
 
-  std::string to_markdown() const noexcept {
+  std::string print_as_data() const noexcept {
     std::stringstream stream;
-    stream << markdown_header();
+    stream << print_header_as_data();
     const std::size_t number_of_rows_{number_of_rows()};
     for (std::size_t row_index = 0; row_index < number_of_rows_; ++row_index) {
-      stream << std::endl << markdown_row(row_index);
+      stream << std::endl << print_row_as_data(row_index);
+    }
+    return stream.str();
+  }
+
+  std::string print_as_markdown() const noexcept {
+    std::stringstream stream;
+    stream << print_header_as_markdown();
+    const std::size_t number_of_rows_{number_of_rows()};
+    for (std::size_t row_index = 0; row_index < number_of_rows_; ++row_index) {
+      stream << std::endl << print_row_as_markdown(row_index);
     }
     return stream.str();
   }
@@ -190,29 +181,49 @@ protected:
 
   std::vector<Column> columns_;
 
-  std::string markdown_header() const noexcept {
+  std::string print_header_as_data() const noexcept {
+    std::string text{"#"};
+    for (const Column& column : columns_) {
+      text += column.header() + " ";
+    }
+    return text;
+  }
+
+  std::string print_row_as_data(const std::size_t index) const noexcept {
+    std::string text;
+    for (const Column& column : columns_) {
+      if (index < column.number_of_rows()) {
+        text += column[index] + " ";
+      } else {
+        text += " ";
+      }
+    }
+    return text;
+  }
+
+  std::string print_header_as_markdown() const noexcept {
     std::stringstream stream;
     stream << "|";
     for (const Column& column : columns_) {
-      stream << " " + pad_to_length(column.header_bold(), column.width()) << " |";
+      stream << " " << pad_to_length(column.header_bold(), column.width()) << " |";
     }
     stream << std::endl << "|";
     for (const Column& column : columns_) {
-      stream << " " + pad_to_length(column.alignment_markdown(), column.width()) << " |";
+      stream << " " << pad_to_length(column.alignment_markdown(), column.width()) << " |";
     }
     return stream.str();
   }
 
-  std::string markdown_row(const std::size_t index) const noexcept {
-    std::string row_text{"|"};
+  std::string print_row_as_markdown(const std::size_t index) const noexcept {
+    std::string text{"|"};
     for (const Column& column : columns_) {
       if (index < column.number_of_rows()) {
-        row_text += " " + pad_to_length(column[index], column.width()) + " |";
+        text += " " + pad_to_length(column[index], column.width()) + " |";
       } else {
-        row_text += " " + pad_to_length({}, column.width()) + " |";
+        text += " " + pad_to_length({}, column.width()) + " |";
       }
     }
-    return row_text;
+    return text;
   }
 
 };

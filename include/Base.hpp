@@ -30,11 +30,29 @@ inline void error(const std::string &text) {
   throw std::runtime_error(text);
 }
 
+template <typename Type> const std::map<Type, std::string> labels;
+
+template <typename Type> std::string label(const Type type) noexcept {
+  const typename std::map<Type, std::string>::const_iterator found{labels<Type>.find(type)};
+  if (found != labels<Type>.cend()) {
+    return found->second;
+  } else {
+    return {};
+  }
+}
+
 enum class GameCategory : uint_least8_t {
   AnyNumberOfPlayers,
   ThreeToFourPlayers,
   FiveToSixPlayers,
   SevenToEightPlayers
+};
+
+template <> const std::map<GameCategory, std::string> labels<GameCategory>{
+  {GameCategory::AnyNumberOfPlayers, "All Games"},
+  {GameCategory::ThreeToFourPlayers, "3-4 Player Games"},
+  {GameCategory::FiveToSixPlayers, "5-6 Player Games"},
+  {GameCategory::SevenToEightPlayers, "7-8 Player Games"}
 };
 
 const std::map<uint_least8_t, GameCategory> game_categories{
@@ -80,5 +98,28 @@ std::string current_utc_date_and_time() noexcept {
   const std::tm* current{std::gmtime(&number)};
   return date_and_time(current) + " UTC";
 }
+
+const std::vector<std::string> colors{
+  "#E6194B",
+  "#0082C8",
+  "#3CB44B",
+  "#FFE119",
+  "#F58231",
+  "#911EB4",
+  "#46F0F0",
+  "#F032E6",
+  "#008080",
+  "#AA6E28",
+  "#FABEBE",
+  "#808000",
+  "#E6BEFF",
+  "#000080",
+  "#FFFAC8",
+  "#D2F53C",
+  "#AAFFC3",
+  "#800000",
+  "#FFD8B1",
+  "#808080"
+};
 
 } // namespace CatanLeaderboardGenerator
