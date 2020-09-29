@@ -16,9 +16,7 @@ public:
     Right
   };
 
-  Column() noexcept {}
-
-  Column(const std::string& header, const Alignment alignment) noexcept : header_(header), alignment_(alignment) {}
+  Column(const std::string& header, const Alignment alignment = Alignment::Left) noexcept : header_(header), alignment_(alignment) {}
 
   void add_row(const int_least64_t value) noexcept {
     rows_.push_back(std::to_string(value));
@@ -66,7 +64,7 @@ public:
     }
   }
 
-  const uint_least64_t width() const noexcept {
+  const uint_least64_t width_markdown() const noexcept {
     uint_least64_t maximum{std::max(header_bold().size(), alignment_markdown().size())};
     for (const std::string& row : rows_) {
       if (maximum < row.size()) {
@@ -110,7 +108,7 @@ protected:
 
   std::vector<std::string> rows_;
 
-  Alignment alignment_{Alignment::Center};
+  Alignment alignment_{Alignment::Left};
 
 };
 
@@ -205,11 +203,11 @@ protected:
     std::stringstream stream;
     stream << "|";
     for (const Column& column : columns_) {
-      stream << " " << pad_to_length(column.header_bold(), column.width()) << " |";
+      stream << " " << pad_to_length(column.header_bold(), column.width_markdown()) << " |";
     }
     stream << std::endl << "|";
     for (const Column& column : columns_) {
-      stream << " " << pad_to_length(column.alignment_markdown(), column.width()) << " |";
+      stream << " " << pad_to_length(column.alignment_markdown(), column.width_markdown()) << " |";
     }
     return stream.str();
   }
@@ -218,9 +216,9 @@ protected:
     std::string text{"|"};
     for (const Column& column : columns_) {
       if (index < column.number_of_rows()) {
-        text += " " + pad_to_length(column[index], column.width()) + " |";
+        text += " " + pad_to_length(column[index], column.width_markdown()) + " |";
       } else {
-        text += " " + pad_to_length({}, column.width()) + " |";
+        text += " " + pad_to_length({}, column.width_markdown()) + " |";
       }
     }
     return text;

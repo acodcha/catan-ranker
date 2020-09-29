@@ -22,6 +22,13 @@ std::vector<std::string> split(const std::string& text, const char delimiter) no
   return words;
 }
 
+/// \brief Make each character in a string lowercase.
+std::string lowercase(const std::string& text) noexcept {
+  std::string transformed_text{text};
+  std::transform(transformed_text.begin(), transformed_text.end(), transformed_text.begin(), [](const char character)->char{return std::tolower(character);});
+  return transformed_text;
+}
+
 /// \brief Remove whitespace in a string.
 std::string remove_whitespace(const std::string& text) noexcept {
   std::string new_text{text};
@@ -49,6 +56,18 @@ std::string remove_non_alphabetic_characters(const std::string& text) noexcept {
     }
   }
   return new_text;
+}
+
+std::string replace_character(const std::string& text, const char original, const char replacement) noexcept {
+  std::string transformed_text{text};
+  std::transform(transformed_text.begin(), transformed_text.end(), transformed_text.begin(), [original, replacement](const char character)->char{
+    if (character == original) {
+      return replacement;
+    } else {
+      return character;
+    }
+  });
+  return transformed_text;
 }
 
 /// \brief Pad a string to a given length using trailing spaces.

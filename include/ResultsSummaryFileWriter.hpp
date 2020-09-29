@@ -39,7 +39,8 @@ protected:
         third_place_percentage.add_row(player[game_category].back().place_percentage({3}), 0);
       }
     }
-    table({{player_name, number_of_games, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}});
+    const Table data{{player_name, number_of_games, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}};
+    table(data);
   }
 
 };
