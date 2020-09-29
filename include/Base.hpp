@@ -41,11 +41,20 @@ template <typename Type> std::string label(const Type type) noexcept {
   }
 }
 
+template <typename Type> const std::set<Type> enumerations;
+
 enum class GameCategory : uint_least8_t {
   AnyNumberOfPlayers,
   ThreeToFourPlayers,
   FiveToSixPlayers,
   SevenToEightPlayers
+};
+
+template <> const std::set<GameCategory> enumerations<GameCategory>{
+  GameCategory::AnyNumberOfPlayers,
+  GameCategory::ThreeToFourPlayers,
+  GameCategory::FiveToSixPlayers,
+  GameCategory::SevenToEightPlayers
 };
 
 template <> const std::map<GameCategory, std::string> labels<GameCategory>{
