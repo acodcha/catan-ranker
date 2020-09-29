@@ -63,12 +63,13 @@ protected:
 
   void generate_plots(const std::experimental::filesystem::path& directory, const Players& players) const {
     for (const Player& player : players) {
-      const std::string command{"gnuplot " + gnuplot_average_points_file_path(directory, player).string()};
-      const int outcome{std::system(command.c_str())};
-      if (outcome != 0) {
-        error("Could not run the command: " + command);
+      const std::string average_points_command{"gnuplot " + gnuplot_average_points_file_path(directory, player).string()};
+      const int average_points_outcome{std::system(average_points_command.c_str())};
+      if (average_points_outcome != 0) {
+        error("Could not run the command: " + average_points_command);
       }
     }
+    message("Generated the plots for each player.");
   }
 
   Table table(const Player& player, const GameCategory game_category) const noexcept {
