@@ -1,47 +1,47 @@
 #pragma once
 
 #include "MarkdownFileWriter.hpp"
-#include "Players.hpp"
+#include "Player.hpp"
 
 namespace CatanLeaderboardGenerator {
 
-class ResultsSummaryFileWriter : public MarkdownFileWriter {
+class ResultsPlayerSummaryFileWriter : public MarkdownFileWriter {
 
 public:
 
-  ResultsSummaryFileWriter(const std::experimental::filesystem::path& path, const Games& games, const Players& players) noexcept : MarkdownFileWriter(path, "Results") {
+  ResultsPlayerSummaryFileWriter(const std::experimental::filesystem::path& path, const Games& games, const Player& player) noexcept : MarkdownFileWriter(path, player.name().value()) {
     line("Last updated " + current_local_date_and_time() + " local time (" + current_utc_date_and_time() + ").");
-    section(section_title_players_);
-    players_table(players, GameCategory::AnyNumberOfPlayers);
-    players_table(players, GameCategory::ThreeToFourPlayers);
-    players_table(players, GameCategory::FiveToSixPlayers);
-    players_table(players, GameCategory::SevenToEightPlayers);
+    player_table(player);
     section(section_title_games_);
-    games_table(games, GameCategory::AnyNumberOfPlayers);
-    games_table(games, GameCategory::ThreeToFourPlayers);
-    games_table(games, GameCategory::FiveToSixPlayers);
-    games_table(games, GameCategory::SevenToEightPlayers);
+    games_table(games, player, GameCategory::AnyNumberOfPlayers);
+    games_table(games, player, GameCategory::ThreeToFourPlayers);
+    games_table(games, player, GameCategory::FiveToSixPlayers);
+    games_table(games, player, GameCategory::SevenToEightPlayers);
     blank_line();
-    message("Wrote the summary file to: " + path_.string());
+    message("Wrote the player summary file to: " + path_.string());
   }
 
 protected:
 
-  const std::string section_title_players_{"Player Statistics"};
-
   const std::string section_title_games_{"Game History"};
 
-  void players_table(const Players& players, const GameCategory game_category) noexcept {
-    subsection(section_title_players_ + ": " + label(game_category));
-    Column player_name{"Player", Column::Alignment::Left};
+  void player_table(const Player& player) noexcept {
+    section("Player Statistics");
+    Column category{"Category", Column::Alignment::Center};
     Column number_of_games{"Games", Column::Alignment::Center};
     Column average_points_per_game{"Points", Column::Alignment::Center};
     Column first_place_percentage{"1st Place", Column::Alignment::Center};
     Column second_place_percentage{"2nd Place", Column::Alignment::Center};
     Column third_place_percentage{"3rd Place", Column::Alignment::Center};
-    for (const Player& player : players) {
-      if (!player[game_category].empty()) {
-        player_name.add_row(player.name().value());
+    for (const GameCategory game_category : enumerations<GameCategory>) {
+      category.add_row(label(game_category));
+      if (player[game_category].empty()) {
+        number_of_games.add_row(0);
+        average_points_per_game.add_row("–");
+        first_place_percentage.add_row("–");
+        second_place_percentage.add_row("–");
+        third_place_percentage.add_row("–");
+      } else {
         number_of_games.add_row(player[game_category].back().game_number());
         average_points_per_game.add_row(player[game_category].back().average_points_per_game(), 2);
         first_place_percentage.add_row(player[game_category].back().place_percentage({1}), 0);
@@ -49,11 +49,11 @@ protected:
         third_place_percentage.add_row(player[game_category].back().place_percentage({3}), 0);
       }
     }
-    const Table data{{player_name, number_of_games, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}};
+    const Table data{{category, number_of_games, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}};
     table(data);
   }
 
-  void games_table(const Games& games, const GameCategory game_category) noexcept {
+  void games_table(const Games& games, const Player& player, const GameCategory game_category) noexcept {
     subsection(section_title_games_ + ": " + label(game_category));
     Column game_number{"Game", Column::Alignment::Center};
     Column date{"Date", Column::Alignment::Center};
@@ -61,12 +61,12 @@ protected:
     Column results{"Results", Column::Alignment::Left};
     uint_least64_t counter{0};
     for (std::vector<Game>::const_reverse_iterator game = games.crbegin(); game < games.crend(); ++game) {
-      if (game_category == GameCategory::AnyNumberOfPlayers || game_category == game->category()) {
+      if ((game_category == GameCategory::AnyNumberOfPlayers || game_category == game->category()) && game->participant(player.name())) {
         ++counter;
       }
     }
     for (std::vector<Game>::const_reverse_iterator game = games.crbegin(); game < games.crend(); ++game) {
-      if (game_category == GameCategory::AnyNumberOfPlayers || game_category == game->category()) {
+      if ((game_category == GameCategory::AnyNumberOfPlayers || game_category == game->category()) && game->participant(player.name())) {
         game_number.add_row(counter);
         date.add_row(game->date());
         number_of_players.add_row(game->number_of_players());

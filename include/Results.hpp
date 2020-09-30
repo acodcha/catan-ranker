@@ -3,6 +3,7 @@
 #include "DataTableFileWriter.hpp"
 #include "GnuplotAveragePointsFileWriter.hpp"
 #include "GnuplotPlacePercentageFileWriter.hpp"
+#include "ResultsPlayerSummaryFileWriter.hpp"
 #include "ResultsSummaryFileWriter.hpp"
 
 namespace CatanLeaderboardGenerator {
@@ -12,12 +13,13 @@ class Results {
 
 public:
 
-  Results(const std::experimental::filesystem::path& directory, const Players& players) {
+  Results(const std::experimental::filesystem::path& directory, const Games& games, const Players& players) {
     if (!directory.empty()) {
       std::experimental::filesystem::create_directory(directory);
       if (std::experimental::filesystem::exists(directory) && std::experimental::filesystem::is_directory(directory)) {
-        ResultsSummaryFileWriter{directory / "README.md", players};
+        ResultsSummaryFileWriter{directory / std::experimental::filesystem::path{"README.md"}, games, players};
         create_player_directories(directory, players);
+        write_player_summary_files(directory, games, players);
         write_data_table_files(directory, players);
         write_gnuplot_files(directory, players);
         generate_plots(directory, players);
@@ -31,11 +33,16 @@ protected:
 
   void create_player_directories(const std::experimental::filesystem::path& directory, const Players& players) {
     for (const Player& player : players) {
-      const std::experimental::filesystem::path player_directory{directory / player.name().value()};
-      std::experimental::filesystem::create_directory(player_directory);
-      if (!std::experimental::filesystem::exists(player_directory) || !std::experimental::filesystem::is_directory(player_directory)) {
-        error("Could not create the directory '" + player_directory.string() + "'.");
+      std::experimental::filesystem::create_directory(player_directory(directory, player));
+      if (!std::experimental::filesystem::exists(player_directory(directory, player)) || !std::experimental::filesystem::is_directory(player_directory(directory, player))) {
+        error("Could not create the directory '" + player_directory(directory, player).string() + "'.");
       }
+    }
+  }
+
+  void write_player_summary_files(const std::experimental::filesystem::path& directory, const Games& games, const Players& players) noexcept {
+    for (const Player& player : players) {
+      ResultsPlayerSummaryFileWriter{player_directory(directory, player) / std::experimental::filesystem::path{"README.md"}, games, player};
     }
   }
 
@@ -125,24 +132,28 @@ protected:
     return replace_character(replace_character(lowercase(label(game_category)), ' ', '_'), '-', '_');
   }
 
+  std::experimental::filesystem::path player_directory(const std::experimental::filesystem::path& directory, const Player& player) const noexcept {
+    return directory / player.name().value();
+  }
+
   std::experimental::filesystem::path data_table_file_path(const std::experimental::filesystem::path& directory, const Player& player, const GameCategory game_category) const noexcept {
-    return {directory / player.name().value() / std::experimental::filesystem::path{"data_" + common_file_name(game_category) + ".dat"}};
+    return {player_directory(directory, player) / std::experimental::filesystem::path{"data_" + common_file_name(game_category) + ".dat"}};
   }
 
   std::experimental::filesystem::path gnuplot_average_points_vs_game_number_file_path(const std::experimental::filesystem::path& directory, const Player& player) const noexcept {
-    return {directory / player.name().value() / std::experimental::filesystem::path{"average_points_vs_game_number.gnuplot"}};
+    return {player_directory(directory, player) / std::experimental::filesystem::path{"average_points_vs_game_number.gnuplot"}};
   }
 
   std::experimental::filesystem::path gnuplot_average_points_vs_date_file_path(const std::experimental::filesystem::path& directory, const Player& player) const noexcept {
-    return {directory / player.name().value() / std::experimental::filesystem::path{"average_points_vs_date.gnuplot"}};
+    return {player_directory(directory, player) / std::experimental::filesystem::path{"average_points_vs_date.gnuplot"}};
   }
 
   std::experimental::filesystem::path gnuplot_place_percentage_vs_game_number_file_path(const std::experimental::filesystem::path& directory, const Player& player, const GameCategory game_category) const noexcept {
-    return {directory / player.name().value() / std::experimental::filesystem::path{"place_percentage_" + common_file_name(game_category) + "_vs_game_number.gnuplot"}};
+    return {player_directory(directory, player) / std::experimental::filesystem::path{"place_percentage_" + common_file_name(game_category) + "_vs_game_number.gnuplot"}};
   }
 
   std::experimental::filesystem::path gnuplot_place_percentage_vs_date_file_path(const std::experimental::filesystem::path& directory, const Player& player, const GameCategory game_category) const noexcept {
-    return {directory / player.name().value() / std::experimental::filesystem::path{"place_percentage_" + common_file_name(game_category) + "_vs_date.gnuplot"}};
+    return {player_directory(directory, player) / std::experimental::filesystem::path{"place_percentage_" + common_file_name(game_category) + "_vs_date.gnuplot"}};
   }
 
   void run_command(const std::string& command) const {
