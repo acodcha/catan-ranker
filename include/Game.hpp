@@ -59,6 +59,10 @@ public:
     return (uint_least8_t)player_names_.size();
   }
 
+  GameCategory category() const noexcept {
+    return game_category(number_of_players());
+  }
+
   const std::set<PlayerName, PlayerName::sort>& player_names() const noexcept {
     return player_names_;
   }
@@ -81,17 +85,21 @@ public:
     return data;
   }
 
-  std::string print() const noexcept {
-    std::string text{date_.print() + " : "};
+  std::string print_results() const noexcept {
+    std::string text;
     std::size_t counter{0};
-    for (const std::pair<Points, PlayerName>& datum : points_to_player_names_) {
-      text += player_names_to_places_.find(datum.second)->second.print() + " " + datum.second.value() + " " + datum.first.print();
-      if (counter + 1 < points_to_player_names_.size()) {
+    for (const std::pair<Place, PlayerName>& place_and_player_name : places_to_player_names_) {
+      text += place_and_player_name.first.print() + " " + place_and_player_name.second.value() + " " + player_names_to_points_.find(place_and_player_name.second)->second.print();
+      if (counter + 1 < places_to_player_names_.size()) {
         text += " , ";
       }
       ++counter;
     }
     return text;
+  }
+
+  std::string print() const noexcept {
+    return date_.print() + " : " + print_results();
   }
 
   struct sort {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Colors.hpp"
 #include "String.hpp"
 
 namespace CatanLeaderboardGenerator {
@@ -107,28 +108,5 @@ std::string current_utc_date_and_time() noexcept {
   const std::tm* current{std::gmtime(&number)};
   return date_and_time(current) + " UTC";
 }
-
-const std::vector<std::string> colors{
-  "#E6194B",
-  "#0082C8",
-  "#3CB44B",
-  "#FFE119",
-  "#F58231",
-  "#911EB4",
-  "#46F0F0",
-  "#F032E6",
-  "#008080",
-  "#AA6E28",
-  "#FABEBE",
-  "#808000",
-  "#E6BEFF",
-  "#000080",
-  "#FFFAC8",
-  "#D2F53C",
-  "#AAFFC3",
-  "#800000",
-  "#FFD8B1",
-  "#808080"
-};
 
 } // namespace CatanLeaderboardGenerator
