@@ -17,6 +17,11 @@ public:
       }
     }
     std::sort(data_.begin(), data_.end(), Game::sort());
+    uint_least64_t global_game_index{0};
+    for (Game& game : data_) {
+      game.set_global_index(global_game_index);
+      ++global_game_index;
+    }
     message(print());
   }
 
@@ -25,14 +30,10 @@ public:
       return "The games file is empty.";
     }
     std::stringstream stream;
-    stream << "There are " << data_.size() << " games:" << std::endl;
-    uint_least64_t index{0};
+    stream << "There are " << data_.size() << " games:";
     for (const Game& game : data_) {
-      stream << "- " << std::to_string(index + 1) << ": " << game.print();
-      if (index + 1 < data_.size()) {
-        stream << std::endl;
-      }
-      ++index;
+      stream << std::endl << "- " << std::to_string(game.global_number()) << ": " << game.print();
+
     }
     return stream.str();
   }

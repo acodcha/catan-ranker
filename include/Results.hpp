@@ -44,6 +44,7 @@ protected:
     for (const Player& player : players) {
       ResultsPlayerSummaryFileWriter{player_directory(directory, player) / std::experimental::filesystem::path{"README.md"}, games, player};
     }
+    message("Wrote the player summary files.");
   }
 
   void write_player_data_table_files(const std::experimental::filesystem::path& directory, const Players& players) noexcept {
@@ -129,15 +130,17 @@ protected:
   }
 
   Table player_table(const Player& player, const GameCategory game_category) const noexcept {
-    Column games_played{"Game"};
+    Column global_number{"Global"};
+    Column local_number{"Local"};
     Column date{"Date"};
-    Column average_points_per_game{"AveragePoints"};
-    Column first_place_percentage{"1stPlace%"};
-    Column second_place_percentage{"2ndPlace%"};
-    Column third_place_percentage{"3rdPlace%"};
+    Column average_points_per_game{"Points"};
+    Column first_place_percentage{"1stPlace"};
+    Column second_place_percentage{"2ndPlace"};
+    Column third_place_percentage{"3rdPlace"};
     if (!player[game_category].empty()) {
       for (const PlayerProperties& properties : player[game_category]) {
-        games_played.add_row(properties.game_number());
+        global_number.add_row(properties.global_game_number());
+        local_number.add_row(properties.local_game_number());
         date.add_row(properties.date());
         average_points_per_game.add_row(properties.average_points_per_game(), 7);
         first_place_percentage.add_row(properties.place_percentage({1}), 5);
@@ -145,7 +148,7 @@ protected:
         third_place_percentage.add_row(properties.place_percentage({3}), 5);
       }
     }
-    return {{games_played, date, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}};
+    return {{global_number, local_number, date, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}};
   }
 
   std::string common_file_name(const GameCategory game_category) const noexcept {

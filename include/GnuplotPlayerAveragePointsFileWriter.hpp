@@ -36,7 +36,7 @@ protected:
   void plot(const std::map<GameCategory, std::experimental::filesystem::path>& data_paths, const GameCategory game_category, const uint_least8_t x_column, const std::string& color, const uint_least8_t line_width) noexcept {
     const std::map<GameCategory, std::experimental::filesystem::path>::const_iterator found_7_8{data_paths.find(game_category)};
     if (found_7_8 != data_paths.cend()) {
-      line("  \"" + found_7_8->second.string() + "\" u " + std::to_string(x_column) + ":3 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"" + color + "\" t \"" + label(game_category) + "\" , \\");
+      line("  \"" + found_7_8->second.string() + "\" u " + std::to_string(x_column) + ":4 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"" + color + "\" t \"" + label(game_category) + "\" , \\");
     }
   }
 
@@ -51,7 +51,7 @@ public:
     line("set xtics nomirror out");
     line("set mxtics 1");
     line("plot \\");
-    plots(data_paths, 1);
+    plots(data_paths, 2);
   }
 
 };
@@ -68,7 +68,7 @@ public:
     line("set xtics nomirror out rotate by 45 right");
     line("set mxtics 1");
     line("plot \\");
-    plots(data_paths, 2);
+    plots(data_paths, 3);
   }
 
 };

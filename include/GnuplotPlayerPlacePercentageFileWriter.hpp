@@ -27,12 +27,9 @@ public:
 protected:
 
   void plots(const std::experimental::filesystem::path& data_path, const uint_least8_t x_column) noexcept {
-    //line("  \"" + data_path.string() + "\" u " + std::to_string(x_column) + ":($4+$5+$6) w filledcurves x1 fs pattern 2 lt rgb \"black\" t \"1st Place\" , \\");
-    //line("  \"" + data_path.string() + "\" u " + std::to_string(x_column) + ":($5+$6) w filledcurves x1 fs pattern 1 lt rgb \"black\" t \"2nd Place\" , \\");
-    //line("  \"" + data_path.string() + "\" u " + std::to_string(x_column) + ":6 w filledcurves x1 fs pattern 4 lt rgb \"black\" t \"3rd Place\" , \\");
-    line("  \"" + data_path.string() + "\" u " + std::to_string(x_column) + ":4 w lp lw 8 pt 7 ps 1 lt rgb \"" + Color::YellowWheat + "\" t \"1st Place\" , \\");
-    line("  \"" + data_path.string() + "\" u " + std::to_string(x_column) + ":5 w lp lw 6 pt 7 ps 1 lt rgb \"" + Color::GreyOre + "\" t \"2nd Place\" , \\");
-    line("  \"" + data_path.string() + "\" u " + std::to_string(x_column) + ":6 w lp lw 4 pt 7 ps 1 lt rgb \"" + Color::BrownDarkPort + "\" t \"3rd Place\" , \\");
+    line("  \"" + data_path.string() + "\" u " + std::to_string(x_column) + ":5 w lp lw 8 pt 7 ps 1 lt rgb \"" + Color::YellowWheat + "\" t \"1st Place\" , \\");
+    line("  \"" + data_path.string() + "\" u " + std::to_string(x_column) + ":6 w lp lw 6 pt 7 ps 1 lt rgb \"" + Color::GreyOre + "\" t \"2nd Place\" , \\");
+    line("  \"" + data_path.string() + "\" u " + std::to_string(x_column) + ":7 w lp lw 4 pt 7 ps 1 lt rgb \"" + Color::BrownDarkPort + "\" t \"3rd Place\" , \\");
   }
 
 };
@@ -46,7 +43,7 @@ public:
     line("set xtics nomirror out");
     line("set mxtics 1");
     line("plot \\");
-    plots(data_path, 1);
+    plots(data_path, 2);
   }
 
 };
@@ -63,7 +60,7 @@ public:
     line("set xtics nomirror out rotate by 45 right");
     line("set mxtics 1");
     line("plot \\");
-    plots(data_path, 2);
+    plots(data_path, 3);
   }
 
 };
