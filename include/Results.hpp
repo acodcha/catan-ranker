@@ -89,15 +89,15 @@ protected:
         GnuplotPlayerAveragePointsVsGameNumberFileWriter{gnuplot_player_average_points_vs_game_number_file_path(directory, player), data_paths};
         GnuplotPlayerAveragePointsVsDateFileWriter{gnuplot_player_average_points_vs_date_file_path(directory, player), data_paths};
       }
-      write_gnuplot_place_percentage_files(directory, player, GameCategory::AnyNumberOfPlayers);
-      write_gnuplot_place_percentage_files(directory, player, GameCategory::ThreeToFourPlayers);
-      write_gnuplot_place_percentage_files(directory, player, GameCategory::FiveToSixPlayers);
-      write_gnuplot_place_percentage_files(directory, player, GameCategory::SevenToEightPlayers);
+      write_player_gnuplot_place_percentage_files(directory, player, GameCategory::AnyNumberOfPlayers);
+      write_player_gnuplot_place_percentage_files(directory, player, GameCategory::ThreeToFourPlayers);
+      write_player_gnuplot_place_percentage_files(directory, player, GameCategory::FiveToSixPlayers);
+      write_player_gnuplot_place_percentage_files(directory, player, GameCategory::SevenToEightPlayers);
     }
     message("Wrote the Gnuplot files for each player.");
   }
 
-  void write_gnuplot_place_percentage_files(const std::experimental::filesystem::path& directory, const Player& player, const GameCategory game_category) noexcept {
+  void write_player_gnuplot_place_percentage_files(const std::experimental::filesystem::path& directory, const Player& player, const GameCategory game_category) noexcept {
     if (!player[game_category].empty()) {
       GnuplotPlayerPlacePercentageVsGameNumberFileWriter{
         gnuplot_player_place_percentage_vs_game_number_file_path(directory, player, game_category),
