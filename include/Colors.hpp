@@ -31,10 +31,24 @@ const std::string RedNumberFont{"#CC0000"};
 
 const std::string TanCoast{"#E0B568"};
 
-const std::string WhiteNumberBackground{"#EAE9E4"};
-
 const std::string YellowWheat{"#FEC53E"};
 
-} // namespace Colors
+} // namespace Color
+
+const std::vector<std::string> ColorSequence{
+  Color::OrangeBrick,
+  Color::GreenDarkLumber,
+  Color::YellowWheat,
+  Color::GreenLightWool,
+  Color::GreyOre,
+  Color::BlueDarkWater,
+  Color::BrownLightDesert,
+  Color::PurpleDevelopmentCard,
+  Color::BlueLightWater,
+  Color::TanCoast,
+  Color::BrownDarkPort,
+  Color::RedNumberFont,
+  Color::BlackNumberFont
+};
 
 } // namespace CatanLeaderboardGenerator

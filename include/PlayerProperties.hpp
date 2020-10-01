@@ -12,18 +12,27 @@ public:
   PlayerProperties() noexcept {}
 
   PlayerProperties(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous = {}) noexcept : date_(game.date()) {
-    initialize_game_index(previous);
+    initialize_global_game_index(game);
+    initialize_local_game_index(previous);
     initialize_average_points_per_game(name, game, previous);
     initialize_place_counts(name, game, previous);
     initialize_place_percentages();
   }
 
-  constexpr uint_least8_t game_index() const noexcept {
-    return game_index_;
+  constexpr uint_least8_t global_game_index() const noexcept {
+    return global_game_index_;
   }
 
-  constexpr uint_least8_t game_number() const noexcept {
-    return game_index_ + 1;
+  constexpr uint_least8_t global_game_number() const noexcept {
+    return global_game_index_ + 1;
+  }
+
+  constexpr uint_least8_t local_game_index() const noexcept {
+    return local_game_index_;
+  }
+
+  constexpr uint_least8_t local_game_number() const noexcept {
+    return local_game_index_ + 1;
   }
 
   constexpr const Date& date() const noexcept {
@@ -56,13 +65,15 @@ public:
 
   struct sort {
     bool operator()(const PlayerProperties& player_properties_1, const PlayerProperties& player_properties_2) const noexcept {
-      return player_properties_1.game_index() < player_properties_2.game_index();
+      return player_properties_1.local_game_index() < player_properties_2.local_game_index();
     }
   };
 
 protected:
 
-  uint_least64_t game_index_{0};
+  uint_least64_t global_game_index_{0};
+
+  uint_least64_t local_game_index_{0};
 
   Date date_;
 
@@ -72,9 +83,13 @@ protected:
 
   std::map<Place, Percentage, Place::sort> place_percentages_;
 
-  void initialize_game_index(const std::optional<PlayerProperties>& previous) noexcept {
+  void initialize_global_game_index(const Game& game) noexcept {
+    global_game_index_ = game.global_index();
+  }
+
+  void initialize_local_game_index(const std::optional<PlayerProperties>& previous) noexcept {
     if (previous.has_value()) {
-      game_index_ = previous.value().game_index() + 1;
+      local_game_index_ = previous.value().local_game_index() + 1;
     }
   }
 
@@ -82,7 +97,7 @@ protected:
     const std::optional<Points> found_points{game.points(name)};
     if (found_points.has_value()) {
       if (previous.has_value()) {
-        average_points_per_game_ = (previous.value().average_points_per_game() * previous.value().game_number() + found_points.value().value()) / game_number();
+        average_points_per_game_ = (previous.value().average_points_per_game() * previous.value().local_game_number() + found_points.value().value()) / local_game_number();
       } else {
         average_points_per_game_ = (double)found_points.value().value();
       }
@@ -110,7 +125,7 @@ protected:
 
   void initialize_place_percentages() noexcept {
     for (const std::pair<Place, uint_least64_t>& element : place_counts_) {
-      place_percentages_.insert({element.first, {(double)element.second / game_number()}});
+      place_percentages_.insert({element.first, {(double)element.second / local_game_number()}});
     }
   }
 
