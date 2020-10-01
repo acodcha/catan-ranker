@@ -28,10 +28,10 @@ protected:
 
   virtual constexpr uint_least8_t x_column() const noexcept = 0;
 
-  void plots(const std::experimental::filesystem::path& data_path) noexcept {
-    line("  \"" + data_path.string() + "\" u " + std::to_string(x_column()) + ":5 w lp lw 8 pt 7 ps 1 lt rgb \"" + Color::YellowWheat + "\" t \"1st Place\" , \\");
-    line("  \"" + data_path.string() + "\" u " + std::to_string(x_column()) + ":6 w lp lw 6 pt 7 ps 1 lt rgb \"" + Color::GreyOre + "\" t \"2nd Place\" , \\");
-    line("  \"" + data_path.string() + "\" u " + std::to_string(x_column()) + ":7 w lp lw 4 pt 7 ps 1 lt rgb \"" + Color::BrownDarkPort + "\" t \"3rd Place\" , \\");
+  void plot(const std::experimental::filesystem::path& data) noexcept {
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":5 w lp lw 8 pt 7 ps 1 lt rgb \"" + Color::YellowWheat + "\" t \"1st Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":6 w lp lw 6 pt 7 ps 1 lt rgb \"" + Color::GreyOre + "\" t \"2nd Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":7 w lp lw 4 pt 7 ps 1 lt rgb \"" + Color::BrownDarkPort + "\" t \"3rd Place\" , \\");
   }
 
 };
@@ -40,12 +40,16 @@ class GnuplotPlayerPlacePercentageVsGameNumberFileWriter : public GnuplotPlayerP
 
 public:
 
-  GnuplotPlayerPlacePercentageVsGameNumberFileWriter(const std::experimental::filesystem::path& path, const std::experimental::filesystem::path& data_path, const GameCategory game_category) noexcept : GnuplotPlayerPlacePercentageFileWriter(path, game_category) {
+  GnuplotPlayerPlacePercentageVsGameNumberFileWriter(
+    const std::experimental::filesystem::path& path,
+    const std::experimental::filesystem::path& data_path,
+    const GameCategory game_category
+  ) noexcept : GnuplotPlayerPlacePercentageFileWriter(path, game_category) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
     line("plot \\");
-    plots(data_path);
+    plot(data_path);
   }
 
 protected:
@@ -60,7 +64,11 @@ class GnuplotPlayerPlacePercentageVsDateFileWriter : public GnuplotPlayerPlacePe
 
 public:
 
-  GnuplotPlayerPlacePercentageVsDateFileWriter(const std::experimental::filesystem::path& path, const std::experimental::filesystem::path& data_path, const GameCategory game_category) noexcept : GnuplotPlayerPlacePercentageFileWriter(path, game_category) {
+  GnuplotPlayerPlacePercentageVsDateFileWriter(
+    const std::experimental::filesystem::path& path,
+    const std::experimental::filesystem::path& data_path,
+    const GameCategory game_category
+  ) noexcept : GnuplotPlayerPlacePercentageFileWriter(path, game_category) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");
@@ -68,7 +76,7 @@ public:
     line("set xtics nomirror out rotate by 45 right");
     line("set mxtics 1");
     line("plot \\");
-    plots(data_path);
+    plot(data_path);
   }
 
 protected:

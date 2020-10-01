@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Place.hpp"
 #include "PlayerName.hpp"
 
 namespace CatanLeaderboardGenerator {
@@ -46,6 +47,22 @@ std::experimental::filesystem::path gnuplot_global_average_points_vs_date_file_p
   const GameCategory game_category
 ) noexcept {
   return global_plots_directory(directory) / std::experimental::filesystem::path{"average_points_vs_date_" + common_file_name(game_category) + ".gnuplot"};
+}
+
+std::experimental::filesystem::path gnuplot_global_place_percentage_vs_game_number_file_path(
+  const std::experimental::filesystem::path& directory,
+  const GameCategory game_category,
+  const Place& place
+) noexcept {
+  return global_plots_directory(directory) / std::experimental::filesystem::path{place.print() + "_place_percentage_vs_game_number_" + common_file_name(game_category) + ".gnuplot"};
+}
+
+std::experimental::filesystem::path gnuplot_global_place_percentage_vs_date_file_path(
+  const std::experimental::filesystem::path& directory,
+  const GameCategory game_category,
+  const Place& place
+) noexcept {
+  return global_plots_directory(directory) / std::experimental::filesystem::path{place.print() + "_place_percentage_vs_date_" + common_file_name(game_category) + ".gnuplot"};
 }
 
 std::experimental::filesystem::path gnuplot_player_average_points_vs_game_number_file_path(

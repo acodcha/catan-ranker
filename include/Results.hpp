@@ -2,6 +2,7 @@
 
 #include "DataTableFileWriter.hpp"
 #include "GnuplotGlobalAveragePointsFileWriter.hpp"
+#include "GnuplotGlobalPlacePercentageFileWriter.hpp"
 #include "GnuplotPlayerAveragePointsFileWriter.hpp"
 #include "GnuplotPlayerPlacePercentageFileWriter.hpp"
 #include "Path.hpp"
@@ -81,6 +82,12 @@ protected:
       if (!data_paths.empty()) {
         GnuplotGlobalAveragePointsVsGameNumberFileWriter{Path::gnuplot_global_average_points_vs_game_number_file_path(directory, game_category), data_paths};
         GnuplotGlobalAveragePointsVsDateFileWriter{Path::gnuplot_global_average_points_vs_date_file_path(directory, game_category), data_paths};
+        GnuplotGlobalPlacePercentageVsGameNumberFileWriter{Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {1}), data_paths, game_category, {1}};
+        GnuplotGlobalPlacePercentageVsGameNumberFileWriter{Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {2}), data_paths, game_category, {2}};
+        GnuplotGlobalPlacePercentageVsGameNumberFileWriter{Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {3}), data_paths, game_category, {3}};
+        GnuplotGlobalPlacePercentageVsDateFileWriter{Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {1}), data_paths, game_category, {1}};
+        GnuplotGlobalPlacePercentageVsDateFileWriter{Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {2}), data_paths, game_category, {2}};
+        GnuplotGlobalPlacePercentageVsDateFileWriter{Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {3}), data_paths, game_category, {3}};
       }
     }
   }
@@ -138,6 +145,12 @@ protected:
       if (std::experimental::filesystem::exists(path_2)) {
         run_command("gnuplot " + path_2.string());
       }
+      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {1}).string());
+      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {2}).string());
+      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {3}).string());
+      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {1}).string());
+      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {2}).string());
+      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {3}).string());
     }
     message("Generated the global plots.");
   }
