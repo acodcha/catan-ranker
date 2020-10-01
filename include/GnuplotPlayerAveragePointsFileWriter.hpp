@@ -8,7 +8,7 @@ class GnuplotPlayerAveragePointsFileWriter : public GnuplotFileWriter {
 
 public:
 
-  GnuplotPlayerAveragePointsFileWriter(const std::experimental::filesystem::path& path, const std::map<GameCategory, std::experimental::filesystem::path>& data_paths) noexcept : GnuplotFileWriter(path) {
+  GnuplotPlayerAveragePointsFileWriter(const std::experimental::filesystem::path& path) noexcept : GnuplotFileWriter(path) {
     line("set terminal pngcairo size 800,600 enhanced font \"Verdana,10\"");
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
@@ -26,17 +26,24 @@ public:
 
 protected:
 
-  void plots(const std::map<GameCategory, std::experimental::filesystem::path>& data_paths, const uint_least8_t x_column) noexcept {
-    plot(data_paths, GameCategory::AnyNumberOfPlayers, x_column, Color::BlueDarkWater, 10);
-    plot(data_paths, GameCategory::ThreeToFourPlayers, x_column, Color::OrangeBrick, 8);
-    plot(data_paths, GameCategory::FiveToSixPlayers, x_column, Color::GreenDarkLumber, 6);
-    plot(data_paths, GameCategory::SevenToEightPlayers, x_column, Color::GreenLightWool, 4);
+  virtual constexpr uint_least8_t x_column() const noexcept = 0;
+
+  void plot(const std::map<GameCategory, std::experimental::filesystem::path>& data) noexcept {
+    plot(data, GameCategory::AnyNumberOfPlayers,  Color::BlueDarkWater, 10);
+    plot(data, GameCategory::ThreeToFourPlayers,  Color::OrangeBrick, 8);
+    plot(data, GameCategory::FiveToSixPlayers,    Color::GreenDarkLumber, 6);
+    plot(data, GameCategory::SevenToEightPlayers, Color::GreenLightWool, 4);
   }
 
-  void plot(const std::map<GameCategory, std::experimental::filesystem::path>& data_paths, const GameCategory game_category, const uint_least8_t x_column, const std::string& color, const uint_least8_t line_width) noexcept {
-    const std::map<GameCategory, std::experimental::filesystem::path>::const_iterator found_7_8{data_paths.find(game_category)};
-    if (found_7_8 != data_paths.cend()) {
-      line("  \"" + found_7_8->second.string() + "\" u " + std::to_string(x_column) + ":4 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"" + color + "\" t \"" + label(game_category) + "\" , \\");
+  void plot(
+    const std::map<GameCategory, std::experimental::filesystem::path>& data,
+    const GameCategory game_category,
+    const std::string& color,
+    const uint_least8_t line_width
+  ) noexcept {
+    const std::map<GameCategory, std::experimental::filesystem::path>::const_iterator found{data.find(game_category)};
+    if (found != data.cend()) {
+      line("  \"" + found->second.string() + "\" u " + std::to_string(x_column()) + ":4 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"" + color + "\" t \"" + label(game_category) + "\" , \\");
     }
   }
 
@@ -46,12 +53,21 @@ class GnuplotPlayerAveragePointsVsGameNumberFileWriter : public GnuplotPlayerAve
 
 public:
 
-  GnuplotPlayerAveragePointsVsGameNumberFileWriter(const std::experimental::filesystem::path& path, const std::map<GameCategory, std::experimental::filesystem::path>& data_paths) noexcept : GnuplotPlayerAveragePointsFileWriter(path, data_paths) {
+  GnuplotPlayerAveragePointsVsGameNumberFileWriter(
+    const std::experimental::filesystem::path& path,
+    const std::map<GameCategory, std::experimental::filesystem::path>& data
+  ) noexcept : GnuplotPlayerAveragePointsFileWriter(path) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
     line("plot \\");
-    plots(data_paths, 2);
+    plot(data);
+  }
+
+protected:
+
+  constexpr uint_least8_t x_column() const noexcept {
+    return 2;
   }
 
 };
@@ -60,7 +76,10 @@ class GnuplotPlayerAveragePointsVsDateFileWriter : public GnuplotPlayerAveragePo
 
 public:
 
-  GnuplotPlayerAveragePointsVsDateFileWriter(const std::experimental::filesystem::path& path, const std::map<GameCategory, std::experimental::filesystem::path>& data_paths) noexcept : GnuplotPlayerAveragePointsFileWriter(path, data_paths) {
+  GnuplotPlayerAveragePointsVsDateFileWriter(
+    const std::experimental::filesystem::path& path,
+    const std::map<GameCategory, std::experimental::filesystem::path>& data
+  ) noexcept : GnuplotPlayerAveragePointsFileWriter(path) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");
@@ -68,7 +87,13 @@ public:
     line("set xtics nomirror out rotate by 45 right");
     line("set mxtics 1");
     line("plot \\");
-    plots(data_paths, 3);
+    plot(data);
+  }
+
+protected:
+
+  constexpr uint_least8_t x_column() const noexcept {
+    return 3;
   }
 
 };
