@@ -27,7 +27,7 @@ public:
 
 protected:
 
-  virtual constexpr uint_least8_t x_column() const noexcept = 0;
+  virtual uint_least8_t x_column() const noexcept = 0;
 
   void plot(const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data) noexcept {
     uint_least64_t counter{0};
