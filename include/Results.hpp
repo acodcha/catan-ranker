@@ -17,30 +17,26 @@ public:
 
   Results(const std::experimental::filesystem::path& directory, const Games& games, const Players& players) {
     if (!directory.empty()) {
-      std::experimental::filesystem::create_directory(directory);
-      if (std::experimental::filesystem::exists(directory) && std::experimental::filesystem::is_directory(directory)) {
-        create_player_directories(directory, players);
-        write_player_data_table_files(directory, players);
-        write_global_gnuplot_files(directory, players);
-        write_player_gnuplot_files(directory, players);
-        ResultsSummaryFileWriter{directory / std::experimental::filesystem::path{"README.md"}, games, players};
-        write_player_summary_files(directory, games, players);
-        generate_global_plots(directory);
-        generate_player_plots(directory, players);
-      } else {
-        error("Could not create the directory '" + directory.string() + "'.");
-      }
+      create_directories(directory, players);
+      write_player_data_table_files(directory, players);
+      write_global_gnuplot_files(directory, players);
+      write_player_gnuplot_files(directory, players);
+      ResultsSummaryFileWriter{directory / std::experimental::filesystem::path{"README.md"}, games, players};
+      write_player_summary_files(directory, games, players);
+      generate_global_plots(directory);
+      generate_player_plots(directory, players);
     }
   }
 
 protected:
 
-  void create_player_directories(const std::experimental::filesystem::path& directory, const Players& players) {
+  void create_directories(const std::experimental::filesystem::path& directory, const Players& players) {
+    create(directory);
+    create(Path::global_plots_directory(directory));
     for (const Player& player : players) {
-      std::experimental::filesystem::create_directory(Path::player_directory(directory, player.name()));
-      if (!std::experimental::filesystem::exists(Path::player_directory(directory, player.name())) || !std::experimental::filesystem::is_directory(Path::player_directory(directory, player.name()))) {
-        error("Could not create the directory '" + Path::player_directory(directory, player.name()).string() + "'.");
-      }
+      create(Path::player_directory(directory, player.name()));
+      create(Path::player_data_directory(directory, player.name()));
+      create(Path::player_plots_directory(directory, player.name()));
     }
   }
 

@@ -31,6 +31,13 @@ inline void error(const std::string &text) {
   throw std::runtime_error(text);
 }
 
+void create(const std::experimental::filesystem::path& directory) {
+  std::experimental::filesystem::create_directory(directory);
+  if (!std::experimental::filesystem::exists(directory) || !std::experimental::filesystem::is_directory(directory)) {
+    error("Could not create the directory: " + directory.string());
+  }
+}
+
 template <typename Type> const std::map<Type, std::string> labels;
 
 template <typename Type> std::string label(const Type type) noexcept {

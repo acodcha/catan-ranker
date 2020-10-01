@@ -67,7 +67,7 @@ public:
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 2;
+    return 1;
   }
 
 };
