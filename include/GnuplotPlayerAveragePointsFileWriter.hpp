@@ -4,11 +4,11 @@
 
 namespace CatanLeaderboardGenerator {
 
-class GnuplotAveragePointsFileWriter : public GnuplotFileWriter {
+class GnuplotPlayerAveragePointsFileWriter : public GnuplotFileWriter {
 
 public:
 
-  GnuplotAveragePointsFileWriter(const std::experimental::filesystem::path& path, const std::map<GameCategory, std::experimental::filesystem::path>& data_paths) noexcept : GnuplotFileWriter(path) {
+  GnuplotPlayerAveragePointsFileWriter(const std::experimental::filesystem::path& path, const std::map<GameCategory, std::experimental::filesystem::path>& data_paths) noexcept : GnuplotFileWriter(path) {
     line("set terminal pngcairo size 800,600 enhanced font \"Verdana,10\"");
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
@@ -42,11 +42,11 @@ protected:
 
 };
 
-class GnuplotAveragePointsVsGameNumberFileWriter : public GnuplotAveragePointsFileWriter {
+class GnuplotPlayerAveragePointsVsGameNumberFileWriter : public GnuplotPlayerAveragePointsFileWriter {
 
 public:
 
-  GnuplotAveragePointsVsGameNumberFileWriter(const std::experimental::filesystem::path& path, const std::map<GameCategory, std::experimental::filesystem::path>& data_paths) noexcept : GnuplotAveragePointsFileWriter(path, data_paths) {
+  GnuplotPlayerAveragePointsVsGameNumberFileWriter(const std::experimental::filesystem::path& path, const std::map<GameCategory, std::experimental::filesystem::path>& data_paths) noexcept : GnuplotPlayerAveragePointsFileWriter(path, data_paths) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -56,11 +56,11 @@ public:
 
 };
 
-class GnuplotAveragePointsVsDateFileWriter : public GnuplotAveragePointsFileWriter {
+class GnuplotPlayerAveragePointsVsDateFileWriter : public GnuplotPlayerAveragePointsFileWriter {
 
 public:
 
-  GnuplotAveragePointsVsDateFileWriter(const std::experimental::filesystem::path& path, const std::map<GameCategory, std::experimental::filesystem::path>& data_paths) noexcept : GnuplotAveragePointsFileWriter(path, data_paths) {
+  GnuplotPlayerAveragePointsVsDateFileWriter(const std::experimental::filesystem::path& path, const std::map<GameCategory, std::experimental::filesystem::path>& data_paths) noexcept : GnuplotPlayerAveragePointsFileWriter(path, data_paths) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");

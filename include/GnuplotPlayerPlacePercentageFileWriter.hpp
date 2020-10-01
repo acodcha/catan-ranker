@@ -4,11 +4,11 @@
 
 namespace CatanLeaderboardGenerator {
 
-class GnuplotPlacePercentageFileWriter : public GnuplotFileWriter {
+class GnuplotPlayerPlacePercentageFileWriter : public GnuplotFileWriter {
 
 public:
 
-  GnuplotPlacePercentageFileWriter(const std::experimental::filesystem::path& path, const std::experimental::filesystem::path& data_path, const GameCategory game_category) noexcept : GnuplotFileWriter(path) {
+  GnuplotPlayerPlacePercentageFileWriter(const std::experimental::filesystem::path& path, const std::experimental::filesystem::path& data_path, const GameCategory game_category) noexcept : GnuplotFileWriter(path) {
     line("set terminal pngcairo size 800,600 enhanced font \"Verdana,10\"");
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
@@ -37,11 +37,11 @@ protected:
 
 };
 
-class GnuplotPlacePercentageVsGameNumberFileWriter : public GnuplotPlacePercentageFileWriter {
+class GnuplotPlayerPlacePercentageVsGameNumberFileWriter : public GnuplotPlayerPlacePercentageFileWriter {
 
 public:
 
-  GnuplotPlacePercentageVsGameNumberFileWriter(const std::experimental::filesystem::path& path, const std::experimental::filesystem::path& data_path, const GameCategory game_category) noexcept : GnuplotPlacePercentageFileWriter(path, data_path, game_category) {
+  GnuplotPlayerPlacePercentageVsGameNumberFileWriter(const std::experimental::filesystem::path& path, const std::experimental::filesystem::path& data_path, const GameCategory game_category) noexcept : GnuplotPlayerPlacePercentageFileWriter(path, data_path, game_category) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -51,11 +51,11 @@ public:
 
 };
 
-class GnuplotPlacePercentageVsDateFileWriter : public GnuplotPlacePercentageFileWriter {
+class GnuplotPlayerPlacePercentageVsDateFileWriter : public GnuplotPlayerPlacePercentageFileWriter {
 
 public:
 
-  GnuplotPlacePercentageVsDateFileWriter(const std::experimental::filesystem::path& path, const std::experimental::filesystem::path& data_path, const GameCategory game_category) noexcept : GnuplotPlacePercentageFileWriter(path, data_path, game_category) {
+  GnuplotPlayerPlacePercentageVsDateFileWriter(const std::experimental::filesystem::path& path, const std::experimental::filesystem::path& data_path, const GameCategory game_category) noexcept : GnuplotPlayerPlacePercentageFileWriter(path, data_path, game_category) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");
