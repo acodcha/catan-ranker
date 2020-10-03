@@ -11,8 +11,15 @@ public:
 
   ResultsPlayerSummaryFileWriter(const std::experimental::filesystem::path& path, const Games& games, const Player& player) noexcept : MarkdownFileWriter(path, player.name().value()) {
     line("Last updated " + current_local_date_and_time() + " local time (" + current_utc_date_and_time() + ").");
+    section("Overview");
     player_table(player);
-    section(section_title_games_);
+    section(section_title_average_points_plot_);
+    average_points_plot();
+    section(section_title_place_percentage_plot_);
+    for (const GameCategory game_category : GameCategories) {
+      place_percentage_plot(game_category);
+    }
+    section(section_title_games_tables_);
     for (const GameCategory game_category : GameCategories) {
       games_table(games, player, game_category);
     }
@@ -21,10 +28,13 @@ public:
 
 protected:
 
-  const std::string section_title_games_{"Game History"};
+  const std::string section_title_average_points_plot_{"Average Points per Game"};
+
+  const std::string section_title_place_percentage_plot_{"Places"};
+
+  const std::string section_title_games_tables_{"Game History"};
 
   void player_table(const Player& player) noexcept {
-    section("Player Statistics");
     Column category{"Category", Column::Alignment::Center};
     Column local_game_number{"Games", Column::Alignment::Center};
     Column average_points_per_game{"Points", Column::Alignment::Center};
@@ -51,8 +61,23 @@ protected:
     table(data);
   }
 
+  void average_points_plot() noexcept {
+    const std::experimental::filesystem::path plot_path{
+      Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName)
+    };
+    line("![](" + plot_path.string() + ")");
+  }
+
+  void place_percentage_plot(const GameCategory game_category) noexcept {
+    subsection(section_title_place_percentage_plot_ + ": " + label(game_category));
+    const std::experimental::filesystem::path plot_path{
+      Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::gnuplot_player_place_percentage_vs_game_number_file_name(game_category))
+    };
+    line("![](" + plot_path.string() + ")");
+  }
+
   void games_table(const Games& games, const Player& player, const GameCategory game_category) noexcept {
-    subsection(section_title_games_ + ": " + label(game_category));
+    subsection(section_title_games_tables_ + ": " + label(game_category));
     Column game_number{"Game", Column::Alignment::Center};
     Column date{"Date", Column::Alignment::Center};
     Column number_of_players{"Players", Column::Alignment::Center};
