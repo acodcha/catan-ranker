@@ -9,7 +9,7 @@ jobs:
     name: build and test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout
+    - uses: actions/checkout@v2
     - name: install packages
       run: sudo apt install -y cmake g++ gnuplot
     - name: configure
