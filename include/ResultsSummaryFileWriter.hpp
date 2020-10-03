@@ -30,7 +30,7 @@ public:
       games_table(games, game_category);
     }
     blank_line();
-    message("Wrote the summary file to: " + path_.string());
+    message("Wrote the global summary file.");
   }
 
 protected:
@@ -51,7 +51,8 @@ protected:
     Column third_place_percentage{"3rd Place", Column::Alignment::Center};
     for (const Player& player : players) {
       if (!player[game_category].empty()) {
-        name.add_row(player.name().value());
+        const std::experimental::filesystem::path summary_file_path{player.name().directory_name() / Path::SummaryFileName};
+        name.add_row("[" + player.name().value() + "](" + summary_file_path.string() + ")");
         local_number.add_row(player[game_category].back().local_game_number());
         average_points_per_game.add_row(player[game_category].back().average_points_per_game(), 2);
         first_place_percentage.add_row(player[game_category].back().place_percentage({1}), 0);
