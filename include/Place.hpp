@@ -90,6 +90,8 @@ protected:
 
 };
 
+const std::set<Place> PlacesFirstSecondThird{{1}, {2}, {3}};
+
 } // namespace CatanLeaderboardGenerator
 
 namespace std {

@@ -11,28 +11,38 @@ public:
 
   ResultsSummaryFileWriter(const std::experimental::filesystem::path& path, const Games& games, const Players& players) noexcept : MarkdownFileWriter(path, "Results") {
     line("Last updated " + current_local_date_and_time() + " local time (" + current_utc_date_and_time() + ").");
-    section(section_title_players_);
-    players_table(players, GameCategory::AnyNumberOfPlayers);
-    players_table(players, GameCategory::ThreeToFourPlayers);
-    players_table(players, GameCategory::FiveToSixPlayers);
-    players_table(players, GameCategory::SevenToEightPlayers);
-    section(section_title_games_);
-    games_table(games, GameCategory::AnyNumberOfPlayers);
-    games_table(games, GameCategory::ThreeToFourPlayers);
-    games_table(games, GameCategory::FiveToSixPlayers);
-    games_table(games, GameCategory::SevenToEightPlayers);
+    section(section_title_players_table_);
+    for (const GameCategory game_category : GameCategories) {
+      players_table(players, game_category);
+    }
+    section(section_title_average_points_plots_);
+    for (const GameCategory game_category : GameCategories) {
+      average_points_plot(game_category);
+    }
+    for (const Place place : PlacesFirstSecondThird) {
+      section(section_title_place_percentage_plots(place));
+      for (const GameCategory game_category : GameCategories) {
+        place_percentage_plot(game_category, place);
+      }
+    }
+    section(section_title_games_tables_);
+    for (const GameCategory game_category : GameCategories) {
+      games_table(games, game_category);
+    }
     blank_line();
     message("Wrote the summary file to: " + path_.string());
   }
 
 protected:
 
-  const std::string section_title_players_{"Player Statistics"};
+  const std::string section_title_players_table_{"Player Statistics"};
 
-  const std::string section_title_games_{"Game History"};
+  const std::string section_title_average_points_plots_{"Average Points per Game"};
+
+  const std::string section_title_games_tables_{"Game History"};
 
   void players_table(const Players& players, const GameCategory game_category) noexcept {
-    subsection(section_title_players_ + ": " + label(game_category));
+    subsection(section_title_players_table_ + ": " + label(game_category));
     Column name{"Player", Column::Alignment::Left};
     Column local_number{"Games", Column::Alignment::Center};
     Column average_points_per_game{"Points", Column::Alignment::Center};
@@ -54,7 +64,7 @@ protected:
   }
 
   void games_table(const Games& games, const GameCategory game_category) noexcept {
-    subsection(section_title_games_ + ": " + label(game_category));
+    subsection(section_title_games_tables_ + ": " + label(game_category));
     Column game_number{"Game", Column::Alignment::Center};
     Column date{"Date", Column::Alignment::Center};
     Column number_of_players{"Players", Column::Alignment::Center};
@@ -76,6 +86,26 @@ protected:
     }
     const Table data{{game_number, date, number_of_players, results}};
     table(data);
+  }
+
+  void average_points_plot(const GameCategory game_category) noexcept {
+    subsection(section_title_average_points_plots_ + ": " + label(game_category));
+    const std::experimental::filesystem::path plot_path{
+      Path::gnuplot_path_to_png_path(Path::GlobalPlotsDirectoryName / Path::gnuplot_global_average_points_vs_game_number_file_name(game_category))
+    };
+    line("![](" + plot_path.string() + ")");
+  }
+
+  void place_percentage_plot(const GameCategory game_category, const Place& place) noexcept {
+    subsection(section_title_place_percentage_plots(place) + ": " + label(game_category));
+    const std::experimental::filesystem::path plot_path{
+      Path::gnuplot_path_to_png_path(Path::GlobalPlotsDirectoryName / Path::gnuplot_global_place_percentage_vs_game_number_file_name(game_category, place))
+    };
+    line("![](" + plot_path.string() + ")");
+  }
+
+  std::string section_title_place_percentage_plots(const Place place) const noexcept {
+    return place.print() + " Places";
   }
 
 };

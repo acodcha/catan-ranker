@@ -13,10 +13,9 @@ public:
     line("Last updated " + current_local_date_and_time() + " local time (" + current_utc_date_and_time() + ").");
     player_table(player);
     section(section_title_games_);
-    games_table(games, player, GameCategory::AnyNumberOfPlayers);
-    games_table(games, player, GameCategory::ThreeToFourPlayers);
-    games_table(games, player, GameCategory::FiveToSixPlayers);
-    games_table(games, player, GameCategory::SevenToEightPlayers);
+    for (const GameCategory game_category : GameCategories) {
+      games_table(games, player, game_category);
+    }
     blank_line();
   }
 
@@ -32,7 +31,7 @@ protected:
     Column first_place_percentage{"1st Place", Column::Alignment::Center};
     Column second_place_percentage{"2nd Place", Column::Alignment::Center};
     Column third_place_percentage{"3rd Place", Column::Alignment::Center};
-    for (const GameCategory game_category : enumerations<GameCategory>) {
+    for (const GameCategory game_category : GameCategories) {
       category.add_row(label(game_category));
       if (player[game_category].empty()) {
         local_game_number.add_row(0);

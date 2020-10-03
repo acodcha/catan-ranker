@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Path.hpp"
 #include "TextFileWriter.hpp"
 
 namespace CatanLeaderboardGenerator {
@@ -19,9 +20,7 @@ public:
 protected:
 
   std::experimental::filesystem::path png_file_path() const noexcept {
-    std::experimental::filesystem::path png_file_path{path_};
-    png_file_path.replace_extension(".png");
-    return png_file_path;
+    return Path::gnuplot_path_to_png_path(path_);
   }
 
 };

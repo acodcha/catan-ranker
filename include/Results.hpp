@@ -5,7 +5,6 @@
 #include "GnuplotGlobalPlacePercentageFileWriter.hpp"
 #include "GnuplotPlayerAveragePointsFileWriter.hpp"
 #include "GnuplotPlayerPlacePercentageFileWriter.hpp"
-#include "Path.hpp"
 #include "ResultsPlayerSummaryFileWriter.hpp"
 #include "ResultsSummaryFileWriter.hpp"
 
@@ -33,61 +32,72 @@ protected:
 
   void create_directories(const std::experimental::filesystem::path& directory, const Players& players) {
     create(directory);
-    create(Path::global_plots_directory(directory));
+    create(directory / Path::GlobalPlotsDirectoryName);
     for (const Player& player : players) {
-      create(Path::player_directory(directory, player.name()));
-      create(Path::player_data_directory(directory, player.name()));
-      create(Path::player_plots_directory(directory, player.name()));
+      create(directory / player.name().directory_name());
+      create(directory / player.name().directory_name() / Path::PlayerDataDirectoryName);
+      create(directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName);
     }
   }
 
   void write_player_data_table_files(const std::experimental::filesystem::path& directory, const Players& players) noexcept {
     for (const Player& player : players) {
-      if (!player[GameCategory::AnyNumberOfPlayers].empty()) {
-        DataTableFileWriter{
-          Path::player_data_table_file_path(directory, player.name(), GameCategory::AnyNumberOfPlayers),
-          player_table(player, GameCategory::AnyNumberOfPlayers)
-        };
-      }
-      if (!player[GameCategory::ThreeToFourPlayers].empty()) {
-        DataTableFileWriter{
-          Path::player_data_table_file_path(directory, player.name(), GameCategory::ThreeToFourPlayers),
-          player_table(player, GameCategory::ThreeToFourPlayers)
-        };
-      }
-      if (!player[GameCategory::FiveToSixPlayers].empty()) {
-        DataTableFileWriter{
-          Path::player_data_table_file_path(directory, player.name(), GameCategory::FiveToSixPlayers),
-          player_table(player, GameCategory::FiveToSixPlayers)
-        };
-      }
-      if (!player[GameCategory::SevenToEightPlayers].empty()) {
-        DataTableFileWriter{
-          Path::player_data_table_file_path(directory, player.name(), GameCategory::SevenToEightPlayers),
-          player_table(player, GameCategory::SevenToEightPlayers)
-        };
+      for (const GameCategory game_category : GameCategories) {
+        if (!player[game_category].empty()) {
+          DataTableFileWriter{
+            directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_table_file_name(game_category),
+            player_table(player, game_category)
+          };
+        }
       }
     }
     message("Wrote the data table files for each player.");
   }
 
   void write_global_gnuplot_files(const std::experimental::filesystem::path& directory, const Players& players) noexcept {
-    for (const GameCategory game_category : enumerations<GameCategory>) {
+    for (const GameCategory game_category : GameCategories) {
       std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort> data_paths;
       for (const Player& player : players) {
         if (!player[game_category].empty()) {
-          data_paths.insert({player.name(), Path::player_data_table_file_path(directory, player.name(), game_category)});
+          data_paths.insert({
+            player.name(),
+            directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_table_file_name(game_category)
+          });
         }
       }
       if (!data_paths.empty()) {
-        GnuplotGlobalAveragePointsVsGameNumberFileWriter{Path::gnuplot_global_average_points_vs_game_number_file_path(directory, game_category), data_paths};
-        GnuplotGlobalAveragePointsVsDateFileWriter{Path::gnuplot_global_average_points_vs_date_file_path(directory, game_category), data_paths};
-        GnuplotGlobalPlacePercentageVsGameNumberFileWriter{Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {1}), data_paths, game_category, {1}};
-        GnuplotGlobalPlacePercentageVsGameNumberFileWriter{Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {2}), data_paths, game_category, {2}};
-        GnuplotGlobalPlacePercentageVsGameNumberFileWriter{Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {3}), data_paths, game_category, {3}};
-        GnuplotGlobalPlacePercentageVsDateFileWriter{Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {1}), data_paths, game_category, {1}};
-        GnuplotGlobalPlacePercentageVsDateFileWriter{Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {2}), data_paths, game_category, {2}};
-        GnuplotGlobalPlacePercentageVsDateFileWriter{Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {3}), data_paths, game_category, {3}};
+        GnuplotGlobalAveragePointsVsGameNumberFileWriter{
+          directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_average_points_vs_game_number_file_name(game_category),
+          data_paths
+        };
+        GnuplotGlobalAveragePointsVsDateFileWriter{
+          directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_average_points_vs_date_file_name(game_category),
+          data_paths
+        };
+        GnuplotGlobalPlacePercentageVsGameNumberFileWriter{
+          directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_place_percentage_vs_game_number_file_name(game_category, {1}),
+          data_paths, game_category, {1}
+        };
+        GnuplotGlobalPlacePercentageVsGameNumberFileWriter{
+          directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_place_percentage_vs_game_number_file_name(game_category, {2}),
+          data_paths, game_category, {2}
+        };
+        GnuplotGlobalPlacePercentageVsGameNumberFileWriter{
+          directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_place_percentage_vs_game_number_file_name(game_category, {3}),
+          data_paths, game_category, {3}
+        };
+        GnuplotGlobalPlacePercentageVsDateFileWriter{
+          directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_place_percentage_vs_date_file_name(game_category, {1}),
+          data_paths, game_category, {1}
+        };
+        GnuplotGlobalPlacePercentageVsDateFileWriter{
+          directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_place_percentage_vs_date_file_name(game_category, {2}),
+          data_paths, game_category, {2}
+        };
+        GnuplotGlobalPlacePercentageVsDateFileWriter{
+          directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_place_percentage_vs_date_file_name(game_category, {3}),
+          data_paths, game_category, {3}
+        };
       }
     }
   }
@@ -95,14 +105,23 @@ protected:
   void write_player_gnuplot_files(const std::experimental::filesystem::path& directory, const Players& players) noexcept {
     for (const Player& player : players) {
       std::map<GameCategory, std::experimental::filesystem::path> data_paths;
-      for (const GameCategory game_category : enumerations<GameCategory>) {
+      for (const GameCategory game_category : GameCategories) {
         if (!player[game_category].empty()) {
-          data_paths.insert({game_category, Path::player_data_table_file_path(directory, player.name(), game_category)});
+          data_paths.insert({
+            game_category,
+            directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_table_file_name(game_category)
+          });
         }
       }
       if (!data_paths.empty()) {
-        GnuplotPlayerAveragePointsVsGameNumberFileWriter{Path::gnuplot_player_average_points_vs_game_number_file_path(directory, player.name()), data_paths};
-        GnuplotPlayerAveragePointsVsDateFileWriter{Path::gnuplot_player_average_points_vs_date_file_path(directory, player.name()), data_paths};
+        GnuplotPlayerAveragePointsVsGameNumberFileWriter{
+          directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName,
+          data_paths
+        };
+        GnuplotPlayerAveragePointsVsDateFileWriter{
+          directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsDateFileName,
+          data_paths
+        };
       }
       write_player_gnuplot_place_percentage_files(directory, player, GameCategory::AnyNumberOfPlayers);
       write_player_gnuplot_place_percentage_files(directory, player, GameCategory::ThreeToFourPlayers);
@@ -115,13 +134,13 @@ protected:
   void write_player_gnuplot_place_percentage_files(const std::experimental::filesystem::path& directory, const Player& player, const GameCategory game_category) noexcept {
     if (!player[game_category].empty()) {
       GnuplotPlayerPlacePercentageVsGameNumberFileWriter{
-        Path::gnuplot_player_place_percentage_vs_game_number_file_path(directory, player.name(), game_category),
-        Path::player_data_table_file_path(directory, player.name(), game_category),
+        directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::gnuplot_player_place_percentage_vs_game_number_file_name(game_category),
+        directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_table_file_name(game_category),
         game_category
       };
       GnuplotPlayerPlacePercentageVsDateFileWriter{
-        Path::gnuplot_player_place_percentage_vs_date_file_path(directory, player.name(), game_category),
-        Path::player_data_table_file_path(directory, player.name(), game_category),
+        directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::gnuplot_player_place_percentage_vs_date_file_name(game_category),
+        directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_table_file_name(game_category),
         game_category
       };
     }
@@ -129,28 +148,36 @@ protected:
 
   void write_player_summary_files(const std::experimental::filesystem::path& directory, const Games& games, const Players& players) noexcept {
     for (const Player& player : players) {
-      ResultsPlayerSummaryFileWriter{Path::player_directory(directory, player.name()) / std::experimental::filesystem::path{"README.md"}, games, player};
+      ResultsPlayerSummaryFileWriter{directory / player.name().directory_name() / Path::SummaryFileName, games, player};
     }
     message("Wrote the player summary files.");
   }
 
   void generate_global_plots(const std::experimental::filesystem::path& directory) const {
     message("Generating the global plots...");
-    for (const GameCategory game_category : enumerations<GameCategory>) {
-      const std::experimental::filesystem::path path_1{Path::gnuplot_global_average_points_vs_game_number_file_path(directory, game_category)};
-      if (std::experimental::filesystem::exists(path_1)) {
-        run_command("gnuplot " + path_1.string());
+    for (const GameCategory game_category : GameCategories) {
+      const std::experimental::filesystem::path average_points_vs_game_number_path{
+        directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_average_points_vs_game_number_file_name(game_category)
+      };
+      if (std::experimental::filesystem::exists(average_points_vs_game_number_path)) {
+        run_command("gnuplot " + average_points_vs_game_number_path.string());
       }
-      const std::experimental::filesystem::path path_2{Path::gnuplot_global_average_points_vs_date_file_path(directory, game_category)};
-      if (std::experimental::filesystem::exists(path_2)) {
-        run_command("gnuplot " + path_2.string());
+      const std::experimental::filesystem::path average_points_vs_date_path{
+        directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_average_points_vs_date_file_name(game_category)
+      };
+      if (std::experimental::filesystem::exists(average_points_vs_date_path)) {
+        run_command("gnuplot " + average_points_vs_date_path.string());
       }
-      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {1}).string());
-      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {2}).string());
-      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_game_number_file_path(directory, game_category, {3}).string());
-      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {1}).string());
-      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {2}).string());
-      run_command("gnuplot " + Path::gnuplot_global_place_percentage_vs_date_file_path(directory, game_category, {3}).string());
+      for (const Place& place : PlacesFirstSecondThird) {
+        const std::experimental::filesystem::path place_percentage_vs_game_number_path{
+          directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_place_percentage_vs_game_number_file_name(game_category, place)
+        };
+        run_command("gnuplot " + place_percentage_vs_game_number_path.string());
+        const std::experimental::filesystem::path place_percentage_vs_date_path{
+          directory / Path::GlobalPlotsDirectoryName / Path::gnuplot_global_place_percentage_vs_date_file_name(game_category, place)
+        };
+        run_command("gnuplot " + place_percentage_vs_date_path.string());
+      }
     }
     message("Generated the global plots.");
   }
@@ -159,13 +186,25 @@ protected:
     message("Generating the plots for each player...");
     for (const Player& player : players) {
       if (!player[GameCategory::AnyNumberOfPlayers].empty()) {
-        run_command("gnuplot " + Path::gnuplot_player_average_points_vs_game_number_file_path(directory, player.name()).string());
-        run_command("gnuplot " + Path::gnuplot_player_average_points_vs_date_file_path(directory, player.name()).string());
+        const std::experimental::filesystem::path average_points_vs_game_number_path{
+          directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName
+        };
+        run_command("gnuplot " + average_points_vs_game_number_path.string());
+        const std::experimental::filesystem::path average_points_vs_date_path{
+          directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsDateFileName
+        };
+        run_command("gnuplot " + average_points_vs_date_path.string());
       }
-      for (const GameCategory game_category : enumerations<GameCategory>) {
+      for (const GameCategory game_category : GameCategories) {
         if (!player[game_category].empty()) {
-          run_command("gnuplot " + Path::gnuplot_player_place_percentage_vs_game_number_file_path(directory, player.name(), game_category).string());
-          run_command("gnuplot " + Path::gnuplot_player_place_percentage_vs_date_file_path(directory, player.name(), game_category).string());
+          const std::experimental::filesystem::path place_percentage_vs_game_number_path{
+            directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::gnuplot_player_place_percentage_vs_game_number_file_name(game_category)
+          };
+          run_command("gnuplot " + place_percentage_vs_game_number_path.string());
+          const std::experimental::filesystem::path place_percentage_vs_date_path{
+            directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::gnuplot_player_place_percentage_vs_date_file_name(game_category)
+          };
+          run_command("gnuplot " + place_percentage_vs_date_path.string());
         }
       }
     }
