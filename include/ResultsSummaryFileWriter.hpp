@@ -10,7 +10,7 @@ class ResultsSummaryFileWriter : public MarkdownFileWriter {
 public:
 
   ResultsSummaryFileWriter(const std::experimental::filesystem::path& path, const Games& games, const Players& players) noexcept : MarkdownFileWriter(path, "Catan Leaderboard") {
-    line("Last updated " + current_local_date_and_time() + " local time (" + current_utc_date_and_time() + ").");
+    line("Last updated " + current_utc_date_and_time() + ".");
     section(section_title_players_table_);
     for (const GameCategory game_category : GameCategories) {
       players_table(players, game_category);

@@ -10,7 +10,7 @@ class ResultsPlayerSummaryFileWriter : public MarkdownFileWriter {
 public:
 
   ResultsPlayerSummaryFileWriter(const std::experimental::filesystem::path& path, const Games& games, const Player& player) noexcept : MarkdownFileWriter(path, player.name().value()) {
-    line("Last updated " + current_local_date_and_time() + " local time (" + current_utc_date_and_time() + ").");
+    line("Last updated " + current_utc_date_and_time() + ".");
     section("Overview");
     player_table(player);
     section(section_title_average_points_plot_);

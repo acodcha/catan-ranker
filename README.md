@@ -3,6 +3,8 @@
 
 Generates a simple leaderboard for Catan games. The leaderboard consists of Markdown files containing tables and plots.
 
+See https://github.com/acodcha/CatanLeaderboard for an example of a leaderboard that uses this program.
+
 ## Dependencies
 The following packages are required:
 - **C++17 Compiler:** Any C++17 compiler will do, such as GCC or Clang. On Ubuntu, install GCC with `sudo apt install g++` or Clang with `sudo apt install clang`.
