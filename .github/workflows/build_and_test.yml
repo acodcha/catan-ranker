@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install packages
-      run: sudo apt install -y g++ cmake gnuplot
+      run: sudo apt install -y cmake g++ gnuplot
     - name: configure
       run: mkdir -p build && cd build && cmake ..
     - name: build
