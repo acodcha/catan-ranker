@@ -29,10 +29,10 @@ protected:
   virtual uint_least8_t x_column() const noexcept = 0;
 
   void plot(const std::map<GameCategory, std::experimental::filesystem::path>& data) noexcept {
-    plot(data, GameCategory::AnyNumberOfPlayers,  Color::BlueDarkWater, 10);
-    plot(data, GameCategory::ThreeToFourPlayers,  Color::OrangeBrick, 8);
-    plot(data, GameCategory::FiveToSixPlayers,    Color::GreenDarkLumber, 6);
-    plot(data, GameCategory::SevenToEightPlayers, Color::GreenLightWool, 4);
+    plot(data, GameCategory::AnyNumberOfPlayers,  Color::BlueDarkWater, 4);
+    plot(data, GameCategory::ThreeToFourPlayers,  Color::OrangeBrick, 2);
+    plot(data, GameCategory::FiveToSixPlayers,    Color::GreenDarkLumber, 2);
+    plot(data, GameCategory::SevenToEightPlayers, Color::GreenLightWool, 2);
   }
 
   void plot(
