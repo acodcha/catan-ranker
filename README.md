@@ -56,11 +56,11 @@ Run with no arguments or with the `--help` argument to obtain usage information.
 Otherwise, for regular use, run with:
 
 ```
-catan_leaderboard_generator --games <path> --results <path>
+catan_leaderboard_generator --games <path> --leaderboard <path>
 ```
 
 - `--games <path>` specifies the path to the games file to be read. Required.
-- `--results <path>` specifies the path to the directory in which results files will be written. Optional. If omitted, no results are written.
+- `--leaderboard <path>` specifies the path to the directory in which the leaderboard will be written. Optional. If omitted, no leaderboard is written.
 
 ### Games File
 The games file must have the following format:
