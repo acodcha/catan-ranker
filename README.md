@@ -1,7 +1,7 @@
 # Catan Leaderboard Generator
 ![build and test](https://github.com/acodcha/CatanLeaderboardGenerator/workflows/build%20and%20test/badge.svg?branch=master)
 
-Generates a simple leaderboard for Catan games.
+Generates a simple leaderboard for Catan games. The leaderboard consists of Markdown files containing tables and plots.
 
 ## Dependencies
 The following packages are required:
@@ -56,11 +56,11 @@ Run with no arguments or with the `--help` argument to obtain usage information.
 Otherwise, for regular use, run with:
 
 ```
-catan_leaderboard_generator --games <path> --results <path>
+catan_leaderboard_generator --games <path> --leaderboard <path>
 ```
 
 - `--games <path>` specifies the path to the games file to be read. Required.
-- `--results <path>` specifies the path to the directory in which results files will be written. Optional. If omitted, no results are written.
+- `--leaderboard <path>` specifies the path to the directory in which the leaderboard will be written. Optional. If omitted, no leaderboard is written.
 
 ### Games File
 The games file must have the following format:
@@ -82,7 +82,7 @@ The games file must have the following format:
 - A comma (`,`) is used to separate players.
 - Except for line endings, all whitespace is ignored. However, as in the above example, the use of whitespace is recommended for readability.
 - The ordering of games is unimportant. The games will be sorted by date during processing.
-- The ordering of players in a game is unimportant. The winning player is the player with the most points. Players can be tied for 2nd place, 3rd place, and so on, depending on their points.
+- The ordering of players in a game is unimportant. The winning player is the player with the most points. Players can be tied for 2nd place, 3rd place, and so on depending on their points.
 - In 5+ player games, because of the special build phase and because a player can only win during their turn, it is possible for the winning player to be tied for most points or to not have the most points. In such cases, identify the winning player by placing an asterisk (`*`) after their points, as in the above example.
 
 ## License

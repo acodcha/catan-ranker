@@ -16,6 +16,10 @@ public:
     return value_;
   }
 
+  std::experimental::filesystem::path directory_name() const noexcept {
+    return {value_};
+  }
+
   bool operator==(const PlayerName& other) const noexcept {
     return value_ == other.value_;
   }

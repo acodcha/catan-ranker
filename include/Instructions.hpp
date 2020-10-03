@@ -13,9 +13,9 @@ const std::string GamesFileKey{"--games"};
 
 const std::string GamesFilePattern{GamesFileKey + " <path>"};
 
-const std::string ResultsDirectoryKey{"--results"};
+const std::string LeaderboardDirectoryKey{"--leaderboard"};
 
-const std::string ResultsDirectoryPattern{ResultsDirectoryKey + " <path>"};
+const std::string LeaderboardDirectoryPattern{LeaderboardDirectoryKey + " <path>"};
 
 } // namespace Arguments
 
@@ -37,8 +37,8 @@ public:
     return games_file_;
   }
 
-  const std::experimental::filesystem::path& results_directory() const noexcept {
-    return results_directory_;
+  const std::experimental::filesystem::path& leaderboard_directory() const noexcept {
+    return leaderboard_directory_;
   }
 
 protected:
@@ -49,7 +49,7 @@ protected:
 
   std::experimental::filesystem::path games_file_;
 
-  std::experimental::filesystem::path results_directory_;
+  std::experimental::filesystem::path leaderboard_directory_;
 
   void assign_arguments(int argc, char *argv[]) noexcept {
     if (argc > 1) {
@@ -69,8 +69,8 @@ protected:
         exit(EXIT_SUCCESS);
       } else if (*argument == Arguments::GamesFileKey && argument + 1 < arguments_.cend()) {
         games_file_ = {*(argument + 1)};
-      } else if (*argument == Arguments::ResultsDirectoryKey && argument + 1 < arguments_.cend()) {
-        results_directory_ = {*(argument + 1)};
+      } else if (*argument == Arguments::LeaderboardDirectoryKey && argument + 1 < arguments_.cend()) {
+        leaderboard_directory_ = {*(argument + 1)};
       }
     }
   }
@@ -84,16 +84,16 @@ protected:
   void message_usage_information() const noexcept {
     const std::string space{"  "};
     message("Usage:");
-    message(space + executable_name_ + " " + Arguments::GamesFilePattern + " " + Arguments::ResultsDirectoryPattern);
+    message(space + executable_name_ + " " + Arguments::GamesFilePattern + " " + Arguments::LeaderboardDirectoryPattern);
     const uint_least64_t length{std::max({
       Arguments::UsageInformation.length(),
       Arguments::GamesFilePattern.length(),
-      Arguments::ResultsDirectoryPattern.length()
+      Arguments::LeaderboardDirectoryPattern.length()
     })};
     message("Arguments:");
     message(space + pad_to_length(Arguments::UsageInformation, length) + space + "Displays this information and exits.");
     message(space + pad_to_length(Arguments::GamesFilePattern, length) + space + "Path to the games file to be read. Required.");
-    message(space + pad_to_length(Arguments::ResultsDirectoryPattern, length) + space + "Path to the directory in which results files will be written. Optional. If omitted, no results are written.");
+    message(space + pad_to_length(Arguments::LeaderboardDirectoryPattern, length) + space + "Path to the directory in which the leaderboard will be written. Optional. If omitted, no leaderboard is written.");
     message("");
   }
 
@@ -113,10 +113,10 @@ protected:
     if (!games_file_.empty()) {
       message("The games will be read from: " + games_file_.string());
     }
-    if (!results_directory_.empty()) {
-      message("The results will be written to: " + results_directory_.string());
+    if (!leaderboard_directory_.empty()) {
+      message("The leaderboard will be written to: " + leaderboard_directory_.string());
     } else {
-      warning("The results directory (" + Arguments::ResultsDirectoryPattern + ") is missing. Results files will not be written.");
+      warning("The leaderboard directory (" + Arguments::LeaderboardDirectoryPattern + ") is missing. Leaderboard files will not be written.");
     }
   }
 
