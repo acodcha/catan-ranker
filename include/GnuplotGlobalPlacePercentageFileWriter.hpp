@@ -19,7 +19,7 @@ public:
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
-    line("set ylabel \"" + label(game_category) + " " + place.print() + "Place %\"");
+    line("set ylabel \"" + label(game_category) + " " + place.print() + " Place %\"");
     line("set yrange [0:100]");
     line("set ytics mirror out 10.0");
     line("set mytics 10");
