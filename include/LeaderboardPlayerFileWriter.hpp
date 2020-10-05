@@ -45,27 +45,30 @@ protected:
     Column category{"Category", Column::Alignment::Center};
     Column number_of_games{"Games", Column::Alignment::Center};
     Column average_points_per_game{"Points", Column::Alignment::Center};
-    Column first_place_percentage{"1st Place", Column::Alignment::Center};
-    Column second_place_percentage{"2nd Place", Column::Alignment::Center};
-    Column third_place_percentage{"3rd Place", Column::Alignment::Center};
-    Column first_or_second_place_percentage{"1st or 2nd Place", Column::Alignment::Center};
-    Column first_or_second_or_third_place_percentage{"1st, 2nd, or 3rd Place", Column::Alignment::Center};
+    Column first_place{"1st Place", Column::Alignment::Center};
+    Column second_place{"2nd Place", Column::Alignment::Center};
+    Column third_place{"3rd Place", Column::Alignment::Center};
+    Column first_or_second_place{"1st or 2nd Place", Column::Alignment::Center};
+    Column first_or_second_or_third_place{"1st, 2nd, or 3rd Place", Column::Alignment::Center};
     for (const GameCategory game_category : GameCategories) {
       category.add_row(label(game_category));
       if (!player[game_category].empty()) {
         number_of_games.add_row(player[game_category].back().player_game_category_game_number());
         average_points_per_game.add_row(player[game_category].back().average_points_per_game(), 2);
-        const Percentage first_place{player[game_category].back().place_percentage({1})};
-        const Percentage second_place{player[game_category].back().place_percentage({2})};
-        const Percentage third_place{player[game_category].back().place_percentage({3})};
-        first_place_percentage.add_row(first_place, 0);
-        second_place_percentage.add_row(second_place, 0);
-        third_place_percentage.add_row(third_place, 0);
-        first_or_second_place_percentage.add_row(first_place + second_place, 0);
-        first_or_second_or_third_place_percentage.add_row(first_place + second_place + third_place, 0);
+        const uint_least64_t first_place_count{player[game_category].back().place_count({1})};
+        const uint_least64_t second_place_count{player[game_category].back().place_count({2})};
+        const uint_least64_t third_place_count{player[game_category].back().place_count({3})};
+        const Percentage first_place_percentage{player[game_category].back().place_percentage({1})};
+        const Percentage second_place_percentage{player[game_category].back().place_percentage({2})};
+        const Percentage third_place_percentage{player[game_category].back().place_percentage({3})};
+        first_place.add_row(std::to_string(first_place_count) + "  " + first_place_percentage.print(0));
+        second_place.add_row(std::to_string(second_place_count) + "  " + second_place_percentage.print(0));
+        third_place.add_row(std::to_string(third_place_count) + "  " + third_place_percentage.print(0));
+        first_or_second_place.add_row(std::to_string(first_place_count + second_place_count) + "  " + Percentage{first_place_percentage + second_place_percentage}.print(0));
+        first_or_second_or_third_place.add_row(std::to_string(first_place_count + second_place_count + third_place_count) + "  " + Percentage{first_place_percentage + second_place_percentage + third_place_percentage}.print(0));
       }
     }
-    const Table data{{category, number_of_games, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage, first_or_second_place_percentage, first_or_second_or_third_place_percentage}};
+    const Table data{{category, number_of_games, average_points_per_game, first_place, second_place, third_place, first_or_second_place, first_or_second_or_third_place}};
     table(data);
   }
 
