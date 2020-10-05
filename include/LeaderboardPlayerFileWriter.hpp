@@ -1,15 +1,21 @@
 #pragma once
 
 #include "MarkdownFileWriter.hpp"
+#include "Path.hpp"
 #include "Player.hpp"
 
 namespace CatanLeaderboardGenerator {
 
-class ResultsPlayerSummaryFileWriter : public MarkdownFileWriter {
+class LeaderboardPlayerFileWriter : public MarkdownFileWriter {
 
 public:
 
-  ResultsPlayerSummaryFileWriter(const std::experimental::filesystem::path& path, const Games& games, const Player& player) noexcept : MarkdownFileWriter(path, player.name().value()) {
+  LeaderboardPlayerFileWriter(
+    const std::experimental::filesystem::path& file_path,
+    const std::experimental::filesystem::path& base_directory,
+    const Games& games,
+    const Player& player
+  ) noexcept : MarkdownFileWriter(file_path, player.name().value()) {
     line("Last updated " + current_utc_date_and_time() + ".");
     section("Overview");
     player_table(player);
@@ -17,7 +23,7 @@ public:
     average_points_plot();
     section(section_title_place_percentage_plot_);
     for (const GameCategory game_category : GameCategories) {
-      place_percentage_plot(game_category);
+      place_percentage_plot(base_directory, player, game_category);
     }
     section(section_title_games_tables_);
     for (const GameCategory game_category : GameCategories) {
@@ -43,13 +49,7 @@ protected:
     Column third_place_percentage{"3rd Place", Column::Alignment::Center};
     for (const GameCategory game_category : GameCategories) {
       category.add_row(label(game_category));
-      if (player[game_category].empty()) {
-        local_game_number.add_row(0);
-        average_points_per_game.add_row("–");
-        first_place_percentage.add_row("–");
-        second_place_percentage.add_row("–");
-        third_place_percentage.add_row("–");
-      } else {
+      if (!player[game_category].empty()) {
         local_game_number.add_row(player[game_category].back().local_game_number());
         average_points_per_game.add_row(player[game_category].back().average_points_per_game(), 2);
         first_place_percentage.add_row(player[game_category].back().place_percentage({1}), 0);
@@ -62,21 +62,21 @@ protected:
   }
 
   void average_points_plot() noexcept {
-    const std::experimental::filesystem::path plot_path{
-      Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName)
-    };
-    line("![](" + plot_path.string() + ")");
+    line("![](" + Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName).string() + ")");
   }
 
-  void place_percentage_plot(const GameCategory game_category) noexcept {
-    subsection(section_title_place_percentage_plot_ + ": " + label(game_category));
-    const std::experimental::filesystem::path plot_path{
-      Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::gnuplot_player_place_percentage_vs_game_number_file_name(game_category))
-    };
-    line("![](" + plot_path.string() + ")");
+  void place_percentage_plot(const std::experimental::filesystem::path& base_directory, const Player& player, const GameCategory game_category) noexcept {
+    const std::experimental::filesystem::path gnuplot_path{Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(game_category)};
+    if (std::experimental::filesystem::exists(base_directory / player.name().directory_name() / gnuplot_path)) {
+      subsection(section_title_place_percentage_plot_ + ": " + label(game_category));
+      line("![](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
+    }
   }
 
   void games_table(const Games& games, const Player& player, const GameCategory game_category) noexcept {
+    if (player[game_category].empty()) {
+      return;
+    }
     subsection(section_title_games_tables_ + ": " + label(game_category));
     Column game_number{"Game", Column::Alignment::Center};
     Column date{"Date", Column::Alignment::Center};
