@@ -1,5 +1,5 @@
 # Catan Leaderboard Generator
-![build and test](https://github.com/acodcha/CatanLeaderboardGenerator/workflows/build%20and%20test/badge.svg?branch=master)
+![build and test](https://github.com/acodcha/CatanLeaderboardGenerator/workflows/build%20and%20test/badge.svg?branch=main)
 
 Generates a simple leaderboard for Catan games. The leaderboard consists of Markdown files containing tables and plots.
 
