@@ -70,17 +70,9 @@ protected:
           base_directory / Path::MainPlotsDirectoryName / Path::main_average_points_vs_game_number_file_name(game_category),
           data_paths
         };
-        MainAveragePointsVsDateGnuplotFileWriter{
-          base_directory / Path::MainPlotsDirectoryName / Path::main_average_points_vs_date_file_name(game_category),
-          data_paths
-        };
         for (const Place& place : PlacesFirstSecondThird) {
           MainPlacePercentageVsGameNumberGnuplotFileWriter{
             base_directory / Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_game_number_file_name(game_category, place),
-            data_paths, game_category, place
-          };
-          MainPlacePercentageVsDateGnuplotFileWriter{
-            base_directory / Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_date_file_name(game_category, place),
             data_paths, game_category, place
           };
         }
@@ -105,20 +97,11 @@ protected:
           base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName,
           data_paths
         };
-        PlayerAveragePointsVsDateGnuplotFileWriter{
-          base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsDateFileName,
-          data_paths
-        };
       }
       for (const GameCategory game_category : GameCategories) {
         if (!player[game_category].empty()) {
           PlayerPlacePercentageVsGameNumberGnuplotFileWriter{
             base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(game_category),
-            base_directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_file_name(game_category),
-            game_category
-          };
-          PlayerPlacePercentageVsDateGnuplotFileWriter{
-            base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_date_file_name(game_category),
             base_directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_file_name(game_category),
             game_category
           };
@@ -144,10 +127,8 @@ protected:
     message("Generating the main plots...");
     for (const GameCategory game_category : GameCategories) {
       generate_plot(base_directory / Path::MainPlotsDirectoryName / Path::main_average_points_vs_game_number_file_name(game_category));
-      generate_plot(base_directory / Path::MainPlotsDirectoryName / Path::main_average_points_vs_date_file_name(game_category));
       for (const Place& place : PlacesFirstSecondThird) {
         generate_plot(base_directory / Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_game_number_file_name(game_category, place));
-        generate_plot(base_directory / Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_date_file_name(game_category, place));
       }
     }
     message("Generated the main plots.");
@@ -157,10 +138,8 @@ protected:
     message("Generating the player plots...");
     for (const Player& player : players) {
       generate_plot(base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName);
-      generate_plot(base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsDateFileName);
       for (const GameCategory game_category : GameCategories) {
         generate_plot(base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(game_category));
-        generate_plot(base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_date_file_name(game_category));
       }
     }
     message("Generated the player plots.");
