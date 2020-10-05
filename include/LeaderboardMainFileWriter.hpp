@@ -11,11 +11,10 @@ class LeaderboardMainFileWriter : public MarkdownFileWriter {
 public:
 
   LeaderboardMainFileWriter(
-    const std::experimental::filesystem::path& file_path,
     const std::experimental::filesystem::path& base_directory,
     const Games& games,
     const Players& players
-  ) noexcept : MarkdownFileWriter(file_path, "Catan Leaderboard") {
+  ) noexcept : MarkdownFileWriter(base_directory / Path::LeaderboardFileName, "Catan Leaderboard") {
     line("Last updated " + current_utc_date_and_time() + ".");
     section(section_title_players_table_);
     for (const GameCategory game_category : GameCategories) {
