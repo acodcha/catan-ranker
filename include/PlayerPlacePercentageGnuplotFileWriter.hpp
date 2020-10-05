@@ -4,11 +4,11 @@
 
 namespace CatanLeaderboardGenerator {
 
-class GnuplotPlayerPlacePercentageFileWriter : public GnuplotFileWriter {
+class PlayerPlacePercentageGnuplotFileWriter : public GnuplotFileWriter {
 
 public:
 
-  GnuplotPlayerPlacePercentageFileWriter(const std::experimental::filesystem::path& path, const GameCategory game_category) noexcept : GnuplotFileWriter(path) {
+  PlayerPlacePercentageGnuplotFileWriter(const std::experimental::filesystem::path& path, const GameCategory game_category) noexcept : GnuplotFileWriter(path) {
     line("set terminal pngcairo size 800,600 enhanced font \"Verdana,10\"");
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
@@ -36,15 +36,15 @@ protected:
 
 };
 
-class GnuplotPlayerPlacePercentageVsGameNumberFileWriter : public GnuplotPlayerPlacePercentageFileWriter {
+class PlayerPlacePercentageVsGameNumberGnuplotFileWriter : public PlayerPlacePercentageGnuplotFileWriter {
 
 public:
 
-  GnuplotPlayerPlacePercentageVsGameNumberFileWriter(
+  PlayerPlacePercentageVsGameNumberGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const std::experimental::filesystem::path& data_path,
     const GameCategory game_category
-  ) noexcept : GnuplotPlayerPlacePercentageFileWriter(path, game_category) {
+  ) noexcept : PlayerPlacePercentageGnuplotFileWriter(path, game_category) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -60,15 +60,15 @@ protected:
 
 };
 
-class GnuplotPlayerPlacePercentageVsDateFileWriter : public GnuplotPlayerPlacePercentageFileWriter {
+class PlayerPlacePercentageVsDateGnuplotFileWriter : public PlayerPlacePercentageGnuplotFileWriter {
 
 public:
 
-  GnuplotPlayerPlacePercentageVsDateFileWriter(
+  PlayerPlacePercentageVsDateGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const std::experimental::filesystem::path& data_path,
     const GameCategory game_category
-  ) noexcept : GnuplotPlayerPlacePercentageFileWriter(path, game_category) {
+  ) noexcept : PlayerPlacePercentageGnuplotFileWriter(path, game_category) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");

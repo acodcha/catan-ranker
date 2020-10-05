@@ -4,11 +4,11 @@
 
 namespace CatanLeaderboardGenerator {
 
-class GnuplotPlayerAveragePointsFileWriter : public GnuplotFileWriter {
+class PlayerAveragePointsGnuplotFileWriter : public GnuplotFileWriter {
 
 public:
 
-  GnuplotPlayerAveragePointsFileWriter(const std::experimental::filesystem::path& path) noexcept : GnuplotFileWriter(path) {
+  PlayerAveragePointsGnuplotFileWriter(const std::experimental::filesystem::path& path) noexcept : GnuplotFileWriter(path) {
     line("set terminal pngcairo size 800,600 enhanced font \"Verdana,10\"");
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
@@ -49,14 +49,14 @@ protected:
 
 };
 
-class GnuplotPlayerAveragePointsVsGameNumberFileWriter : public GnuplotPlayerAveragePointsFileWriter {
+class PlayerAveragePointsVsGameNumberGnuplotFileWriter : public PlayerAveragePointsGnuplotFileWriter {
 
 public:
 
-  GnuplotPlayerAveragePointsVsGameNumberFileWriter(
+  PlayerAveragePointsVsGameNumberGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const std::map<GameCategory, std::experimental::filesystem::path>& data
-  ) noexcept : GnuplotPlayerAveragePointsFileWriter(path) {
+  ) noexcept : PlayerAveragePointsGnuplotFileWriter(path) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -72,14 +72,14 @@ protected:
 
 };
 
-class GnuplotPlayerAveragePointsVsDateFileWriter : public GnuplotPlayerAveragePointsFileWriter {
+class PlayerAveragePointsVsDateGnuplotFileWriter : public PlayerAveragePointsGnuplotFileWriter {
 
 public:
 
-  GnuplotPlayerAveragePointsVsDateFileWriter(
+  PlayerAveragePointsVsDateGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const std::map<GameCategory, std::experimental::filesystem::path>& data
-  ) noexcept : GnuplotPlayerAveragePointsFileWriter(path) {
+  ) noexcept : PlayerAveragePointsGnuplotFileWriter(path) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");

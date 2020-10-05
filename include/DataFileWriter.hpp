@@ -5,11 +5,11 @@
 
 namespace CatanLeaderboardGenerator {
 
-class DataTableFileWriter : public TextFileWriter {
+class DataFileWriter : public TextFileWriter {
 
 public:
 
-  DataTableFileWriter(const std::experimental::filesystem::path& path, const Table& table) noexcept : TextFileWriter(path) {
+  DataFileWriter(const std::experimental::filesystem::path& path, const Table& table) noexcept : TextFileWriter(path) {
     line(table.print_as_data());
     blank_line();
   }
