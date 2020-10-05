@@ -34,19 +34,19 @@ std::experimental::filesystem::path player_data_file_name(const GameCategory gam
 }
 
 std::experimental::filesystem::path main_average_points_vs_game_number_file_name(const GameCategory game_category) noexcept {
-  return {"average_points_vs_game_number_" + game_category_file_name(game_category).string() + ".gnuplot"};
+  return {game_category_file_name(game_category).string() + "_average_points_vs_game_number.gnuplot"};
 }
 
 std::experimental::filesystem::path main_average_points_vs_date_file_name(const GameCategory game_category) noexcept {
-  return {"average_points_vs_date_" + game_category_file_name(game_category).string() + ".gnuplot"};
+  return {game_category_file_name(game_category).string() + "_average_points_vs_date.gnuplot"};
 }
 
 std::experimental::filesystem::path main_place_percentage_vs_game_number_file_name(const GameCategory game_category, const Place& place) noexcept {
-  return {place.print() + "_place_percentage_vs_game_number_" + game_category_file_name(game_category).string() + ".gnuplot"};
+  return {game_category_file_name(game_category).string() + "_" + place.print() + "_place_percentage_vs_game_number.gnuplot"};
 }
 
 std::experimental::filesystem::path main_place_percentage_vs_date_file_name(const GameCategory game_category, const Place& place) noexcept {
-  return {place.print() + "_place_percentage_vs_date_" + game_category_file_name(game_category).string() + ".gnuplot"};
+  return {game_category_file_name(game_category).string() + "_" + place.print() + "_place_percentage_vs_date.gnuplot"};
 }
 
 std::experimental::filesystem::path player_place_percentage_vs_game_number_file_name(const GameCategory game_category) noexcept {

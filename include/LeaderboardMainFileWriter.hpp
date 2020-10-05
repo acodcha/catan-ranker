@@ -21,13 +21,10 @@ public:
     for (const GameCategory game_category : GameCategories) {
       players_table(players, game_category);
     }
-    section(section_title_average_points_plots_);
     for (const GameCategory game_category : GameCategories) {
+      section(label(game_category));
       average_points_plot(base_directory, game_category);
-    }
-    for (const Place place : PlacesFirstSecondThird) {
-      section(section_title_place_percentage_plots(place));
-      for (const GameCategory game_category : GameCategories) {
+      for (const Place place : PlacesFirstSecondThird) {
         place_percentage_plot(base_directory, game_category, place);
       }
     }
@@ -41,8 +38,6 @@ public:
 protected:
 
   const std::string section_title_players_table_{"Players"};
-
-  const std::string section_title_average_points_plots_{"Average Points per Game"};
 
   const std::string section_title_games_tables_{"Game History"};
 
@@ -84,7 +79,7 @@ protected:
       Path::MainPlotsDirectoryName / Path::main_average_points_vs_game_number_file_name(game_category)
     };
     if (std::experimental::filesystem::exists(base_directory / gnuplot_path)) {
-      subsection(section_title_average_points_plots_ + ": " + label(game_category));
+      subsection(label(game_category) + ": Average Points per Game");
       line("![](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
     }
   }
@@ -94,7 +89,7 @@ protected:
       Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_game_number_file_name(game_category, place)
     };
     if (std::experimental::filesystem::exists(base_directory / gnuplot_path)) {
-      subsection(section_title_place_percentage_plots(place) + ": " + label(game_category));
+      subsection(label(game_category) + ": " + section_title_place_percentage_plots(place));
       line("![](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
     }
   }
