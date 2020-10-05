@@ -17,6 +17,8 @@ public:
     const Player& player
   ) noexcept : MarkdownFileWriter(file_path, player.name().value()) {
     line("Last updated " + current_utc_date_and_time() + ".");
+    blank_line();
+    line("[Go back to all players.](../" + Path::LeaderboardFileName.string() + ")");
     section("Overview");
     player_table(player);
     section(section_title_average_points_plot_);
