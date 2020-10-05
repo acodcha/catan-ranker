@@ -34,7 +34,7 @@ protected:
     for (const std::pair<PlayerName, std::experimental::filesystem::path>& datum : data) {
       const uint_least64_t color_index{counter % ColorSequence.size()};
       const uint_least64_t point_type_index{(uint_least64_t)std::floor(counter / ColorSequence.size()) % GnuplotPointTypeSequence.size()};
-      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":4 w lp lw 2 pt " + std::to_string(GnuplotPointTypeSequence[point_type_index]) + " ps 1 lt rgb \"" + ColorSequence[color_index] + "\" t \"" + datum.first.value() + "\" , \\");
+      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":6 w lp lw 2 pt " + std::to_string(GnuplotPointTypeSequence[point_type_index]) + " ps 1 lt rgb \"" + ColorSequence[color_index] + "\" t \"" + datum.first.value() + "\" , \\");
       ++counter;
     }
   }
@@ -59,7 +59,7 @@ public:
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 1;
+    return 2;
   }
 
 };
@@ -85,7 +85,7 @@ public:
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 3;
+    return 5;
   }
 
 };

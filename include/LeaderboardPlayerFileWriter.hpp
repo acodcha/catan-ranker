@@ -43,7 +43,7 @@ protected:
 
   void player_table(const Player& player) noexcept {
     Column category{"Category", Column::Alignment::Center};
-    Column local_game_number{"Games", Column::Alignment::Center};
+    Column number_of_games{"Games", Column::Alignment::Center};
     Column average_points_per_game{"Points", Column::Alignment::Center};
     Column first_place_percentage{"1st Place", Column::Alignment::Center};
     Column second_place_percentage{"2nd Place", Column::Alignment::Center};
@@ -51,14 +51,14 @@ protected:
     for (const GameCategory game_category : GameCategories) {
       category.add_row(label(game_category));
       if (!player[game_category].empty()) {
-        local_game_number.add_row(player[game_category].back().local_game_number());
+        number_of_games.add_row(player[game_category].back().player_game_category_game_number());
         average_points_per_game.add_row(player[game_category].back().average_points_per_game(), 2);
         first_place_percentage.add_row(player[game_category].back().place_percentage({1}), 0);
         second_place_percentage.add_row(player[game_category].back().place_percentage({2}), 0);
         third_place_percentage.add_row(player[game_category].back().place_percentage({3}), 0);
       }
     }
-    const Table data{{category, local_game_number, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}};
+    const Table data{{category, number_of_games, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}};
     table(data);
   }
 

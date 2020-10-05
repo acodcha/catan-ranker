@@ -17,10 +17,16 @@ public:
       }
     }
     std::sort(data_.begin(), data_.end(), Game::sort());
-    uint_least64_t global_game_index{0};
+    std::map<GameCategory, uint_least64_t> game_category_game_index{
+      {GameCategory::AnyNumberOfPlayers, 0},
+      {GameCategory::ThreeToFourPlayers, 0},
+      {GameCategory::FiveToSixPlayers, 0},
+      {GameCategory::SevenToEightPlayers, 0}
+    };
     for (Game& game : data_) {
-      game.set_global_index(global_game_index);
-      ++global_game_index;
+      game.set_indices(game_category_game_index[GameCategory::AnyNumberOfPlayers], game_category_game_index[game.category()]);
+      ++game_category_game_index[GameCategory::AnyNumberOfPlayers];
+      ++game_category_game_index[game.category()];
     }
     message(print());
   }
@@ -32,7 +38,7 @@ public:
     std::stringstream stream;
     stream << "There are " << data_.size() << " games:";
     for (const Game& game : data_) {
-      stream << std::endl << "- " << std::to_string(game.global_number()) << ": " << game.print();
+      stream << std::endl << "- " << std::to_string(game.number()) << ": " << game.print();
 
     }
     return stream.str();

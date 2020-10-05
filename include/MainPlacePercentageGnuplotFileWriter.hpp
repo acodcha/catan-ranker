@@ -34,12 +34,16 @@ protected:
 
   virtual uint_least8_t x_column() const noexcept = 0;
 
-  void plot(const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data) noexcept {
+  constexpr uint_least8_t y_column(const Place& place) const noexcept {
+    return place.value() + 6;
+  }
+
+  void plot(const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data, const Place& place) noexcept {
     uint_least64_t counter{0};
     for (const std::pair<PlayerName, std::experimental::filesystem::path>& datum : data) {
       const uint_least64_t color_index{counter % ColorSequence.size()};
       const uint_least64_t point_type_index{(uint_least64_t)std::floor(counter / ColorSequence.size()) % GnuplotPointTypeSequence.size()};
-      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":5 w lp lw 2 pt " + std::to_string(GnuplotPointTypeSequence[point_type_index]) + " ps 1 lt rgb \"" + ColorSequence[color_index] + "\" t \"" + datum.first.value() + "\" , \\");
+      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":" + std::to_string(y_column(place)) + " w lp lw 2 pt " + std::to_string(GnuplotPointTypeSequence[point_type_index]) + " ps 1 lt rgb \"" + ColorSequence[color_index] + "\" t \"" + datum.first.value() + "\" , \\");
       ++counter;
     }
   }
@@ -60,13 +64,13 @@ public:
     line("set xtics nomirror out");
     line("set mxtics 1");
     line("plot \\");
-    plot(data);
+    plot(data, place);
   }
 
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 1;
+    return 2;
   }
 
 };
@@ -88,13 +92,13 @@ public:
     line("set xtics nomirror out rotate by 45 right");
     line("set mxtics 1");
     line("plot \\");
-    plot(data);
+    plot(data, place);
   }
 
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 3;
+    return 5;
   }
 
 };

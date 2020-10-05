@@ -18,7 +18,7 @@ public:
   Leaderboard(const std::experimental::filesystem::path& base_directory, const Games& games, const Players& players) {
     if (!base_directory.empty()) {
       create_directories(base_directory, players);
-      write_player_data_table_files(base_directory, players);
+      write_player_data_files(base_directory, players);
       write_main_gnuplot_files(base_directory, players);
       write_player_gnuplot_files(base_directory, players);
       write_main_leaderboard_file(base_directory, games, players);
@@ -40,7 +40,7 @@ protected:
     }
   }
 
-  void write_player_data_table_files(const std::experimental::filesystem::path& base_directory, const Players& players) noexcept {
+  void write_player_data_files(const std::experimental::filesystem::path& base_directory, const Players& players) noexcept {
     for (const Player& player : players) {
       for (const GameCategory game_category : GameCategories) {
         if (!player[game_category].empty()) {
@@ -157,17 +157,21 @@ protected:
   }
 
   Table player_table(const Player& player, const GameCategory game_category) const noexcept {
-    Column global_number{"Global"};
-    Column local_number{"Local"};
+    Column game_number{"Game#"};
+    Column game_category_game_number{"GameCategory#"};
+    Column player_game_number{"PlayerGame#"};
+    Column player_game_category_game_number{"PlayerCategoryGame#"};
     Column date{"Date"};
-    Column average_points_per_game{"Points"};
-    Column first_place_percentage{"1stPlace"};
-    Column second_place_percentage{"2ndPlace"};
-    Column third_place_percentage{"3rdPlace"};
+    Column average_points_per_game{"AvgPoints"};
+    Column first_place_percentage{"1stPlace%"};
+    Column second_place_percentage{"2ndPlace%"};
+    Column third_place_percentage{"3rdPlace%"};
     if (!player[game_category].empty()) {
       for (const PlayerProperties& properties : player[game_category]) {
-        global_number.add_row(properties.global_game_number());
-        local_number.add_row(properties.local_game_number());
+        game_number.add_row(properties.game_number());
+        game_category_game_number.add_row(properties.game_category_game_number());
+        player_game_number.add_row(properties.player_game_number());
+        player_game_category_game_number.add_row(properties.player_game_category_game_number());
         date.add_row(properties.date());
         average_points_per_game.add_row(properties.average_points_per_game(), 7);
         first_place_percentage.add_row(properties.place_percentage({1}), 5);
@@ -175,7 +179,7 @@ protected:
         third_place_percentage.add_row(properties.place_percentage({3}), 5);
       }
     }
-    return {{global_number, local_number, date, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}};
+    return {{game_number, game_category_game_number, player_game_number, player_game_category_game_number, date, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage}};
   }
 
 };
