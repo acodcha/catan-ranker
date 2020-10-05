@@ -14,13 +14,15 @@ public:
       const std::set<PlayerName, PlayerName::sort> game_player_names{game.player_names()};
       games_player_names.insert(game_player_names.cbegin(), game_player_names.cend());
     }
+    uint_least64_t counter{0};
     for (const PlayerName& player_name : games_player_names) {
-      data_.insert({player_name, games});
+      data_.insert({player_name, games, color(counter), gnuplot_point_type(counter)});
+      ++counter;
     }
     message(print());
   }
 
-  const Player& player(const PlayerName& name) const {
+  const Player& find(const PlayerName& name) const {
     const std::set<Player, Player::sort>::const_iterator datum{data_.find({name})};
     if (datum != data_.cend()) {
       return *datum;

@@ -13,7 +13,16 @@ public:
 
   Player(const PlayerName& name) noexcept : name_(name) {}
 
-  Player(const PlayerName& name, const Games& games) noexcept : name_(name) {
+  Player(
+    const PlayerName& name,
+    const Games& games,
+    const std::string& color,
+    const uint_least8_t gnuplot_point_type
+  ) noexcept :
+    name_(name),
+    color_(color),
+    gnuplot_point_type_(gnuplot_point_type)
+  {
     uint_least64_t player_game_index{0};
     for (const Game& game : games) {
       if (game.participant(name_)) {
@@ -26,6 +35,14 @@ public:
 
   const PlayerName& name() const noexcept {
     return name_;
+  }
+
+  const std::string& color() const noexcept {
+    return color_;
+  }
+
+  const uint_least8_t gnuplot_point_type() const noexcept {
+    return gnuplot_point_type_;
   }
 
   std::string print(const GameCategory game_category) const noexcept {
@@ -83,6 +100,10 @@ public:
 protected:
 
   PlayerName name_;
+
+  std::string color_;
+
+  uint_least8_t gnuplot_point_type_{0};
 
   std::map<GameCategory, std::vector<PlayerProperties>> data_{
     {GameCategory::AnyNumberOfPlayers, {}},

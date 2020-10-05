@@ -38,12 +38,10 @@ protected:
     return place.value() + 6;
   }
 
-  void plot(const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data, const Place& place) noexcept {
+  void plot(const Players& players, const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data, const Place& place) noexcept {
     uint_least64_t counter{0};
     for (const std::pair<PlayerName, std::experimental::filesystem::path>& datum : data) {
-      const uint_least64_t color_index{counter % ColorSequence.size()};
-      const uint_least64_t point_type_index{(uint_least64_t)std::floor(counter / ColorSequence.size()) % GnuplotPointTypeSequence.size()};
-      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":" + std::to_string(y_column(place)) + " w lp lw 2 pt " + std::to_string(GnuplotPointTypeSequence[point_type_index]) + " ps 1 lt rgb \"" + ColorSequence[color_index] + "\" t \"" + datum.first.value() + "\" , \\");
+      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":" + std::to_string(y_column(place)) + " w lp lw 2 pt " + std::to_string(players.find(datum.first).gnuplot_point_type()) + " ps 1 lt rgb \"#" + players.find(datum.first).color() + "\" t \"" + datum.first.value() + "\" , \\");
       ++counter;
     }
   }
@@ -56,6 +54,7 @@ public:
 
   MainPlacePercentageVsGameNumberGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
+    const Players& players,
     const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data,
     const GameCategory game_category,
     const Place& place
@@ -64,7 +63,7 @@ public:
     line("set xtics nomirror out");
     line("set mxtics 1");
     line("plot \\");
-    plot(data, place);
+    plot(players, data, place);
   }
 
 protected:
@@ -81,6 +80,7 @@ public:
 
   MainPlacePercentageVsDateGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
+    const Players& players,
     const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data,
     const GameCategory game_category,
     const Place& place
@@ -92,7 +92,7 @@ public:
     line("set xtics nomirror out rotate by 45 right");
     line("set mxtics 1");
     line("plot \\");
-    plot(data, place);
+    plot(players, data, place);
   }
 
 protected:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Colors.hpp"
+#include "Color.hpp"
 #include "String.hpp"
 
 namespace CatanLeaderboardGenerator {

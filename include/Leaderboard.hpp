@@ -68,12 +68,12 @@ protected:
       if (!data_paths.empty()) {
         MainAveragePointsVsGameNumberGnuplotFileWriter{
           base_directory / Path::MainPlotsDirectoryName / Path::main_average_points_vs_game_number_file_name(game_category),
-          data_paths
+          players, data_paths
         };
         for (const Place& place : PlacesFirstSecondThird) {
           MainPlacePercentageVsGameNumberGnuplotFileWriter{
             base_directory / Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_game_number_file_name(game_category, place),
-            data_paths, game_category, place
+            players, data_paths, game_category, place
           };
         }
       }
