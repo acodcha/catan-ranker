@@ -29,12 +29,10 @@ protected:
 
   virtual uint_least8_t x_column() const noexcept = 0;
 
-  void plot(const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data) noexcept {
+  void plot(const Players& players, const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data) noexcept {
     uint_least64_t counter{0};
     for (const std::pair<PlayerName, std::experimental::filesystem::path>& datum : data) {
-      const uint_least64_t color_index{counter % ColorSequence.size()};
-      const uint_least64_t point_type_index{(uint_least64_t)std::floor(counter / ColorSequence.size()) % GnuplotPointTypeSequence.size()};
-      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":4 w lp lw 2 pt " + std::to_string(GnuplotPointTypeSequence[point_type_index]) + " ps 1 lt rgb \"" + ColorSequence[color_index] + "\" t \"" + datum.first.value() + "\" , \\");
+      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":6 w lp lw 2 pt " + std::to_string(players.find(datum.first).gnuplot_point_type()) + " ps 1 lt rgb \"#" + players.find(datum.first).color() + "\" t \"" + datum.first.value() + "\" , \\");
       ++counter;
     }
   }
@@ -47,19 +45,20 @@ public:
 
   MainAveragePointsVsGameNumberGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
+    const Players& players,
     const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data
   ) noexcept : MainAveragePointsGnuplotFileWriter(path) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
     line("plot \\");
-    plot(data);
+    plot(players, data);
   }
 
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 1;
+    return 2;
   }
 
 };
@@ -70,6 +69,7 @@ public:
 
   MainAveragePointsVsDateGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
+    const Players& players,
     const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data
   ) noexcept : MainAveragePointsGnuplotFileWriter(path) {
     line("set timefmt \"%Y-%m-%d\"");
@@ -79,13 +79,13 @@ public:
     line("set xtics nomirror out rotate by 45 right");
     line("set mxtics 1");
     line("plot \\");
-    plot(data);
+    plot(players, data);
   }
 
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 3;
+    return 5;
   }
 
 };

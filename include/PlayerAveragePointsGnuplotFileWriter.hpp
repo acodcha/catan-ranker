@@ -43,7 +43,7 @@ protected:
   ) noexcept {
     const std::map<GameCategory, std::experimental::filesystem::path>::const_iterator found{data.find(game_category)};
     if (found != data.cend()) {
-      line("  \"" + found->second.string() + "\" u " + std::to_string(x_column()) + ":4 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"" + color + "\" t \"" + label(game_category) + "\" , \\");
+      line("  \"" + found->second.string() + "\" u " + std::to_string(x_column()) + ":6 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"#" + color + "\" t \"" + label(game_category) + "\" , \\");
     }
   }
 
@@ -67,7 +67,7 @@ public:
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 1;
+    return 3;
   }
 
 };
@@ -93,7 +93,7 @@ public:
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 3;
+    return 5;
   }
 
 };

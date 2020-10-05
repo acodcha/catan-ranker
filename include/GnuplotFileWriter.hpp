@@ -5,8 +5,6 @@
 
 namespace CatanLeaderboardGenerator {
 
-const std::vector<uint_least8_t> GnuplotPointTypeSequence{7, 5, 9, 13, 11, 2};
-
 class GnuplotFileWriter : public TextFileWriter {
 
 public:

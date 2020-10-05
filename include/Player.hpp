@@ -13,11 +13,22 @@ public:
 
   Player(const PlayerName& name) noexcept : name_(name) {}
 
-  Player(const PlayerName& name, const Games& games) noexcept : name_(name) {
+  Player(
+    const PlayerName& name,
+    const Games& games,
+    const std::string& color,
+    const uint_least8_t gnuplot_point_type
+  ) noexcept :
+    name_(name),
+    color_(color),
+    gnuplot_point_type_(gnuplot_point_type)
+  {
+    uint_least64_t player_game_index{0};
     for (const Game& game : games) {
       if (game.participant(name_)) {
-        insert(game, game_category(game.number_of_players()));
-        insert(game, GameCategory::AnyNumberOfPlayers);
+        insert(game, player_game_index, game.category());
+        insert(game, player_game_index, GameCategory::AnyNumberOfPlayers);
+        ++player_game_index;
       }
     }
   }
@@ -26,10 +37,18 @@ public:
     return name_;
   }
 
+  const std::string& color() const noexcept {
+    return color_;
+  }
+
+  const uint_least8_t gnuplot_point_type() const noexcept {
+    return gnuplot_point_type_;
+  }
+
   std::string print(const GameCategory game_category) const noexcept {
     const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator category_history{data_.find(game_category)};
     if (category_history != data_.cend() && !category_history->second.empty()) {
-      return name_.value() + " : " + std::to_string(category_history->second.back().local_game_number()) + " games , " + real_number_to_string(category_history->second.back().average_points_per_game(), 2) + " pts , " + category_history->second.back().place_percentage({1}).print() + " 1st , " + category_history->second.back().place_percentage({2}).print() + " 2nd , " + category_history->second.back().place_percentage({3}).print() + " 3rd";
+      return name_.value() + " : " + std::to_string(category_history->second.back().player_game_category_game_number()) + " games , " + real_number_to_string(category_history->second.back().average_points_per_game(), 2) + " pts , " + category_history->second.back().place_percentage({1}).print() + " 1st , " + category_history->second.back().place_percentage({2}).print() + " 2nd , " + category_history->second.back().place_percentage({3}).print() + " 3rd";
     } else {
       return {};
     }
@@ -82,6 +101,10 @@ protected:
 
   PlayerName name_;
 
+  std::string color_;
+
+  uint_least8_t gnuplot_point_type_{0};
+
   std::map<GameCategory, std::vector<PlayerProperties>> data_{
     {GameCategory::AnyNumberOfPlayers, {}},
     {GameCategory::ThreeToFourPlayers, {}},
@@ -89,13 +112,13 @@ protected:
     {GameCategory::SevenToEightPlayers, {}}
   };
 
-  void insert(const Game& game, const GameCategory game_category) noexcept {
+  void insert(const Game& game, const uint_least64_t player_game_index, const GameCategory game_category) noexcept {
     const std::map<GameCategory, std::vector<PlayerProperties>>::iterator history{data_.find(game_category)};
     if (history != data_.end()) {
       if (history->second.empty()) {
-        history->second.emplace_back(name_, game);
+        history->second.emplace_back(name_, game_category, game, player_game_index);
       } else {
-        history->second.emplace_back(name_, game, history->second.back());
+        history->second.emplace_back(name_, game_category, game, player_game_index, history->second.back());
       }
     }
   }

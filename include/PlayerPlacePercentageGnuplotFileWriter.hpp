@@ -29,9 +29,9 @@ protected:
   virtual uint_least8_t x_column() const noexcept = 0;
 
   void plot(const std::experimental::filesystem::path& data) noexcept {
-    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":5 w lp lw 4 pt 7 ps 1 lt rgb \"" + Color::YellowWheat + "\" t \"1st Place\" , \\");
-    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":6 w lp lw 3 pt 7 ps 1 lt rgb \"" + Color::GreyOre + "\" t \"2nd Place\" , \\");
-    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":7 w lp lw 2 pt 7 ps 1 lt rgb \"" + Color::BrownDarkPort + "\" t \"3rd Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":7 w lp lw 4 pt 7 ps 1 lt rgb \"#" + Color::YellowWheat + "\" t \"1st Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":8 w lp lw 3 pt 7 ps 1 lt rgb \"#" + Color::GreyOre + "\" t \"2nd Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":9 w lp lw 2 pt 7 ps 1 lt rgb \"#" + Color::BrownDarkPort + "\" t \"3rd Place\" , \\");
   }
 
 };
@@ -55,7 +55,7 @@ public:
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 2;
+    return 4;
   }
 
 };
@@ -82,7 +82,7 @@ public:
 protected:
 
   constexpr uint_least8_t x_column() const noexcept {
-    return 3;
+    return 5;
   }
 
 };
