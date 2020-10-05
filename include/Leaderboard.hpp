@@ -112,13 +112,13 @@ protected:
   }
 
   void write_main_leaderboard_file(const std::experimental::filesystem::path& base_directory, const Games& games, const Players& players) noexcept {
-    LeaderboardMainFileWriter{base_directory / Path::LeaderboardFileName, base_directory, games, players};
+    LeaderboardMainFileWriter{base_directory, games, players};
     message("Wrote the main leaderboard Markdown file.");
   }
 
   void write_player_leaderboard_files(const std::experimental::filesystem::path& base_directory, const Games& games, const Players& players) noexcept {
     for (const Player& player : players) {
-      LeaderboardPlayerFileWriter{base_directory / player.name().directory_name() / Path::LeaderboardFileName, base_directory, games, player};
+      LeaderboardPlayerFileWriter{base_directory, games, player};
     }
     message("Wrote the player leaderboard Markdown files.");
   }

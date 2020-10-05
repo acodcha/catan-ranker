@@ -11,11 +11,10 @@ class LeaderboardPlayerFileWriter : public MarkdownFileWriter {
 public:
 
   LeaderboardPlayerFileWriter(
-    const std::experimental::filesystem::path& file_path,
     const std::experimental::filesystem::path& base_directory,
     const Games& games,
     const Player& player
-  ) noexcept : MarkdownFileWriter(file_path, player.name().value()) {
+  ) noexcept : MarkdownFileWriter(base_directory / player.name().directory_name() / Path::LeaderboardFileName, player.name().value()) {
     line("Last updated " + current_utc_date_and_time() + ".");
     blank_line();
     line("[Go back to all players.](../" + Path::LeaderboardFileName.string() + ")");
