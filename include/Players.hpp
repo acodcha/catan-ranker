@@ -4,6 +4,8 @@
 
 namespace CatanLeaderboardGenerator {
 
+// TODO: Rewrite the Players class to process one Game at a time and update all players at the same time using their add_game() method. This way, can set the Elo rating at the same time as all other properties.
+
 class Players {
 
 public:

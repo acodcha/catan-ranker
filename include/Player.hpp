@@ -5,6 +5,8 @@
 
 namespace CatanLeaderboardGenerator {
 
+// TODO: Rewrite the Player class to use an add_game() method for initialization instead of a Games object. This adds one PlayerProperties to the appropriate category vector.
+
 class Player {
 
 public:
