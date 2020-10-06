@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EloRating.hpp"
 #include "Game.hpp"
 #include "Percentage.hpp"
 
@@ -77,6 +78,14 @@ public:
     }
   }
 
+  constexpr const EloRating& elo_rating() const noexcept {
+    return elo_rating_;
+  }
+
+  void set_elo_rating(const PlayerName& player_name, const Game& game, const std::map<PlayerName, PlayerProperties, PlayerName::sort>& opponents) noexcept {
+    // TODO: Set Elo rating using update_elo_rating().
+  }
+
   struct sort {
     bool operator()(const PlayerProperties& player_properties_1, const PlayerProperties& player_properties_2) const noexcept {
       return player_properties_1.player_game_category_game_index_ < player_properties_2.player_game_category_game_index_;
@@ -100,6 +109,8 @@ protected:
   std::map<Place, uint_least64_t, Place::sort> place_counts_;
 
   std::map<Place, Percentage, Place::sort> place_percentages_;
+
+  EloRating elo_rating_;
 
   void initialize_game_category_game_index(const GameCategory game_category, const Game& game) noexcept {
     if (game_category == GameCategory::AnyNumberOfPlayers) {

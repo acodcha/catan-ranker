@@ -1,23 +1,24 @@
 #pragma once
 
 #include "Place.hpp"
+#include "PlayerName.hpp"
 
 namespace CatanLeaderboardGenerator {
 
-const double StandardMaximumUpdateFactor{32.0};
+const double EloRatingStandardMaximumUpdateFactor{32.0};
 
-const std::map<uint_least8_t, double> NumberOfPlayersToMaximumUpdateFactor{
-  {3, StandardMaximumUpdateFactor / 2}, // Each player faces off against 2 other players. There are 3 2-player pairs.
-  {4, StandardMaximumUpdateFactor / 3}, // Each player faces off against 3 other players. There are 6 2-player pairs.
-  {5, StandardMaximumUpdateFactor / 4}, // Each player faces off against 4 other players. There are 10 2-player pairs.
-  {6, StandardMaximumUpdateFactor / 5}, // Each player faces off against 5 other players. There are 15 2-player pairs.
-  {7, StandardMaximumUpdateFactor / 6}, // Each player faces off against 6 other players. There are 21 2-player pairs.
-  {8, StandardMaximumUpdateFactor / 7}  // Each player faces off against 7 other players. There are 28 2-player pairs.
+const std::map<uint_least8_t, double> NumberOfPlayersToEloRatingMaximumUpdateFactor{
+  {3, EloRatingStandardMaximumUpdateFactor / 2}, // Each player faces off against 2 other players. There are 3 2-player pairs.
+  {4, EloRatingStandardMaximumUpdateFactor / 3}, // Each player faces off against 3 other players. There are 6 2-player pairs.
+  {5, EloRatingStandardMaximumUpdateFactor / 4}, // Each player faces off against 4 other players. There are 10 2-player pairs.
+  {6, EloRatingStandardMaximumUpdateFactor / 5}, // Each player faces off against 5 other players. There are 15 2-player pairs.
+  {7, EloRatingStandardMaximumUpdateFactor / 6}, // Each player faces off against 6 other players. There are 21 2-player pairs.
+  {8, EloRatingStandardMaximumUpdateFactor / 7}  // Each player faces off against 7 other players. There are 28 2-player pairs.
 };
 
 double elo_rating_maximum_update_factor(const uint_least8_t number_of_players) {
-  const std::map<uint_least8_t, double>::const_iterator found{NumberOfPlayersToMaximumUpdateFactor.find(number_of_players)};
-  if (found != NumberOfPlayersToMaximumUpdateFactor.cend()) {
+  const std::map<uint_least8_t, double>::const_iterator found{NumberOfPlayersToEloRatingMaximumUpdateFactor.find(number_of_players)};
+  if (found != NumberOfPlayersToEloRatingMaximumUpdateFactor.cend()) {
     return found->second;
   } else {
     error("A game cannot have " + std::to_string(number_of_players) + " players.");
@@ -128,6 +129,31 @@ protected:
   double value_{1000.0};
 
 };
+
+/// \brief Update a player's Elo rating given a set of players and their places and current Elo ratings.
+EloRating update_elo_rating(const PlayerName& player_name, const std::map<PlayerName, std::pair<Place, EloRating>, PlayerName::sort>& players_data) noexcept {
+  // Maximum update factor.
+  const double maximum_update_factor{elo_rating_maximum_update_factor(players_data.size())};
+  // Player place and Elo rating.
+  std::map<PlayerName, std::pair<Place, EloRating>, PlayerName::sort>::const_iterator found_player{players_data.find(player_name)};
+  Place player_place;
+  EloRating player_elo_rating;
+  if (found_player != players_data.cend()) {
+    player_place = found_player->second.first;
+    player_elo_rating = found_player->second.second;
+  } else {
+    error("Player " + player_name.value() + " is not a participant in this game.");
+  }
+  // Update the Elo rating using the actual and expected outcomes.
+  for (const std::pair<PlayerName, std::pair<Place, EloRating>>& current : players_data) {
+    if (player_name != current.first) {
+      const double actual_outcome{player_place.outcome(current.second.first)};
+      const double expected_outcome{player_elo_rating.expected_outcome(current.second.second)};
+      player_elo_rating += maximum_update_factor * (actual_outcome - expected_outcome);
+    }
+  }
+  return player_elo_rating;
+}
 
 } // namespace CatanLeaderboardGenerator
 
