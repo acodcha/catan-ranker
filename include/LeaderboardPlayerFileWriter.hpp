@@ -51,16 +51,17 @@ protected:
     Column first_or_second_place{"1st or 2nd Place", Column::Alignment::Center};
     Column first_or_second_or_third_place{"1st, 2nd, or 3rd Place", Column::Alignment::Center};
     for (const GameCategory game_category : GameCategories) {
-      category.add_row(label(game_category));
-      if (!player[game_category].empty()) {
-        number_of_games.add_row(player[game_category].back().player_game_category_game_number());
-        average_points_per_game.add_row(player[game_category].back().average_points_per_game(), 2);
-        const uint_least64_t first_place_count{player[game_category].back().place_count({1})};
-        const uint_least64_t second_place_count{player[game_category].back().place_count({2})};
-        const uint_least64_t third_place_count{player[game_category].back().place_count({3})};
-        const Percentage first_place_percentage{player[game_category].back().place_percentage({1})};
-        const Percentage second_place_percentage{player[game_category].back().place_percentage({2})};
-        const Percentage third_place_percentage{player[game_category].back().place_percentage({3})};
+      const std::optional<PlayerProperties> latest{player.latest_properties(game_category)};
+      if (latest.has_value()) {
+        category.add_row(label(game_category));
+        number_of_games.add_row(latest.value().player_game_category_game_number());
+        average_points_per_game.add_row(latest.value().average_points_per_game(), 2);
+        const uint_least64_t first_place_count{latest.value().place_count({1})};
+        const uint_least64_t second_place_count{latest.value().place_count({2})};
+        const uint_least64_t third_place_count{latest.value().place_count({3})};
+        const Percentage first_place_percentage{latest.value().place_percentage({1})};
+        const Percentage second_place_percentage{latest.value().place_percentage({2})};
+        const Percentage third_place_percentage{latest.value().place_percentage({3})};
         first_place.add_row(std::to_string(first_place_count) + " , " + first_place_percentage.print(0));
         second_place.add_row(std::to_string(second_place_count) + " , " + second_place_percentage.print(0));
         third_place.add_row(std::to_string(third_place_count) + " , " + third_place_percentage.print(0));

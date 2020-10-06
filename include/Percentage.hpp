@@ -28,27 +28,27 @@ public:
     }
   }
 
-  constexpr bool operator==(const Percentage other) const noexcept {
+  constexpr bool operator==(const Percentage& other) const noexcept {
     return value_ == other.value_;
   }
 
-  constexpr bool operator!=(const Percentage other) const noexcept {
+  constexpr bool operator!=(const Percentage& other) const noexcept {
     return value_ != other.value_;
   }
 
-  constexpr bool operator<(const Percentage other) const noexcept {
+  constexpr bool operator<(const Percentage& other) const noexcept {
     return value_ < other.value_;
   }
 
-  constexpr bool operator<=(const Percentage other) const noexcept {
+  constexpr bool operator<=(const Percentage& other) const noexcept {
     return value_ <= other.value_;
   }
 
-  constexpr bool operator>(const Percentage other) const noexcept {
+  constexpr bool operator>(const Percentage& other) const noexcept {
     return value_ > other.value_;
   }
 
-  constexpr bool operator>=(const Percentage other) const noexcept {
+  constexpr bool operator>=(const Percentage& other) const noexcept {
     return value_ >= other.value_;
   }
 

@@ -37,6 +37,16 @@ public:
     return name_;
   }
 
+  const std::optional<PlayerProperties> latest_properties(const GameCategory game_category) const noexcept {
+    const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator category_history{data_.find(game_category)};
+    if (category_history != data_.cend() && !category_history->second.empty()) {
+      return category_history->second.back();
+    } else {
+      const std::optional<PlayerProperties> no_data;
+      return no_data;
+    }
+  }
+
   const std::string& color() const noexcept {
     return color_;
   }

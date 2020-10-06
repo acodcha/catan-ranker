@@ -16,6 +16,17 @@ public:
     return value_;
   }
 
+  /// \brief The outcome of a game between a pair of players is 1, 0.5, or 0 in the case of a higher place, an equal place, or a lower place than the opponent, respectively.
+  double outcome(const Place& opponent_place) const noexcept {
+    if (value_ > opponent_place.value_) {
+      return 1.0;
+    } else if (value_ == opponent_place.value_) {
+      return 0.5;
+    } else {
+      return 0.0;
+    }
+  }
+
   std::string print() const noexcept {
     if (value_ == 1) {
       return "1st";
@@ -28,27 +39,27 @@ public:
     }
   }
 
-  constexpr bool operator==(const Place other) const noexcept {
+  constexpr bool operator==(const Place& other) const noexcept {
     return value_ == other.value_;
   }
 
-  constexpr bool operator!=(const Place other) const noexcept {
+  constexpr bool operator!=(const Place& other) const noexcept {
     return value_ != other.value_;
   }
 
-  constexpr bool operator<(const Place other) const noexcept {
+  constexpr bool operator<(const Place& other) const noexcept {
     return value_ < other.value_;
   }
 
-  constexpr bool operator<=(const Place other) const noexcept {
+  constexpr bool operator<=(const Place& other) const noexcept {
     return value_ <= other.value_;
   }
 
-  constexpr bool operator>(const Place other) const noexcept {
+  constexpr bool operator>(const Place& other) const noexcept {
     return value_ > other.value_;
   }
 
-  constexpr bool operator>=(const Place other) const noexcept {
+  constexpr bool operator>=(const Place& other) const noexcept {
     return value_ >= other.value_;
   }
 
