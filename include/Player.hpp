@@ -5,8 +5,6 @@
 
 namespace CatanLeaderboardGenerator {
 
-// TODO: Rewrite the Player class to use an add_game() method for initialization instead of a Games object. This adds one PlayerProperties to the appropriate category vector.
-
 class Player {
 
 public:
@@ -20,8 +18,8 @@ public:
   Player(const PlayerName& name, const std::string& color, const uint_least8_t gnuplot_point_type) noexcept : name_(name), color_(color), gnuplot_point_type_(gnuplot_point_type) {}
 
   /// \brief Update a player with a new game.
-  Player(const Player& player, const Game& game) noexcept : name_(player.name_), color_(player.color_), gnuplot_point_type_(player.gnuplot_point_type_), data_(player.data_) {
-    add_game(game);
+  Player(const Player& player, const Game& game, const std::map<PlayerName, std::map<GameCategory, EloRating>, PlayerName::sort>& previous_elo_ratings) noexcept : name_(player.name_), color_(player.color_), gnuplot_point_type_(player.gnuplot_point_type_), data_(player.data_) {
+    add_game(game, previous_elo_ratings);
   }
 
   const PlayerName& name() const noexcept {
@@ -113,24 +111,35 @@ protected:
     {GameCategory::SevenToEightPlayers, {}}
   };
 
-  void add_game(const Game& game, const GameCategory game_category) noexcept {
+  void add_game(const Game& game, const std::map<PlayerName, std::map<GameCategory, EloRating>, PlayerName::sort>& previous_elo_ratings) noexcept {
+    if (game.participant(name_)) {
+      add_game(game, game.category(), previous_elo_ratings);
+      add_game(game, GameCategory::AnyNumberOfPlayers, previous_elo_ratings);
+    }
+  }
+
+  void add_game(const Game& game, const GameCategory game_category, const std::map<PlayerName, std::map<GameCategory, EloRating>, PlayerName::sort>& previous_elo_ratings) noexcept {
+    // Get appropriate previous Elo ratings.
+    std::map<PlayerName, EloRating, PlayerName::sort> previous;
+    for (const std::pair<PlayerName, std::map<GameCategory, EloRating>> previous_elo_rating : previous_elo_ratings) {
+      const std::map<GameCategory, EloRating>::const_iterator found{previous_elo_rating.second.find(game_category)};
+      if (found != previous_elo_rating.second.cend()) {
+        previous.emplace(previous_elo_rating.first, found->second);
+      } else {
+        error("Game category " + label(game_category) + " is missing from the previous Elo ratings map.");
+      }
+    }
+    // Add new game.
     const std::map<GameCategory, std::vector<PlayerProperties>>::iterator history_any_number_of_players{data_.find(GameCategory::AnyNumberOfPlayers)};
     const std::map<GameCategory, std::vector<PlayerProperties>>::iterator history_same_game_category{data_.find(game_category)};
     if (history_any_number_of_players != data_.cend() && history_same_game_category != data_.end()) {
       if (history_any_number_of_players->second.empty() && history_same_game_category->second.empty()) {
-        history_same_game_category->second.emplace_back(name_, game_category, game);
+        history_same_game_category->second.emplace_back(name_, game_category, game, previous);
       } else if (!history_any_number_of_players->second.empty() && history_same_game_category->second.empty()) {
-        history_same_game_category->second.emplace_back(name_, game_category, game, history_any_number_of_players->second.back());
+        history_same_game_category->second.emplace_back(name_, game_category, game, previous, history_any_number_of_players->second.back());
       } else {
-        history_same_game_category->second.emplace_back(name_, game_category, game, history_any_number_of_players->second.back(), history_same_game_category->second.back());
+        history_same_game_category->second.emplace_back(name_, game_category, game, previous, history_any_number_of_players->second.back(), history_same_game_category->second.back());
       }
-    }
-  }
-
-  void add_game(const Game& game) noexcept {
-    if (game.participant(name_)) {
-      add_game(game, game.category());
-      add_game(game, GameCategory::AnyNumberOfPlayers);
     }
   }
 

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Place.hpp"
-#include "PlayerName.hpp"
+#include "Game.hpp"
 
 namespace CatanLeaderboardGenerator {
 
@@ -130,25 +129,39 @@ protected:
 
 };
 
-/// \brief Update a player's Elo rating given a set of players and their places and current Elo ratings.
-EloRating update_elo_rating(const PlayerName& player_name, const std::map<PlayerName, std::pair<Place, EloRating>, PlayerName::sort>& players_data) noexcept {
+EloRating update_elo_rating(
+  const PlayerName& player_name,
+  const Game& game,
+  const std::map<PlayerName, EloRating, PlayerName::sort>& previous_elo_ratings
+) noexcept {
   // Maximum update factor.
-  const double maximum_update_factor{elo_rating_maximum_update_factor(players_data.size())};
-  // Player place and Elo rating.
-  std::map<PlayerName, std::pair<Place, EloRating>, PlayerName::sort>::const_iterator found_player{players_data.find(player_name)};
-  Place player_place;
+  const double maximum_update_factor{elo_rating_maximum_update_factor(game.number_of_players())};
+  // Player current place.
+  const std::optional<Place> player_place{game.place(player_name)};
+  if (!player_place.has_value()) {
+    error("Player " + player_name.value() + " is not a participant in the game: " + game.print());
+  }
+  // Player previous Elo rating.
   EloRating player_elo_rating;
-  if (found_player != players_data.cend()) {
-    player_place = found_player->second.first;
-    player_elo_rating = found_player->second.second;
+  const std::map<PlayerName, EloRating, PlayerName::sort>::const_iterator found{previous_elo_ratings.find(player_name)};
+  if (found != previous_elo_ratings.cend()) {
+    player_elo_rating = found->second;
   } else {
-    error("Player " + player_name.value() + " is not a participant in this game.");
+    error("Player " + player_name.value() + " is missing from the previous Elo ratings map.");
   }
   // Update the Elo rating using the actual and expected outcomes.
-  for (const std::pair<PlayerName, std::pair<Place, EloRating>>& current : players_data) {
-    if (player_name != current.first) {
-      const double actual_outcome{player_place.outcome(current.second.first)};
-      const double expected_outcome{player_elo_rating.expected_outcome(current.second.second)};
+  for (const PlayerName& game_player_name : game ) {
+    if (player_name != game_player_name) {
+      const Place game_player_place{game.place(game_player_name).value()};
+      const double actual_outcome{player_place.value().outcome(game_player_place)};
+      EloRating game_player_previous_elo_rating;
+      const std::map<PlayerName, EloRating, PlayerName::sort>::const_iterator found{previous_elo_ratings.find(game_player_name)};
+      if (found != previous_elo_ratings.cend()) {
+        game_player_previous_elo_rating = found->second;
+      } else {
+        error("Player " + game_player_name.value() + " is missing from the previous Elo ratings map.");
+      }
+      const double expected_outcome{player_elo_rating.expected_outcome(game_player_previous_elo_rating)};
       player_elo_rating += maximum_update_factor * (actual_outcome - expected_outcome);
     }
   }

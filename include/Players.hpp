@@ -4,8 +4,6 @@
 
 namespace CatanLeaderboardGenerator {
 
-// TODO: Rewrite the Players class to process one Game at a time and update all players at the same time using their add_game() method. This way, can set the Elo rating at the same time as all other properties.
-
 class Players {
 
 public:
@@ -23,11 +21,26 @@ public:
       data_.insert({player_name, color(counter), gnuplot_point_type(counter)});
       ++counter;
     }
-    // Update the players one game at a time.
+    // Update all the players one game at a time.
     for (const Game& game : games) {
+      // Obtain each player's previous Elo ratings.
+      // These are needed for updating each player's Elo rating after the current game.
+      std::map<PlayerName, std::map<GameCategory, EloRating>, PlayerName::sort> previous_elo_ratings;
+      for (const Player& player : data_) {
+        std::map<GameCategory, EloRating> previous_elo_rating;
+        for ( const GameCategory game_category : {GameCategory::AnyNumberOfPlayers, game.category()}) {
+          if (player[game_category].empty()) {
+            previous_elo_rating.insert({game_category, {}});
+          } else {
+            previous_elo_rating.insert({game_category, player[game_category].back().elo_rating()});
+          }
+        }
+        previous_elo_ratings.insert({player.name(), previous_elo_rating});
+      }
+      // Update each player with the current game.
       std::set<Player, Player::sort> updated_data;
       for (const Player& player : data_) {
-        updated_data.emplace(player, game);
+        updated_data.emplace(player, game, previous_elo_ratings);
       }
       data_ = updated_data;
     }

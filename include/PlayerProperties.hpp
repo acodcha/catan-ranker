@@ -1,7 +1,6 @@
 #pragma once
 
 #include "EloRating.hpp"
-#include "Game.hpp"
 #include "Percentage.hpp"
 
 namespace CatanLeaderboardGenerator {
@@ -16,6 +15,7 @@ public:
     const PlayerName& name,
     const GameCategory game_category,
     const Game& game,
+    const std::map<PlayerName, EloRating, PlayerName::sort>& previous_elo_ratings,
     const std::optional<PlayerProperties>& previous_any_number_of_players = std::optional<PlayerProperties>{},
     const std::optional<PlayerProperties>& previous_same_game_category = std::optional<PlayerProperties>{}
   ) noexcept :
@@ -28,6 +28,7 @@ public:
     initialize_average_points_per_game(name, game, previous_same_game_category);
     initialize_place_counts(name, game, previous_same_game_category);
     initialize_place_percentages();
+    initialize_elo_rating(name, game, previous_elo_ratings);
   }
 
   /// \brief Game number of this game.
@@ -80,10 +81,6 @@ public:
 
   constexpr const EloRating& elo_rating() const noexcept {
     return elo_rating_;
-  }
-
-  void set_elo_rating(const PlayerName& player_name, const Game& game, const std::map<PlayerName, PlayerProperties, PlayerName::sort>& opponents) noexcept {
-    // TODO: Set Elo rating using update_elo_rating().
   }
 
   struct sort {
@@ -166,6 +163,14 @@ protected:
     for (const std::pair<Place, uint_least64_t>& element : place_counts_) {
       place_percentages_.insert({element.first, {(double)element.second / player_game_category_game_number()}});
     }
+  }
+
+  void initialize_elo_rating(
+    const PlayerName& player_name,
+    const Game& game,
+    const std::map<PlayerName, EloRating, PlayerName::sort>& previous_elo_ratings
+  ) noexcept {
+    elo_rating_ = update_elo_rating(player_name, game, previous_elo_ratings);
   }
 
 };
