@@ -22,6 +22,7 @@ public:
     }
     for (const GameCategory game_category : GameCategories) {
       section(label(game_category));
+      elo_rating_plot(base_directory, game_category);
       average_points_plot(base_directory, game_category);
       for (const Place place : PlacesFirstSecondThird) {
         place_percentage_plot(base_directory, game_category, place);
@@ -84,6 +85,16 @@ protected:
     }
     const Table data{{name, number_of_games, elo_rating, average_points_per_game, first_place, second_place, third_place, first_or_second_place, first_or_second_or_third_place}};
     table(data);
+  }
+
+  void elo_rating_plot(const std::experimental::filesystem::path& base_directory, const GameCategory game_category) noexcept {
+    const std::experimental::filesystem::path gnuplot_path{
+      Path::MainPlotsDirectoryName / Path::main_elo_rating_vs_game_number_file_name(game_category)
+    };
+    if (std::experimental::filesystem::exists(base_directory / gnuplot_path)) {
+      subsection(label(game_category) + ": Ratings");
+      line("![](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
+    }
   }
 
   void average_points_plot(const std::experimental::filesystem::path& base_directory, const GameCategory game_category) noexcept {

@@ -55,6 +55,17 @@ public:
     return peak;
   }
 
+  EloRating peak_elo_rating() const noexcept {
+    EloRating peak{0};
+    for (const GameCategory game_category : GameCategories) {
+      const EloRating current{peak_elo_rating(game_category)};
+      if (peak < current) {
+        peak = current;
+      }
+    }
+    return peak;
+  }
+
   std::string print(const GameCategory game_category) const noexcept {
     const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator category_history{data_.find(game_category)};
     if (category_history != data_.cend() && !category_history->second.empty()) {

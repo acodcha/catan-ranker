@@ -1,8 +1,7 @@
 #pragma once
 
 #include "GnuplotFileWriter.hpp"
-#include "Place.hpp"
-#include "PlayerName.hpp"
+#include "Players.hpp"
 
 namespace CatanLeaderboardGenerator {
 

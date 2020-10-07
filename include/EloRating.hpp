@@ -4,7 +4,9 @@
 
 namespace CatanLeaderboardGenerator {
 
-const double EloRatingStandardMaximumUpdateFactor{32.0};
+constexpr const double EloRatingStartingValue{1000.0};
+
+constexpr const double EloRatingStandardMaximumUpdateFactor{32.0};
 
 const std::map<uint_least8_t, double> NumberOfPlayersToEloRatingMaximumUpdateFactor{
   {3, EloRatingStandardMaximumUpdateFactor / 2}, // Each player faces off against 2 other players. There are 3 2-player pairs.
@@ -125,7 +127,7 @@ public:
 
 protected:
 
-  double value_{1000.0};
+  double value_{EloRatingStartingValue};
 
 };
 

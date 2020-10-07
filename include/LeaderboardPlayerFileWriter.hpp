@@ -20,6 +20,8 @@ public:
     line("[Go back to all players.](../" + Path::LeaderboardFileName.string() + ")");
     section("Overview");
     player_table(player);
+    section(section_title_elo_rating_plot_);
+    elo_rating_plot();
     section(section_title_average_points_plot_);
     average_points_plot();
     section(section_title_place_percentage_plot_);
@@ -34,6 +36,8 @@ public:
   }
 
 protected:
+
+  const std::string section_title_elo_rating_plot_{"Ratings"};
 
   const std::string section_title_average_points_plot_{"Average Points per Game"};
 
@@ -73,6 +77,10 @@ protected:
     }
     const Table data{{category, number_of_games, elo_rating, average_points_per_game, first_place, second_place, third_place, first_or_second_place, first_or_second_or_third_place}};
     table(data);
+  }
+
+  void elo_rating_plot() noexcept {
+    line("![](" + Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerEloRatingVsGameNumberFileName).string() + ")");
   }
 
   void average_points_plot() noexcept {
