@@ -15,23 +15,20 @@ public:
 
   Player(const PlayerName& name) noexcept : name_(name) {}
 
+  Player(const PlayerName& name, const std::string& color, const uint_least8_t gnuplot_point_type) noexcept : name_(name), color_(color), gnuplot_point_type_(gnuplot_point_type) {}
+
   Player(
     const PlayerName& name,
-    const Games& games,
     const std::string& color,
-    const uint_least8_t gnuplot_point_type
+    const uint_least8_t gnuplot_point_type,
+    const Games& games
   ) noexcept :
     name_(name),
     color_(color),
     gnuplot_point_type_(gnuplot_point_type)
   {
-    uint_least64_t player_game_index{0};
     for (const Game& game : games) {
-      if (game.participant(name_)) {
-        insert(game, player_game_index, game.category());
-        insert(game, player_game_index, GameCategory::AnyNumberOfPlayers);
-        ++player_game_index;
-      }
+      add_game(game);
     }
   }
 
@@ -124,14 +121,24 @@ protected:
     {GameCategory::SevenToEightPlayers, {}}
   };
 
-  void insert(const Game& game, const uint_least64_t player_game_index, const GameCategory game_category) noexcept {
-    const std::map<GameCategory, std::vector<PlayerProperties>>::iterator history{data_.find(game_category)};
-    if (history != data_.end()) {
-      if (history->second.empty()) {
-        history->second.emplace_back(name_, game_category, game, player_game_index);
+  void add_game(const Game& game, const GameCategory game_category) noexcept {
+    const std::map<GameCategory, std::vector<PlayerProperties>>::iterator history_any_number_of_players{data_.find(GameCategory::AnyNumberOfPlayers)};
+    const std::map<GameCategory, std::vector<PlayerProperties>>::iterator history_same_game_category{data_.find(game_category)};
+    if (history_any_number_of_players != data_.cend() && history_same_game_category != data_.end()) {
+      if (history_any_number_of_players->second.empty() && history_same_game_category->second.empty()) {
+        history_same_game_category->second.emplace_back(name_, game_category, game);
+      } else if (!history_any_number_of_players->second.empty() && history_same_game_category->second.empty()) {
+        history_same_game_category->second.emplace_back(name_, game_category, game, history_any_number_of_players->second.back());
       } else {
-        history->second.emplace_back(name_, game_category, game, player_game_index, history->second.back());
+        history_same_game_category->second.emplace_back(name_, game_category, game, history_any_number_of_players->second.back(), history_same_game_category->second.back());
       }
+    }
+  }
+
+  void add_game(const Game& game) noexcept {
+    if (game.participant(name_)) {
+      add_game(game, game.category());
+      add_game(game, GameCategory::AnyNumberOfPlayers);
     }
   }
 

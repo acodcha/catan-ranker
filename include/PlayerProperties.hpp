@@ -16,17 +16,17 @@ public:
     const PlayerName& name,
     const GameCategory game_category,
     const Game& game,
-    const uint_least64_t player_game_index,
-    const std::optional<PlayerProperties>& previous = {}
+    const std::optional<PlayerProperties>& previous_any_number_of_players = {},
+    const std::optional<PlayerProperties>& previous_same_game_category = {}
   ) noexcept :
     game_index_(game.index()),
-    player_game_index_(player_game_index),
     date_(game.date())
   {
     initialize_game_category_game_index(game_category, game);
-    initialize_player_game_category_game_index(previous);
-    initialize_average_points_per_game(name, game, previous);
-    initialize_place_counts(name, game, previous);
+    initialize_player_game_index(previous_any_number_of_players);
+    initialize_player_game_category_game_index(previous_same_game_category);
+    initialize_average_points_per_game(name, game, previous_same_game_category);
+    initialize_place_counts(name, game, previous_same_game_category);
     initialize_place_percentages();
   }
 
@@ -120,17 +120,23 @@ protected:
     }
   }
 
-  void initialize_player_game_category_game_index(const std::optional<PlayerProperties>& previous) noexcept {
-    if (previous.has_value()) {
-      player_game_category_game_index_ = previous.value().player_game_category_game_index_ + 1;
+  void initialize_player_game_index(const std::optional<PlayerProperties>& previous_any_number_of_players) noexcept {
+    if (previous_any_number_of_players.has_value()) {
+      player_game_index_ = previous_any_number_of_players.value().player_game_index_ + 1;
     }
   }
 
-  void initialize_average_points_per_game(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous) noexcept {
+  void initialize_player_game_category_game_index(const std::optional<PlayerProperties>& previous_same_game_category) noexcept {
+    if (previous_same_game_category.has_value()) {
+      player_game_category_game_index_ = previous_same_game_category.value().player_game_category_game_index_ + 1;
+    }
+  }
+
+  void initialize_average_points_per_game(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous_same_game_category) noexcept {
     const std::optional<Points> found_points{game.points(name)};
     if (found_points.has_value()) {
-      if (previous.has_value()) {
-        average_points_per_game_ = (previous.value().average_points_per_game() * previous.value().player_game_category_game_number() + found_points.value().value()) / player_game_category_game_number();
+      if (previous_same_game_category.has_value()) {
+        average_points_per_game_ = (previous_same_game_category.value().average_points_per_game() * previous_same_game_category.value().player_game_category_game_number() + found_points.value().value()) / player_game_category_game_number();
       } else {
         average_points_per_game_ = (double)found_points.value().value();
       }
@@ -139,9 +145,9 @@ protected:
     }
   }
 
-  void initialize_place_counts(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous) noexcept {
-    if (previous.has_value()) {
-      place_counts_ = previous.value().place_counts_;
+  void initialize_place_counts(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous_same_game_category) noexcept {
+    if (previous_same_game_category.has_value()) {
+      place_counts_ = previous_same_game_category.value().place_counts_;
     }
     const std::optional<Place> found_place{game.place(name)};
     if (found_place.has_value()) {

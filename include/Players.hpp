@@ -18,7 +18,7 @@ public:
     }
     uint_least64_t counter{0};
     for (const PlayerName& player_name : games_player_names) {
-      data_.insert({player_name, games, color(counter), gnuplot_point_type(counter)});
+      data_.insert({player_name, color(counter), gnuplot_point_type(counter), games});
       ++counter;
     }
     message(print());
