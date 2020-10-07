@@ -44,6 +44,7 @@ protected:
   void player_table(const Player& player) noexcept {
     Column category{"Category", Column::Alignment::Center};
     Column number_of_games{"Games", Column::Alignment::Center};
+    Column elo_rating{"Rating", Column::Alignment::Center};
     Column average_points_per_game{"Points", Column::Alignment::Center};
     Column first_place{"1st Place", Column::Alignment::Center};
     Column second_place{"2nd Place", Column::Alignment::Center};
@@ -55,6 +56,7 @@ protected:
       if (latest.has_value()) {
         category.add_row(label(game_category));
         number_of_games.add_row(latest.value().player_game_category_game_number());
+        elo_rating.add_row(latest.value().elo_rating());
         average_points_per_game.add_row(latest.value().average_points_per_game(), 2);
         const uint_least64_t first_place_count{latest.value().place_count({1})};
         const uint_least64_t second_place_count{latest.value().place_count({2})};
@@ -69,7 +71,7 @@ protected:
         first_or_second_or_third_place.add_row(std::to_string(first_place_count + second_place_count + third_place_count) + " , " + Percentage{first_place_percentage + second_place_percentage + third_place_percentage}.print(0));
       }
     }
-    const Table data{{category, number_of_games, average_points_per_game, first_place, second_place, third_place, first_or_second_place, first_or_second_or_third_place}};
+    const Table data{{category, number_of_games, elo_rating, average_points_per_game, first_place, second_place, third_place, first_or_second_place, first_or_second_or_third_place}};
     table(data);
   }
 

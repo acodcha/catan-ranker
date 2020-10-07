@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Date.hpp"
+#include "EloRating.hpp"
 #include "Percentage.hpp"
 
 namespace CatanLeaderboardGenerator {
@@ -31,6 +31,10 @@ public:
   }
 
   void add_row(const Date& value) noexcept {
+    rows_.push_back(value.print());
+  }
+
+  void add_row(const EloRating& value) noexcept {
     rows_.push_back(value.print());
   }
 
