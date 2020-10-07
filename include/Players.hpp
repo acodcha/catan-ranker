@@ -56,6 +56,16 @@ public:
     }
   }
 
+  EloRating peak_elo_rating(const GameCategory game_category) const noexcept {
+    EloRating peak{0};
+    for (const Player& player : data_) {
+      if (peak < player.peak_elo_rating(game_category)) {
+        peak = player.peak_elo_rating(game_category);
+      }
+    }
+    return peak;
+  }
+
   std::string print() const noexcept {
     std::stringstream stream;
     stream << "There are " << data_.size() << " players:";

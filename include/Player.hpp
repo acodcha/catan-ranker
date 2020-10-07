@@ -44,6 +44,17 @@ public:
     return gnuplot_point_type_;
   }
 
+  EloRating peak_elo_rating(const GameCategory game_category) const noexcept {
+    EloRating peak{0};
+    const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator found{data_.find(game_category)};
+    for (const PlayerProperties& player_properties : found->second) {
+      if (peak < player_properties.elo_rating()) {
+        peak = player_properties.elo_rating();
+      }
+    }
+    return peak;
+  }
+
   std::string print(const GameCategory game_category) const noexcept {
     const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator category_history{data_.find(game_category)};
     if (category_history != data_.cend() && !category_history->second.empty()) {
@@ -62,7 +73,7 @@ public:
   }
 
   const std::vector<PlayerProperties>& operator[](const GameCategory game_category) const noexcept {
-    const std::map<CatanLeaderboardGenerator::GameCategory, std::vector<CatanLeaderboardGenerator::PlayerProperties>>::const_iterator found{data_.find(game_category)};
+    const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator found{data_.find(game_category)};
     return found->second;
   }
 
