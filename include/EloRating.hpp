@@ -153,7 +153,7 @@ EloRating update_elo_rating(
   for (const PlayerName& game_player_name : game ) {
     if (player_name != game_player_name) {
       const Place game_player_place{game.place(game_player_name).value()};
-      const double actual_outcome{player_place.value().outcome(game_player_place)};
+      const double actual_outcome{player_place.value().actual_outcome(game_player_place)};
       EloRating game_player_previous_elo_rating;
       const std::map<PlayerName, EloRating, PlayerName::sort>::const_iterator found{previous_elo_ratings.find(game_player_name)};
       if (found != previous_elo_ratings.cend()) {
