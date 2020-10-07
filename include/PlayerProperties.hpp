@@ -16,8 +16,8 @@ public:
     const PlayerName& name,
     const GameCategory game_category,
     const Game& game,
-    const std::optional<PlayerProperties>& previous_any_number_of_players = {},
-    const std::optional<PlayerProperties>& previous_same_game_category = {}
+    const std::optional<PlayerProperties>& previous_any_number_of_players = std::optional<PlayerProperties>{},
+    const std::optional<PlayerProperties>& previous_same_game_category = std::optional<PlayerProperties>{}
   ) noexcept :
     game_index_(game.index()),
     date_(game.date())
