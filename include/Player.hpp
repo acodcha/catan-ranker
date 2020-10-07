@@ -13,23 +13,15 @@ public:
 
   Player() noexcept {}
 
+  /// \brief Only used to quickly search for a player.
   Player(const PlayerName& name) noexcept : name_(name) {}
 
+  /// \brief Create a player for the first time.
   Player(const PlayerName& name, const std::string& color, const uint_least8_t gnuplot_point_type) noexcept : name_(name), color_(color), gnuplot_point_type_(gnuplot_point_type) {}
 
-  Player(
-    const PlayerName& name,
-    const std::string& color,
-    const uint_least8_t gnuplot_point_type,
-    const Games& games
-  ) noexcept :
-    name_(name),
-    color_(color),
-    gnuplot_point_type_(gnuplot_point_type)
-  {
-    for (const Game& game : games) {
-      add_game(game);
-    }
+  /// \brief Update a player with a new game.
+  Player(const Player& player, const Game& game) noexcept : name_(player.name_), color_(player.color_), gnuplot_point_type_(player.gnuplot_point_type_), data_(player.data_) {
+    add_game(game);
   }
 
   const PlayerName& name() const noexcept {

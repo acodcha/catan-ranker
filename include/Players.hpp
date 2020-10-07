@@ -11,15 +11,25 @@ class Players {
 public:
 
   Players(const Games& games) noexcept {
+    // Obtain the player names.
     std::set<PlayerName, PlayerName::sort> games_player_names;
     for (const Game& game : games) {
       const std::set<PlayerName, PlayerName::sort> game_player_names{game.player_names()};
       games_player_names.insert(game_player_names.cbegin(), game_player_names.cend());
     }
+    // Initialize the players with a player name, color, and Gnuplot point type.
     uint_least64_t counter{0};
     for (const PlayerName& player_name : games_player_names) {
-      data_.insert({player_name, color(counter), gnuplot_point_type(counter), games});
+      data_.insert({player_name, color(counter), gnuplot_point_type(counter)});
       ++counter;
+    }
+    // Update the players one game at a time.
+    for (const Game& game : games) {
+      std::set<Player, Player::sort> updated_data;
+      for (const Player& player : data_) {
+        updated_data.emplace(player, game);
+      }
+      data_ = updated_data;
     }
     message(print());
   }
@@ -50,6 +60,10 @@ public:
     const_iterator(const std::set<Player, Player::sort>::const_iterator i) noexcept : std::set<Player, Player::sort>::const_iterator(i) {}
   };
 
+  bool empty() const noexcept {
+    return data_.empty();
+  }
+
   std::size_t size() const noexcept {
     return data_.size();
   }
@@ -59,7 +73,7 @@ public:
   }
 
   const_iterator begin() const noexcept {
-   return cbegin();
+   return const_iterator(data_.cbegin());
   }
 
   const_iterator cend() const noexcept {
@@ -67,7 +81,7 @@ public:
   }
 
   const_iterator end() const noexcept {
-   return cend();
+   return const_iterator(data_.cend());
   }
 
 protected:
