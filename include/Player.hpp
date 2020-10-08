@@ -44,26 +44,48 @@ public:
     return gnuplot_point_type_;
   }
 
-  EloRating peak_elo_rating(const GameCategory game_category) const noexcept {
-    EloRating peak{0};
+  EloRating lowest_elo_rating(const GameCategory game_category) const noexcept {
+    EloRating lowest;
     const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator found{data_.find(game_category)};
     for (const PlayerProperties& player_properties : found->second) {
-      if (peak < player_properties.elo_rating()) {
-        peak = player_properties.elo_rating();
+      if (lowest > player_properties.elo_rating()) {
+        lowest = player_properties.elo_rating();
       }
     }
-    return peak;
+    return lowest;
   }
 
-  EloRating peak_elo_rating() const noexcept {
-    EloRating peak{0};
-    for (const GameCategory game_category : GameCategories) {
-      const EloRating current{peak_elo_rating(game_category)};
-      if (peak < current) {
-        peak = current;
+  EloRating highest_elo_rating(const GameCategory game_category) const noexcept {
+    EloRating highest;
+    const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator found{data_.find(game_category)};
+    for (const PlayerProperties& player_properties : found->second) {
+      if (highest < player_properties.elo_rating()) {
+        highest = player_properties.elo_rating();
       }
     }
-    return peak;
+    return highest;
+  }
+
+  EloRating lowest_elo_rating() const noexcept {
+    EloRating lowest;
+    for (const GameCategory game_category : GameCategories) {
+      const EloRating current{lowest_elo_rating(game_category)};
+      if (lowest > current) {
+        lowest = current;
+      }
+    }
+    return lowest;
+  }
+
+  EloRating highest_elo_rating() const noexcept {
+    EloRating highest;
+    for (const GameCategory game_category : GameCategories) {
+      const EloRating current{highest_elo_rating(game_category)};
+      if (highest < current) {
+        highest = current;
+      }
+    }
+    return highest;
   }
 
   std::string print(const GameCategory game_category) const noexcept {

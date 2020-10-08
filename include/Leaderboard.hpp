@@ -101,7 +101,7 @@ protected:
       if (!data_paths.empty()) {
         PlayerEloRatingVsGameNumberGnuplotFileWriter{
           base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerEloRatingVsGameNumberFileName,
-          data_paths, player.peak_elo_rating()
+          data_paths, player.lowest_elo_rating(), player.highest_elo_rating()
         };
         PlayerAveragePointsVsGameNumberGnuplotFileWriter{
           base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName,

@@ -38,17 +38,6 @@ void create(const std::experimental::filesystem::path& directory) {
   }
 }
 
-/// \brief Return the nearest higher nice number, which is always a multiple of 1, 2, 3, 4, 5, 6, 7, 8, or 9 times a power of 10.
-/// \details For example, if given 1460.53, return 2000. If given 579.81, return 600. If given 34.5, return 40.
-uint_least64_t nearest_higher_nice_number(const double number) noexcept {
-  const double log10_number{std::log10(number)};
-  const uint_least64_t floor_log10_number{(uint_least64_t)std::floor(log10_number)};
-  const uint_least64_t factor{(uint_least64_t)std::pow((uint_least64_t)10, floor_log10_number)};
-  const uint_least64_t nice_divided{(uint_least64_t)std::ceil(number / factor)};
-  const uint_least64_t nice{nice_divided * factor};
-  return nice;
-}
-
 template <typename Type> const std::map<Type, std::string> labels;
 
 template <typename Type> std::string label(const Type type) noexcept {

@@ -56,14 +56,26 @@ public:
     }
   }
 
-  EloRating peak_elo_rating(const GameCategory game_category) const noexcept {
-    EloRating peak{0};
+  EloRating lowest_elo_rating(const GameCategory game_category) const noexcept {
+    EloRating lowest;
     for (const Player& player : data_) {
-      if (peak < player.peak_elo_rating(game_category)) {
-        peak = player.peak_elo_rating(game_category);
+      EloRating player_lowest{player.lowest_elo_rating(game_category)};
+      if (lowest > player_lowest) {
+        lowest = player_lowest;
       }
     }
-    return peak;
+    return lowest;
+  }
+
+  EloRating highest_elo_rating(const GameCategory game_category) const noexcept {
+    EloRating highest;
+    for (const Player& player : data_) {
+      EloRating player_highest{player.highest_elo_rating(game_category)};
+      if (highest < player_highest) {
+        highest = player_highest;
+      }
+    }
+    return highest;
   }
 
   std::string print() const noexcept {
