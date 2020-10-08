@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game.hpp"
+#include "EloRating.hpp"
 #include "Percentage.hpp"
 
 namespace CatanLeaderboardGenerator {
@@ -15,18 +15,20 @@ public:
     const PlayerName& name,
     const GameCategory game_category,
     const Game& game,
-    const uint_least64_t player_game_index,
-    const std::optional<PlayerProperties>& previous = {}
+    const std::map<PlayerName, EloRating, PlayerName::sort>& previous_elo_ratings,
+    const std::optional<PlayerProperties>& previous_any_number_of_players = std::optional<PlayerProperties>{},
+    const std::optional<PlayerProperties>& previous_same_game_category = std::optional<PlayerProperties>{}
   ) noexcept :
     game_index_(game.index()),
-    player_game_index_(player_game_index),
     date_(game.date())
   {
     initialize_game_category_game_index(game_category, game);
-    initialize_player_game_category_game_index(previous);
-    initialize_average_points_per_game(name, game, previous);
-    initialize_place_counts(name, game, previous);
+    initialize_player_game_index(previous_any_number_of_players);
+    initialize_player_game_category_game_index(previous_same_game_category);
+    initialize_average_points_per_game(name, game, previous_same_game_category);
+    initialize_place_counts(name, game, previous_same_game_category);
     initialize_place_percentages();
+    initialize_elo_rating(name, game, previous_elo_ratings);
   }
 
   /// \brief Game number of this game.
@@ -77,6 +79,10 @@ public:
     }
   }
 
+  constexpr const EloRating& elo_rating() const noexcept {
+    return elo_rating_;
+  }
+
   struct sort {
     bool operator()(const PlayerProperties& player_properties_1, const PlayerProperties& player_properties_2) const noexcept {
       return player_properties_1.player_game_category_game_index_ < player_properties_2.player_game_category_game_index_;
@@ -101,6 +107,8 @@ protected:
 
   std::map<Place, Percentage, Place::sort> place_percentages_;
 
+  EloRating elo_rating_;
+
   void initialize_game_category_game_index(const GameCategory game_category, const Game& game) noexcept {
     if (game_category == GameCategory::AnyNumberOfPlayers) {
       game_category_game_index_ = game_index_;
@@ -109,17 +117,23 @@ protected:
     }
   }
 
-  void initialize_player_game_category_game_index(const std::optional<PlayerProperties>& previous) noexcept {
-    if (previous.has_value()) {
-      player_game_category_game_index_ = previous.value().player_game_category_game_index_ + 1;
+  void initialize_player_game_index(const std::optional<PlayerProperties>& previous_any_number_of_players) noexcept {
+    if (previous_any_number_of_players.has_value()) {
+      player_game_index_ = previous_any_number_of_players.value().player_game_index_ + 1;
     }
   }
 
-  void initialize_average_points_per_game(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous) noexcept {
+  void initialize_player_game_category_game_index(const std::optional<PlayerProperties>& previous_same_game_category) noexcept {
+    if (previous_same_game_category.has_value()) {
+      player_game_category_game_index_ = previous_same_game_category.value().player_game_category_game_index_ + 1;
+    }
+  }
+
+  void initialize_average_points_per_game(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous_same_game_category) noexcept {
     const std::optional<Points> found_points{game.points(name)};
     if (found_points.has_value()) {
-      if (previous.has_value()) {
-        average_points_per_game_ = (previous.value().average_points_per_game() * previous.value().player_game_category_game_number() + found_points.value().value()) / player_game_category_game_number();
+      if (previous_same_game_category.has_value()) {
+        average_points_per_game_ = (previous_same_game_category.value().average_points_per_game() * previous_same_game_category.value().player_game_category_game_number() + found_points.value().value()) / player_game_category_game_number();
       } else {
         average_points_per_game_ = (double)found_points.value().value();
       }
@@ -128,9 +142,9 @@ protected:
     }
   }
 
-  void initialize_place_counts(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous) noexcept {
-    if (previous.has_value()) {
-      place_counts_ = previous.value().place_counts_;
+  void initialize_place_counts(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous_same_game_category) noexcept {
+    if (previous_same_game_category.has_value()) {
+      place_counts_ = previous_same_game_category.value().place_counts_;
     }
     const std::optional<Place> found_place{game.place(name)};
     if (found_place.has_value()) {
@@ -149,6 +163,14 @@ protected:
     for (const std::pair<Place, uint_least64_t>& element : place_counts_) {
       place_percentages_.insert({element.first, {(double)element.second / player_game_category_game_number()}});
     }
+  }
+
+  void initialize_elo_rating(
+    const PlayerName& player_name,
+    const Game& game,
+    const std::map<PlayerName, EloRating, PlayerName::sort>& previous_elo_ratings
+  ) noexcept {
+    elo_rating_ = update_elo_rating(player_name, game, previous_elo_ratings);
   }
 
 };

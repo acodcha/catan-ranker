@@ -1,25 +1,29 @@
 #pragma once
 
+#include "EloRating.hpp"
 #include "GnuplotFileWriter.hpp"
 
 namespace CatanLeaderboardGenerator {
 
-class PlayerAveragePointsGnuplotFileWriter : public GnuplotFileWriter {
+class PlayerEloRatingGnuplotFileWriter : public GnuplotFileWriter {
 
 public:
 
-  PlayerAveragePointsGnuplotFileWriter(const std::experimental::filesystem::path& path) noexcept : GnuplotFileWriter(path) {
+  PlayerEloRatingGnuplotFileWriter(const std::experimental::filesystem::path& path, const EloRating& lowest, const EloRating& highest) noexcept : GnuplotFileWriter(path) {
+    const uint_least64_t increment{100};
+    const uint_least64_t y_minimum{std::min((uint_least64_t)(EloRatingStartingValue - increment), nearest_lower_nice_number(lowest.value(), increment))};
+    const uint_least64_t y_maximum{std::max((uint_least64_t)(EloRatingStartingValue + increment), nearest_higher_nice_number(highest.value(), increment))};
     line("set terminal pngcairo size 800,600 enhanced font \"Verdana,10\"");
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
-    line("set ylabel \"Average Points per Game\"");
-    line("set yrange [2:11]");
-    line("set ytics mirror out 1.0");
+    line("set ylabel \"Rating\"");
+    line("set yrange [" + std::to_string(y_minimum) + ":" + std::to_string(y_maximum) + "]");
+    line("set ytics mirror out");
     line("set mytics 10");
     line("set y2label \"\"");
-    line("set y2range [2:11]");
-    line("set y2tics mirror in 1.0");
+    line("set y2range [" + std::to_string(y_minimum) + ":" + std::to_string(y_maximum) + "]");
+    line("set y2tics mirror in");
     line("set my2tics 10");
     line("set output \"" + png_file_path().string() + "\"");
   }
@@ -43,20 +47,22 @@ protected:
   ) noexcept {
     const std::map<GameCategory, std::experimental::filesystem::path>::const_iterator found{data.find(game_category)};
     if (found != data.cend()) {
-      line("  \"" + found->second.string() + "\" u " + std::to_string(x_column()) + ":7 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"#" + color + "\" t \"" + label(game_category) + "\" , \\");
+      line("  \"" + found->second.string() + "\" u " + std::to_string(x_column()) + ":6 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"#" + color + "\" t \"" + label(game_category) + "\" , \\");
     }
   }
 
 };
 
-class PlayerAveragePointsVsGameNumberGnuplotFileWriter : public PlayerAveragePointsGnuplotFileWriter {
+class PlayerEloRatingVsGameNumberGnuplotFileWriter : public PlayerEloRatingGnuplotFileWriter {
 
 public:
 
-  PlayerAveragePointsVsGameNumberGnuplotFileWriter(
+  PlayerEloRatingVsGameNumberGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
-    const std::map<GameCategory, std::experimental::filesystem::path>& data
-  ) noexcept : PlayerAveragePointsGnuplotFileWriter(path) {
+    const std::map<GameCategory, std::experimental::filesystem::path>& data,
+    const EloRating& lowest,
+    const EloRating& highest
+  ) noexcept : PlayerEloRatingGnuplotFileWriter(path, lowest, highest) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -72,14 +78,16 @@ protected:
 
 };
 
-class PlayerAveragePointsVsDateGnuplotFileWriter : public PlayerAveragePointsGnuplotFileWriter {
+class PlayerEloRatingVsDateGnuplotFileWriter : public PlayerEloRatingGnuplotFileWriter {
 
 public:
 
-  PlayerAveragePointsVsDateGnuplotFileWriter(
+  PlayerEloRatingVsDateGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
-    const std::map<GameCategory, std::experimental::filesystem::path>& data
-  ) noexcept : PlayerAveragePointsGnuplotFileWriter(path) {
+    const std::map<GameCategory, std::experimental::filesystem::path>& data,
+    const EloRating& lowest,
+    const EloRating& highest
+  ) noexcept : PlayerEloRatingGnuplotFileWriter(path, lowest, highest) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");

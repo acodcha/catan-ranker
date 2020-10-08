@@ -134,6 +134,34 @@ public:
     }
   };
 
+  struct const_iterator : public std::set<PlayerName, PlayerName::sort>::const_iterator {
+    const_iterator(const std::set<PlayerName, PlayerName::sort>::const_iterator i) noexcept : std::set<PlayerName, PlayerName::sort>::const_iterator(i) {}
+  };
+
+  bool empty() const noexcept {
+    return player_names_.empty();
+  }
+
+  std::size_t size() const noexcept {
+    return player_names_.size();
+  }
+
+  const_iterator cbegin() const noexcept {
+   return const_iterator(player_names_.cbegin());
+  }
+
+  const_iterator begin() const noexcept {
+   return const_iterator(player_names_.cbegin());
+  }
+
+  const_iterator cend() const noexcept {
+   return const_iterator(player_names_.cend());
+  }
+
+  const_iterator end() const noexcept {
+   return const_iterator(player_names_.cend());
+  }
+
 protected:
 
   Date date_;

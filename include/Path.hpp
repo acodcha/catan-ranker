@@ -15,6 +15,10 @@ const std::experimental::filesystem::path PlayerPlotsDirectoryName{"plots"};
 
 const std::experimental::filesystem::path LeaderboardFileName{"README.md"};
 
+const std::experimental::filesystem::path PlayerEloRatingVsGameNumberFileName{"rating_vs_game_number.gnuplot"};
+
+const std::experimental::filesystem::path PlayerEloRatingVsDateFileName{"rating_vs_date.gnuplot"};
+
 const std::experimental::filesystem::path PlayerAveragePointsVsGameNumberFileName{"average_points_vs_game_number.gnuplot"};
 
 const std::experimental::filesystem::path PlayerAveragePointsVsDateFileName{"average_points_vs_date.gnuplot"};
@@ -31,6 +35,14 @@ std::experimental::filesystem::path game_category_file_name(const GameCategory g
 
 std::experimental::filesystem::path player_data_file_name(const GameCategory game_category) noexcept {
   return {game_category_file_name(game_category).string() + ".dat"};
+}
+
+std::experimental::filesystem::path main_elo_rating_vs_game_number_file_name(const GameCategory game_category) noexcept {
+  return {game_category_file_name(game_category).string() + "_rating_vs_game_number.gnuplot"};
+}
+
+std::experimental::filesystem::path main_elo_rating_vs_date_file_name(const GameCategory game_category) noexcept {
+  return {game_category_file_name(game_category).string() + "_rating_vs_date.gnuplot"};
 }
 
 std::experimental::filesystem::path main_average_points_vs_game_number_file_name(const GameCategory game_category) noexcept {

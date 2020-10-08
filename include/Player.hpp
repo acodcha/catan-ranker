@@ -11,30 +11,29 @@ public:
 
   Player() noexcept {}
 
+  /// \brief Only used to quickly search for a player.
   Player(const PlayerName& name) noexcept : name_(name) {}
 
-  Player(
-    const PlayerName& name,
-    const Games& games,
-    const std::string& color,
-    const uint_least8_t gnuplot_point_type
-  ) noexcept :
-    name_(name),
-    color_(color),
-    gnuplot_point_type_(gnuplot_point_type)
-  {
-    uint_least64_t player_game_index{0};
-    for (const Game& game : games) {
-      if (game.participant(name_)) {
-        insert(game, player_game_index, game.category());
-        insert(game, player_game_index, GameCategory::AnyNumberOfPlayers);
-        ++player_game_index;
-      }
-    }
+  /// \brief Create a player for the first time.
+  Player(const PlayerName& name, const std::string& color, const uint_least8_t gnuplot_point_type) noexcept : name_(name), color_(color), gnuplot_point_type_(gnuplot_point_type) {}
+
+  /// \brief Update a player with a new game.
+  Player(const Player& player, const Game& game, const std::map<PlayerName, std::map<GameCategory, EloRating>, PlayerName::sort>& previous_elo_ratings) noexcept : name_(player.name_), color_(player.color_), gnuplot_point_type_(player.gnuplot_point_type_), data_(player.data_) {
+    add_game(game, previous_elo_ratings);
   }
 
   const PlayerName& name() const noexcept {
     return name_;
+  }
+
+  const std::optional<PlayerProperties> latest_properties(const GameCategory game_category) const noexcept {
+    const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator category_history{data_.find(game_category)};
+    if (category_history != data_.cend() && !category_history->second.empty()) {
+      return category_history->second.back();
+    } else {
+      const std::optional<PlayerProperties> no_data;
+      return no_data;
+    }
   }
 
   const std::string& color() const noexcept {
@@ -45,10 +44,54 @@ public:
     return gnuplot_point_type_;
   }
 
+  EloRating lowest_elo_rating(const GameCategory game_category) const noexcept {
+    EloRating lowest;
+    const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator found{data_.find(game_category)};
+    for (const PlayerProperties& player_properties : found->second) {
+      if (lowest > player_properties.elo_rating()) {
+        lowest = player_properties.elo_rating();
+      }
+    }
+    return lowest;
+  }
+
+  EloRating highest_elo_rating(const GameCategory game_category) const noexcept {
+    EloRating highest;
+    const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator found{data_.find(game_category)};
+    for (const PlayerProperties& player_properties : found->second) {
+      if (highest < player_properties.elo_rating()) {
+        highest = player_properties.elo_rating();
+      }
+    }
+    return highest;
+  }
+
+  EloRating lowest_elo_rating() const noexcept {
+    EloRating lowest;
+    for (const GameCategory game_category : GameCategories) {
+      const EloRating current{lowest_elo_rating(game_category)};
+      if (lowest > current) {
+        lowest = current;
+      }
+    }
+    return lowest;
+  }
+
+  EloRating highest_elo_rating() const noexcept {
+    EloRating highest;
+    for (const GameCategory game_category : GameCategories) {
+      const EloRating current{highest_elo_rating(game_category)};
+      if (highest < current) {
+        highest = current;
+      }
+    }
+    return highest;
+  }
+
   std::string print(const GameCategory game_category) const noexcept {
     const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator category_history{data_.find(game_category)};
     if (category_history != data_.cend() && !category_history->second.empty()) {
-      return name_.value() + " : " + std::to_string(category_history->second.back().player_game_category_game_number()) + " games , " + real_number_to_string(category_history->second.back().average_points_per_game(), 2) + " pts , " + category_history->second.back().place_percentage({1}).print() + " 1st , " + category_history->second.back().place_percentage({2}).print() + " 2nd , " + category_history->second.back().place_percentage({3}).print() + " 3rd";
+      return name_.value() + " : " + std::to_string(category_history->second.back().player_game_category_game_number()) + " games , " + category_history->second.back().elo_rating().print() + " rating , " + real_number_to_string(category_history->second.back().average_points_per_game(), 2) + " pts , " + category_history->second.back().place_percentage({1}).print() + " 1st , " + category_history->second.back().place_percentage({2}).print() + " 2nd , " + category_history->second.back().place_percentage({3}).print() + " 3rd";
     } else {
       return {};
     }
@@ -63,7 +106,7 @@ public:
   }
 
   const std::vector<PlayerProperties>& operator[](const GameCategory game_category) const noexcept {
-    const std::map<CatanLeaderboardGenerator::GameCategory, std::vector<CatanLeaderboardGenerator::PlayerProperties>>::const_iterator found{data_.find(game_category)};
+    const std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator found{data_.find(game_category)};
     return found->second;
   }
 
@@ -112,13 +155,34 @@ protected:
     {GameCategory::SevenToEightPlayers, {}}
   };
 
-  void insert(const Game& game, const uint_least64_t player_game_index, const GameCategory game_category) noexcept {
-    const std::map<GameCategory, std::vector<PlayerProperties>>::iterator history{data_.find(game_category)};
-    if (history != data_.end()) {
-      if (history->second.empty()) {
-        history->second.emplace_back(name_, game_category, game, player_game_index);
+  void add_game(const Game& game, const std::map<PlayerName, std::map<GameCategory, EloRating>, PlayerName::sort>& previous_elo_ratings) noexcept {
+    if (game.participant(name_)) {
+      add_game(game, game.category(), previous_elo_ratings);
+      add_game(game, GameCategory::AnyNumberOfPlayers, previous_elo_ratings);
+    }
+  }
+
+  void add_game(const Game& game, const GameCategory game_category, const std::map<PlayerName, std::map<GameCategory, EloRating>, PlayerName::sort>& previous_elo_ratings) noexcept {
+    // Get appropriate previous Elo ratings.
+    std::map<PlayerName, EloRating, PlayerName::sort> previous;
+    for (const std::pair<PlayerName, std::map<GameCategory, EloRating>> previous_elo_rating : previous_elo_ratings) {
+      const std::map<GameCategory, EloRating>::const_iterator found{previous_elo_rating.second.find(game_category)};
+      if (found != previous_elo_rating.second.cend()) {
+        previous.emplace(previous_elo_rating.first, found->second);
       } else {
-        history->second.emplace_back(name_, game_category, game, player_game_index, history->second.back());
+        error("Game category " + label(game_category) + " is missing from the previous Elo ratings map.");
+      }
+    }
+    // Add new game.
+    const std::map<GameCategory, std::vector<PlayerProperties>>::iterator history_any_number_of_players{data_.find(GameCategory::AnyNumberOfPlayers)};
+    const std::map<GameCategory, std::vector<PlayerProperties>>::iterator history_same_game_category{data_.find(game_category)};
+    if (history_any_number_of_players != data_.cend() && history_same_game_category != data_.end()) {
+      if (history_any_number_of_players->second.empty() && history_same_game_category->second.empty()) {
+        history_same_game_category->second.emplace_back(name_, game_category, game, previous);
+      } else if (!history_any_number_of_players->second.empty() && history_same_game_category->second.empty()) {
+        history_same_game_category->second.emplace_back(name_, game_category, game, previous, history_any_number_of_players->second.back());
+      } else {
+        history_same_game_category->second.emplace_back(name_, game_category, game, previous, history_any_number_of_players->second.back(), history_same_game_category->second.back());
       }
     }
   }
