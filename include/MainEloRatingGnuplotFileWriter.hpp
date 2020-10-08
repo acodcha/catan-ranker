@@ -17,7 +17,7 @@ public:
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
-    line("set ylabel \"Average Points per Game\"");
+    line("set ylabel \"Rating\"");
     line("set yrange [" + std::to_string(y_minimum) + ":" + std::to_string(y_maximum) + "]");
     line("set ytics mirror out");
     line("set mytics 10");
