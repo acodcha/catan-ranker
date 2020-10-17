@@ -29,6 +29,7 @@ public:
     initialize_place_counts(name, game, previous_same_game_category);
     initialize_place_percentages();
     initialize_elo_rating(name, game, previous_elo_ratings);
+    initialize_average_elo_rating(previous_same_game_category);
   }
 
   /// \brief Game number of this game.
@@ -83,6 +84,14 @@ public:
     return elo_rating_;
   }
 
+  constexpr const EloRating& average_elo_rating() const noexcept {
+    return average_elo_rating_;
+  }
+
+  std::string print() const noexcept {
+    return std::to_string(player_game_category_game_number()) + " games , " + average_elo_rating_.print() + " average rating , " + elo_rating_.print() + " current rating , " + real_number_to_string(average_points_per_game_, 2) + " pts , " + place_percentage({1}).print() + " 1st , " + place_percentage({2}).print() + " 2nd , " + place_percentage({3}).print() + " 3rd";
+  }
+
   struct sort {
     bool operator()(const PlayerProperties& player_properties_1, const PlayerProperties& player_properties_2) const noexcept {
       return player_properties_1.player_game_category_game_index_ < player_properties_2.player_game_category_game_index_;
@@ -109,6 +118,8 @@ protected:
 
   EloRating elo_rating_;
 
+  EloRating average_elo_rating_;
+
   void initialize_game_category_game_index(const GameCategory game_category, const Game& game) noexcept {
     if (game_category == GameCategory::AnyNumberOfPlayers) {
       game_category_game_index_ = game_index_;
@@ -133,7 +144,7 @@ protected:
     const std::optional<Points> found_points{game.points(name)};
     if (found_points.has_value()) {
       if (previous_same_game_category.has_value()) {
-        average_points_per_game_ = (previous_same_game_category.value().average_points_per_game() * previous_same_game_category.value().player_game_category_game_number() + found_points.value().value()) / player_game_category_game_number();
+        average_points_per_game_ = (previous_same_game_category.value().average_points_per_game_ * previous_same_game_category.value().player_game_category_game_number() + found_points.value().value()) / player_game_category_game_number();
       } else {
         average_points_per_game_ = (double)found_points.value().value();
       }
@@ -171,6 +182,14 @@ protected:
     const std::map<PlayerName, EloRating, PlayerName::sort>& previous_elo_ratings
   ) noexcept {
     elo_rating_ = update_elo_rating(player_name, game, previous_elo_ratings);
+  }
+
+  void initialize_average_elo_rating(const std::optional<PlayerProperties>& previous_same_game_category) noexcept {
+    if (previous_same_game_category.has_value()) {
+      average_elo_rating_ = (previous_same_game_category.value().average_elo_rating_ * previous_same_game_category.value().player_game_category_game_number() + elo_rating_) / (player_game_category_game_number());
+    } else {
+      average_elo_rating_ = elo_rating_;
+    }
   }
 
 };

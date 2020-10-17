@@ -174,7 +174,8 @@ protected:
     Column player_game_number{"PlayerGame#"};
     Column player_game_category_game_number{"PlayerCategoryGame#"};
     Column date{"Date"};
-    Column elo_rating{"Rating"};
+    Column average_elo_rating{"AvgRating"};
+    Column elo_rating{"CurrentRating"};
     Column average_points_per_game{"AvgPoints"};
     Column first_place_percentage{"1stPlace%"};
     Column second_place_percentage{"2ndPlace%"};
@@ -188,6 +189,7 @@ protected:
         player_game_number.add_row(properties.player_game_number());
         player_game_category_game_number.add_row(properties.player_game_category_game_number());
         date.add_row(properties.date());
+        average_elo_rating.add_row(properties.average_elo_rating());
         elo_rating.add_row(properties.elo_rating());
         average_points_per_game.add_row(properties.average_points_per_game(), 7);
         first_place_percentage.add_row(properties.place_percentage({1}), 5);
@@ -197,7 +199,7 @@ protected:
         first_or_second_or_third_place_percentage.add_row(properties.place_percentage({1}) + properties.place_percentage({2}) + properties.place_percentage({3}), 5);
       }
     }
-    return {{game_number, game_category_game_number, player_game_number, player_game_category_game_number, date, elo_rating, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage, first_or_second_place_percentage, first_or_second_or_third_place_percentage}};
+    return {{game_number, game_category_game_number, player_game_number, player_game_category_game_number, date, average_elo_rating, elo_rating, average_points_per_game, first_place_percentage, second_place_percentage, third_place_percentage, first_or_second_place_percentage, first_or_second_or_third_place_percentage}};
   }
 
 };

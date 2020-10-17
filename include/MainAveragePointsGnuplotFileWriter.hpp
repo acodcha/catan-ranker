@@ -30,7 +30,7 @@ protected:
   void plot(const Players& players, const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data) noexcept {
     uint_least64_t counter{0};
     for (const std::pair<PlayerName, std::experimental::filesystem::path>& datum : data) {
-      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":7 w lp lw 2 pt " + std::to_string(players.find(datum.first).gnuplot_point_type()) + " ps 1 lt rgb \"#" + players.find(datum.first).color() + "\" t \"" + datum.first.value() + "\" , \\");
+      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":8 w lp lw 2 pt " + std::to_string(players.find(datum.first).gnuplot_point_type()) + " ps 1 lt rgb \"#" + players.find(datum.first).color() + "\" t \"" + datum.first.value() + "\" , \\");
       ++counter;
     }
   }
@@ -55,7 +55,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 2;
   }
 
@@ -82,7 +82,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 5;
   }
 

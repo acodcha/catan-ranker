@@ -32,7 +32,7 @@ protected:
   virtual uint_least8_t x_column() const noexcept = 0;
 
   constexpr uint_least8_t y_column(const Place& place) const noexcept {
-    return place.value() + 7;
+    return place.value() + 8;
   }
 
   void plot(const Players& players, const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data, const Place& place) noexcept {
@@ -65,7 +65,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 2;
   }
 
@@ -94,7 +94,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 5;
   }
 
