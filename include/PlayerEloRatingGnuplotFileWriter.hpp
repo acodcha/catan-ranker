@@ -13,7 +13,6 @@ public:
     const uint_least64_t increment{100};
     const uint_least64_t y_minimum{std::min((uint_least64_t)(EloRatingStartingValue - increment), nearest_lower_nice_number(lowest.value(), increment))};
     const uint_least64_t y_maximum{std::max((uint_least64_t)(EloRatingStartingValue + increment), nearest_higher_nice_number(highest.value(), increment))};
-    line("set terminal pngcairo size 800,600 enhanced font \"Verdana,10\"");
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -25,7 +24,6 @@ public:
     line("set y2range [" + std::to_string(y_minimum) + ":" + std::to_string(y_maximum) + "]");
     line("set y2tics mirror in");
     line("set my2tics 10");
-    line("set output \"" + png_file_path().string() + "\"");
   }
 
 protected:
@@ -47,7 +45,7 @@ protected:
   ) noexcept {
     const std::map<GameCategory, std::experimental::filesystem::path>::const_iterator found{data.find(game_category)};
     if (found != data.cend()) {
-      line("  \"" + found->second.string() + "\" u " + std::to_string(x_column()) + ":6 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"#" + color + "\" t \"" + label(game_category) + "\" , \\");
+      line("  \"" + found->second.string() + "\" u " + std::to_string(x_column()) + ":7 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"#" + color + "\" t \"" + label(game_category) + "\" , \\");
     }
   }
 
@@ -72,7 +70,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 3;
   }
 
@@ -100,7 +98,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 5;
   }
 

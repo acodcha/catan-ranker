@@ -14,7 +14,6 @@ public:
     const GameCategory game_category,
     const Place& place
   ) noexcept : GnuplotFileWriter(path) {
-    line("set terminal pngcairo size 800,600 enhanced font \"Verdana,10\"");
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -26,7 +25,6 @@ public:
     line("set y2range [0:100]");
     line("set y2tics mirror in 10.0");
     line("set my2tics 10");
-    line("set output \"" + png_file_path().string() + "\"");
   }
 
 protected:
@@ -34,7 +32,7 @@ protected:
   virtual uint_least8_t x_column() const noexcept = 0;
 
   constexpr uint_least8_t y_column(const Place& place) const noexcept {
-    return place.value() + 7;
+    return place.value() + 8;
   }
 
   void plot(const Players& players, const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data, const Place& place) noexcept {
@@ -67,7 +65,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 2;
   }
 
@@ -96,7 +94,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 5;
   }
 

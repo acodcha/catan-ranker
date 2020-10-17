@@ -9,7 +9,6 @@ class PlayerPlacePercentageGnuplotFileWriter : public GnuplotFileWriter {
 public:
 
   PlayerPlacePercentageGnuplotFileWriter(const std::experimental::filesystem::path& path, const GameCategory game_category) noexcept : GnuplotFileWriter(path) {
-    line("set terminal pngcairo size 800,600 enhanced font \"Verdana,10\"");
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -21,7 +20,6 @@ public:
     line("set y2range [0:100]");
     line("set y2tics mirror in 10.0");
     line("set my2tics 10");
-    line("set output \"" + png_file_path().string() + "\"");
   }
 
 protected:
@@ -29,9 +27,9 @@ protected:
   virtual uint_least8_t x_column() const noexcept = 0;
 
   void plot(const std::experimental::filesystem::path& data) noexcept {
-    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":8 w lp lw 4 pt 7 ps 1 lt rgb \"#" + Color::YellowWheat + "\" t \"1st Place\" , \\");
-    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":9 w lp lw 3 pt 7 ps 1 lt rgb \"#" + Color::GreyOre + "\" t \"2nd Place\" , \\");
-    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":10 w lp lw 2 pt 7 ps 1 lt rgb \"#" + Color::BrownDarkPort + "\" t \"3rd Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":9 w lp lw 4 pt 7 ps 1 lt rgb \"#" + Color::YellowWheat + "\" t \"1st Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":10 w lp lw 3 pt 7 ps 1 lt rgb \"#" + Color::GreyOre + "\" t \"2nd Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":11 w lp lw 2 pt 7 ps 1 lt rgb \"#" + Color::BrownDarkPort + "\" t \"3rd Place\" , \\");
   }
 
 };
@@ -54,7 +52,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 4;
   }
 
@@ -81,7 +79,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 5;
   }
 

@@ -9,7 +9,6 @@ class PlayerAveragePointsGnuplotFileWriter : public GnuplotFileWriter {
 public:
 
   PlayerAveragePointsGnuplotFileWriter(const std::experimental::filesystem::path& path) noexcept : GnuplotFileWriter(path) {
-    line("set terminal pngcairo size 800,600 enhanced font \"Verdana,10\"");
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -21,7 +20,6 @@ public:
     line("set y2range [2:11]");
     line("set y2tics mirror in 1.0");
     line("set my2tics 10");
-    line("set output \"" + png_file_path().string() + "\"");
   }
 
 protected:
@@ -43,7 +41,7 @@ protected:
   ) noexcept {
     const std::map<GameCategory, std::experimental::filesystem::path>::const_iterator found{data.find(game_category)};
     if (found != data.cend()) {
-      line("  \"" + found->second.string() + "\" u " + std::to_string(x_column()) + ":7 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"#" + color + "\" t \"" + label(game_category) + "\" , \\");
+      line("  \"" + found->second.string() + "\" u " + std::to_string(x_column()) + ":8 w lp lw " + std::to_string(line_width) + " pt 7 ps 1 lt rgb \"#" + color + "\" t \"" + label(game_category) + "\" , \\");
     }
   }
 
@@ -66,7 +64,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 3;
   }
 
@@ -92,7 +90,7 @@ public:
 
 protected:
 
-  constexpr uint_least8_t x_column() const noexcept {
+  uint_least8_t x_column() const noexcept {
     return 5;
   }
 
