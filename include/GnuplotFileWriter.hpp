@@ -9,7 +9,10 @@ class GnuplotFileWriter : public TextFileWriter {
 
 public:
 
-  GnuplotFileWriter(const std::experimental::filesystem::path& path) noexcept : TextFileWriter(path) {}
+  GnuplotFileWriter(const std::experimental::filesystem::path& path) noexcept : TextFileWriter(path) {
+    line("set terminal pngcairo size " + std::to_string(width_pixels_) + "," + std::to_string(height_pixels_) + " enhanced font \"Verdana,10\"");
+    line("set output \"" + png_file_path().string() + "\"");
+  }
 
   ~GnuplotFileWriter() noexcept {
     blank_line();
@@ -28,6 +31,10 @@ protected:
   uint_least64_t nearest_lower_nice_number(const double value, const uint_least64_t increment) const noexcept {
     return increment * (uint_least64_t)std::floor(value / increment);
   }
+
+  const uint_least64_t width_pixels_{1024};
+
+  const uint_least64_t height_pixels_{768};
 
 };
 
