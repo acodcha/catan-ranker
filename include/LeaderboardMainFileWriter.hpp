@@ -69,7 +69,7 @@ protected:
         name.add_row("[" + player.name().value() + "](" + leaderboard_file_path.string() + ")");
         number_of_games.add_row(latest.value().player_game_category_game_number());
         average_elo_rating.add_row(latest.value().average_elo_rating());
-        average_points_per_game.add_row(latest.value().average_points_per_game(), 2);
+        average_points_per_game.add_row(latest.value().average_points_per_game(), 3);
         const uint_least64_t first_place_count{latest.value().place_count({1})};
         const uint_least64_t second_place_count{latest.value().place_count({2})};
         const uint_least64_t third_place_count{latest.value().place_count({3})};
