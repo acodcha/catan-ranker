@@ -32,9 +32,9 @@ protected:
     return increment * (uint_least64_t)std::floor(value / increment);
   }
 
-  const uint_least64_t width_pixels_{1024};
+  const uint_least64_t width_pixels_{1000};
 
-  const uint_least64_t height_pixels_{768};
+  const uint_least64_t height_pixels_{750};
 
 };
 
