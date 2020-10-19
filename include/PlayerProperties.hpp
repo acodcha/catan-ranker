@@ -89,7 +89,7 @@ public:
   }
 
   std::string print() const noexcept {
-    return std::to_string(player_game_category_game_number()) + " games , " + average_elo_rating_.print() + " average rating , " + elo_rating_.print() + " current rating , " + real_number_to_string(average_points_per_game_, 2) + " pts , " + place_percentage({1}).print() + " 1st , " + place_percentage({2}).print() + " 2nd , " + place_percentage({3}).print() + " 3rd";
+    return std::to_string(player_game_category_game_number()) + " games , " + average_elo_rating_.print() + " average rating , " + elo_rating_.print() + " current rating , " + real_number_to_string(average_points_per_game_, 3) + " pts , " + place_percentage({1}).print() + " 1st , " + place_percentage({2}).print() + " 2nd , " + place_percentage({3}).print() + " 3rd";
   }
 
   struct sort {
