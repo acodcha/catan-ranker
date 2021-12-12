@@ -48,18 +48,18 @@ protected:
   void player_table(const Player& player) noexcept {
     Column category{"Category", Column::Alignment::Center};
     Column number_of_games{"Games", Column::Alignment::Center};
+    Column elo_rating{"Current Rating", Column::Alignment::Center};
     Column average_elo_rating{"Avg Rating", Column::Alignment::Center};
     Column average_points_per_game{"Avg Points", Column::Alignment::Center};
     Column first_place{"1st Place", Column::Alignment::Center};
     Column second_place{"2nd Place", Column::Alignment::Center};
     Column third_place{"3rd Place", Column::Alignment::Center};
-    Column first_or_second_place{"1st or 2nd Place", Column::Alignment::Center};
-    Column first_or_second_or_third_place{"1st, 2nd, or 3rd Place", Column::Alignment::Center};
     for (const GameCategory game_category : GameCategories) {
       const std::optional<PlayerProperties> latest{player.latest_properties(game_category)};
       if (latest.has_value()) {
         category.add_row(label(game_category));
         number_of_games.add_row(latest.value().player_game_category_game_number());
+        elo_rating.add_row(latest.value().elo_rating());
         average_elo_rating.add_row(latest.value().average_elo_rating());
         average_points_per_game.add_row(latest.value().average_points_per_game(), 3);
         const uint_least64_t first_place_count{latest.value().place_count({1})};
@@ -71,27 +71,25 @@ protected:
         first_place.add_row(first_place_percentage.print(0) + " (" + std::to_string(first_place_count) + ")");
         second_place.add_row(second_place_percentage.print(0) + " (" + std::to_string(second_place_count) + ")");
         third_place.add_row(third_place_percentage.print(0) + " (" + std::to_string(third_place_count) + ")");
-        first_or_second_place.add_row(Percentage{first_place_percentage + second_place_percentage}.print(0) + " (" + std::to_string(first_place_count + second_place_count) + ")");
-        first_or_second_or_third_place.add_row(Percentage{first_place_percentage + second_place_percentage + third_place_percentage}.print(0) + " (" + std::to_string(first_place_count + second_place_count + third_place_count) + ")");
       }
     }
-    const Table data{{category, number_of_games, average_elo_rating, average_points_per_game, first_place, second_place, third_place, first_or_second_place, first_or_second_or_third_place}};
+    const Table data{{category, number_of_games, elo_rating, average_elo_rating, average_points_per_game, first_place, second_place, third_place}};
     table(data);
   }
 
   void elo_rating_plot() noexcept {
-    line("![](" + Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerEloRatingVsGameNumberFileName).string() + ")");
+    line("![Rating History Plot](" + Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerEloRatingVsGameNumberFileName).string() + ")");
   }
 
   void average_points_plot() noexcept {
-    line("![](" + Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName).string() + ")");
+    line("![Average Points per Game History Plot](" + Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName).string() + ")");
   }
 
   void place_percentage_plot(const std::experimental::filesystem::path& base_directory, const Player& player, const GameCategory game_category) noexcept {
     const std::experimental::filesystem::path gnuplot_path{Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(game_category)};
     if (std::experimental::filesystem::exists(base_directory / player.name().directory_name() / gnuplot_path)) {
       subsection(section_title_place_percentage_plot_ + ": " + label(game_category));
-      line("![](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
+      line("![Place History Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
     }
   }
 
