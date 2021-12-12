@@ -10,7 +10,7 @@ class Column {
 
 public:
 
-  enum class Alignment : uint_least8_t {
+  enum class Alignment : uint8_t {
     Left,
     Center,
     Right
@@ -18,15 +18,15 @@ public:
 
   Column(const std::string& header, const Alignment alignment = Alignment::Left) noexcept : header_(header), alignment_(alignment) {}
 
-  void add_row(const int_least64_t value) noexcept {
+  void add_row(const int64_t value) noexcept {
     rows_.push_back(std::to_string(value));
   }
 
-  void add_row(const double value, const uint_least8_t significant_digits) noexcept {
+  void add_row(const double value, const uint8_t significant_digits) noexcept {
     rows_.push_back(real_number_to_string(value, significant_digits));
   }
 
-  void add_row(const Percentage& value, const uint_least8_t decimals) noexcept {
+  void add_row(const Percentage& value, const uint8_t decimals) noexcept {
     rows_.push_back(value.print(decimals));
   }
 
@@ -68,8 +68,8 @@ public:
     }
   }
 
-  const uint_least64_t width_markdown() const noexcept {
-    uint_least64_t maximum{std::max(header_bold().size(), alignment_markdown().size())};
+  const uint64_t width_markdown() const noexcept {
+    uint64_t maximum{std::max(header_bold().size(), alignment_markdown().size())};
     for (const std::string& row : rows_) {
       if (maximum < row.size()) {
         maximum = row.size();

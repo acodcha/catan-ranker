@@ -65,8 +65,8 @@ public:
     }
   }
 
-  uint_least8_t number_of_players() const noexcept {
-    return static_cast<uint_least8_t>(player_names_.size());
+  uint8_t number_of_players() const noexcept {
+    return static_cast<uint8_t>(player_names_.size());
   }
 
   GameCategory category() const noexcept {
@@ -96,27 +96,27 @@ public:
   }
 
   /// \brief Game index. Starts at 0.
-  constexpr uint_least64_t index() const noexcept {
+  constexpr uint64_t index() const noexcept {
     return index_;
   }
 
   /// \brief Game number, such as 5th game globally. Starts at 1. Equals the game index plus one.
-  constexpr uint_least64_t number() const noexcept {
+  constexpr uint64_t number() const noexcept {
     return index_ + 1;
   }
 
   /// \brief Game index within its game category. Starts at 0.
-  constexpr uint_least64_t category_index() const noexcept {
+  constexpr uint64_t category_index() const noexcept {
     return category_index_;
   }
 
   /// \brief Game number within its game category, such as 5th game in the 5-6 player game category. Starts at 1. Equals the game category index plus one.
-  constexpr uint_least64_t category_number() const noexcept {
+  constexpr uint64_t category_number() const noexcept {
     return category_index_ + 1;
   }
 
   /// \brief The games are not necessarily sorted when first constructed, so the index is set later by the Games class.
-  void set_indices(const uint_least64_t index, const uint_least64_t category_index) noexcept {
+  void set_indices(const uint64_t index, const uint64_t category_index) noexcept {
     index_ = index;
     category_index_ = category_index;
   }
@@ -187,10 +187,10 @@ protected:
   std::multimap<Place, PlayerName, Place::sort> places_to_player_names_;
 
   /// \brief Game index.
-  uint_least64_t index_{0};
+  uint64_t index_{0};
 
   /// \brief Game index within its game category.
-  uint_least64_t category_index_{0};
+  uint64_t category_index_{0};
 
   std::vector<std::string> split_date_from_the_rest(const std::string& date_with_player_names_and_points, const std::string& initialization_error_message) const {
     const std::vector<std::string> date_and_the_rest{split(remove_whitespace(date_with_player_names_and_points), ':')};
@@ -222,7 +222,7 @@ protected:
         error(initialization_error_message);
       }
       const PlayerName player_name{player_name_string};
-      const std::optional<int_least64_t> points_optional_number{string_to_integer_number(points_string)};
+      const std::optional<int64_t> points_optional_number{string_to_integer_number(points_string)};
       if (!points_optional_number.has_value() || (points_optional_number.has_value() && (points_optional_number.value() < 2 || points_optional_number.value() > 22))) {
         error(initialization_error_message);
       }

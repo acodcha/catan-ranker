@@ -24,17 +24,17 @@ protected:
     return Path::gnuplot_path_to_png_path(path_);
   }
 
-  uint_least64_t nearest_higher_nice_number(const double value, const uint_least64_t increment) const noexcept {
+  uint64_t nearest_higher_nice_number(const double value, const uint64_t increment) const noexcept {
     return increment * static_cast<uint64_t>(std::ceil(value / increment));
   }
 
-  uint_least64_t nearest_lower_nice_number(const double value, const uint_least64_t increment) const noexcept {
+  uint64_t nearest_lower_nice_number(const double value, const uint64_t increment) const noexcept {
     return increment * static_cast<uint64_t>(std::floor(value / increment));
   }
 
-  const uint_least64_t width_pixels_{1000};
+  const uint64_t width_pixels_{1000};
 
-  const uint_least64_t height_pixels_{750};
+  const uint64_t height_pixels_{750};
 
 };
 

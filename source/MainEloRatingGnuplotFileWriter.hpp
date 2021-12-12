@@ -10,9 +10,9 @@ class MainEloRatingGnuplotFileWriter : public GnuplotFileWriter {
 public:
 
   MainEloRatingGnuplotFileWriter(const std::experimental::filesystem::path& path, const EloRating& lowest, const EloRating& highest) noexcept : GnuplotFileWriter(path) {
-    const uint_least64_t increment{100};
-    const uint_least64_t y_minimum{std::min(static_cast<uint64_t>(EloRatingStartingValue - increment), nearest_lower_nice_number(lowest.value(), increment))};
-    const uint_least64_t y_maximum{std::max(static_cast<uint64_t>(EloRatingStartingValue + increment), nearest_higher_nice_number(highest.value(), increment))};
+    const uint64_t increment{100};
+    const uint64_t y_minimum{std::min(static_cast<uint64_t>(EloRatingStartingValue - increment), nearest_lower_nice_number(lowest.value(), increment))};
+    const uint64_t y_maximum{std::max(static_cast<uint64_t>(EloRatingStartingValue + increment), nearest_higher_nice_number(highest.value(), increment))};
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -28,10 +28,10 @@ public:
 
 protected:
 
-  virtual uint_least8_t x_column() const noexcept = 0;
+  virtual uint8_t x_column() const noexcept = 0;
 
   void plot(const Players& players, const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data) noexcept {
-    uint_least64_t counter{0};
+    uint64_t counter{0};
     for (const std::pair<PlayerName, std::experimental::filesystem::path>& datum : data) {
       line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":7 w lp lw 2 pt " + std::to_string(players.find(datum.first).gnuplot_point_type()) + " ps 1 lt rgb \"#" + players.find(datum.first).color() + "\" t \"" + datum.first.value() + "\" , \\");
       ++counter;
@@ -59,7 +59,7 @@ public:
 
 protected:
 
-  uint_least8_t x_column() const noexcept {
+  uint8_t x_column() const noexcept {
     return 2;
   }
 
@@ -87,7 +87,7 @@ public:
 
 protected:
 
-  uint_least8_t x_column() const noexcept {
+  uint8_t x_column() const noexcept {
     return 5;
   }
 

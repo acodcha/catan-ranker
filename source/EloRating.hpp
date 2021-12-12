@@ -8,7 +8,7 @@ constexpr const double EloRatingStartingValue{1000.0};
 
 constexpr const double EloRatingStandardMaximumUpdateFactor{64.0};
 
-const std::map<uint_least8_t, double> NumberOfPlayersToEloRatingMaximumUpdateFactor{
+const std::map<uint8_t, double> NumberOfPlayersToEloRatingMaximumUpdateFactor{
   {3, EloRatingStandardMaximumUpdateFactor / 2}, // Each player faces off against 2 other players. There are 3 2-player pairs.
   {4, EloRatingStandardMaximumUpdateFactor / 3}, // Each player faces off against 3 other players. There are 6 2-player pairs.
   {5, EloRatingStandardMaximumUpdateFactor / 4}, // Each player faces off against 4 other players. There are 10 2-player pairs.
@@ -17,8 +17,8 @@ const std::map<uint_least8_t, double> NumberOfPlayersToEloRatingMaximumUpdateFac
   {8, EloRatingStandardMaximumUpdateFactor / 7}  // Each player faces off against 7 other players. There are 28 2-player pairs.
 };
 
-double elo_rating_maximum_update_factor(const uint_least8_t number_of_players) {
-  const std::map<uint_least8_t, double>::const_iterator found{NumberOfPlayersToEloRatingMaximumUpdateFactor.find(number_of_players)};
+double elo_rating_maximum_update_factor(const uint8_t number_of_players) {
+  const std::map<uint8_t, double>::const_iterator found{NumberOfPlayersToEloRatingMaximumUpdateFactor.find(number_of_players)};
   if (found != NumberOfPlayersToEloRatingMaximumUpdateFactor.cend()) {
     return found->second;
   } else {

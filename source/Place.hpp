@@ -10,9 +10,9 @@ public:
 
   constexpr Place() noexcept {}
 
-  constexpr Place(const uint_least8_t value) noexcept : value_(value) {}
+  constexpr Place(const uint8_t value) noexcept : value_(value) {}
 
-  constexpr uint_least8_t value() const noexcept {
+  constexpr uint8_t value() const noexcept {
     return value_;
   }
 
@@ -98,7 +98,7 @@ public:
 
 protected:
 
-  uint_least8_t value_{0};
+  uint8_t value_{0};
 
 };
 
@@ -111,7 +111,7 @@ namespace std {
   template <> struct hash<CatanLeaderboardGenerator::Place> {
 
     size_t operator()(const CatanLeaderboardGenerator::Place& place) const {
-      return hash<uint_least8_t>()(place.value());
+      return hash<uint8_t>()(place.value());
     }
 
   };

@@ -12,7 +12,7 @@ public:
 
   constexpr Date() noexcept {}
 
-  constexpr Date(const uint_least16_t year, const uint_least8_t month_number, const uint_least8_t day_number) noexcept : year_(year), month_number_(month_number), day_number_(day_number) {}
+  constexpr Date(const uint16_t year, const uint8_t month_number, const uint8_t day_number) noexcept : year_(year), month_number_(month_number), day_number_(day_number) {}
 
   /// \brief Constructor from a YYYY-MM-DD string, such as "2020-03-15".
   Date(const std::string& year_month_day) {
@@ -21,19 +21,19 @@ public:
     if (year_month_day_vector.size() != 3) {
       error(error_message);
     }
-    const std::optional<uint_least64_t> year{string_to_natural_number(year_month_day_vector[0])};
+    const std::optional<uint64_t> year{string_to_natural_number(year_month_day_vector[0])};
     if (year.has_value() && year.value() > 0) {
       year_ = year.value();
     } else {
       error(error_message);
     }
-    const std::optional<uint_least64_t> month_number{string_to_natural_number(year_month_day_vector[1])};
+    const std::optional<uint64_t> month_number{string_to_natural_number(year_month_day_vector[1])};
     if (month_number.has_value() && month_number.value() >= 1 && month_number.value() <= 12) {
       month_number_ = month_number.value();
     } else {
       error(error_message);
     }
-    const std::optional<uint_least64_t> day_number{string_to_natural_number(year_month_day_vector[2])};
+    const std::optional<uint64_t> day_number{string_to_natural_number(year_month_day_vector[2])};
     if (day_number.has_value() && day_number.value() >= 1 && day_number.value() <= 31) {
       day_number_ = day_number.value();
     } else {
@@ -41,15 +41,15 @@ public:
     }
   }
 
-  constexpr uint_least16_t year() const noexcept {
+  constexpr uint16_t year() const noexcept {
     return year_;
   }
 
-  constexpr uint_least8_t month_number() const noexcept {
+  constexpr uint8_t month_number() const noexcept {
     return month_number_;
   }
 
-  constexpr uint_least8_t day_number() const noexcept {
+  constexpr uint8_t day_number() const noexcept {
     return day_number_;
   }
 
@@ -134,13 +134,13 @@ public:
 protected:
 
   /// \brief CE year, e.g. 2020.
-  uint_least16_t year_{0};
+  uint16_t year_{0};
 
   /// \brief Month number. Ranges from 1 to 12, where 1 is January and 12 is December.
-  uint_least8_t month_number_{0};
+  uint8_t month_number_{0};
 
   /// \brief Day number within a month. 1 is the 1st of the month.
-  uint_least8_t day_number_{0};
+  uint8_t day_number_{0};
 
 };
 

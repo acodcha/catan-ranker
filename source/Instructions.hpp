@@ -85,7 +85,7 @@ protected:
     const std::string space{"  "};
     message("Usage:");
     message(space + executable_name_ + " " + Arguments::GamesFilePattern + " " + Arguments::LeaderboardDirectoryPattern);
-    const uint_least64_t length{std::max({
+    const uint64_t length{std::max({
       Arguments::UsageInformation.length(),
       Arguments::GamesFilePattern.length(),
       Arguments::LeaderboardDirectoryPattern.length()
