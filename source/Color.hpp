@@ -62,7 +62,7 @@ std::string color(const uint_least64_t counter) noexcept {
 const std::vector<uint_least8_t> GnuplotPointTypeSequence{7, 5, 9, 13, 11, 2};
 
 uint_least8_t gnuplot_point_type(const uint_least64_t counter) noexcept {
-  const std::size_t gnuplot_point_type_index{(uint_least64_t)std::floor(counter / ColorSequence.size()) % GnuplotPointTypeSequence.size()};
+  const std::size_t gnuplot_point_type_index{static_cast<uint64_t>(std::floor(counter / ColorSequence.size())) % GnuplotPointTypeSequence.size()};
   return GnuplotPointTypeSequence[gnuplot_point_type_index];
 }
 

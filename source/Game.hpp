@@ -66,7 +66,7 @@ public:
   }
 
   uint_least8_t number_of_players() const noexcept {
-    return (uint_least8_t)player_names_.size();
+    return static_cast<uint_least8_t>(player_names_.size());
   }
 
   GameCategory category() const noexcept {

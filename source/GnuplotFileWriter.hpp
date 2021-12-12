@@ -25,11 +25,11 @@ protected:
   }
 
   uint_least64_t nearest_higher_nice_number(const double value, const uint_least64_t increment) const noexcept {
-    return increment * (uint_least64_t)std::ceil(value / increment);
+    return increment * static_cast<uint64_t>(std::ceil(value / increment));
   }
 
   uint_least64_t nearest_lower_nice_number(const double value, const uint_least64_t increment) const noexcept {
-    return increment * (uint_least64_t)std::floor(value / increment);
+    return increment * static_cast<uint64_t>(std::floor(value / increment));
   }
 
   const uint_least64_t width_pixels_{1000};

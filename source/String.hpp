@@ -97,7 +97,7 @@ std::string real_number_to_string(const double value, const uint_least8_t signif
     const double log10_absolute_value{std::log10(absolute_value)};
     const int_least64_t floor_log10_absolute_value{static_cast<int64_t>(std::floor(log10_absolute_value))};
     const int_least64_t raw_precision{static_cast<int64_t>(significant_digits) - floor_log10_absolute_value - 1};
-    const uint_least64_t precision{(uint_least64_t)std::min(std::max(raw_precision, static_cast<int64_t>(0)), static_cast<int64_t>(16))};
+    const uint_least64_t precision{static_cast<uint64_t>(std::min(std::max(raw_precision, static_cast<int64_t>(0)), static_cast<int64_t>(16)))};
     std::ostringstream stream;
     stream << std::fixed << std::setprecision(precision) << value;
     return stream.str();
@@ -109,7 +109,7 @@ std::optional<uint_least64_t> string_to_natural_number(const std::string& text) 
   char* end = 0;
   const unsigned long long int value = std::strtoull(text.c_str(), &end, 10);
   if (end != text.c_str() && *end == '\0' && value != ULLONG_MAX) {
-    return {(uint_least64_t)(value)};
+    return {static_cast<uint64_t>(value)};
   }
   const std::optional<uint_least64_t> no_value;
   return no_value;

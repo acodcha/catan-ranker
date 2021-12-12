@@ -11,8 +11,8 @@ public:
 
   MainEloRatingGnuplotFileWriter(const std::experimental::filesystem::path& path, const EloRating& lowest, const EloRating& highest) noexcept : GnuplotFileWriter(path) {
     const uint_least64_t increment{100};
-    const uint_least64_t y_minimum{std::min((uint_least64_t)(EloRatingStartingValue - increment), nearest_lower_nice_number(lowest.value(), increment))};
-    const uint_least64_t y_maximum{std::max((uint_least64_t)(EloRatingStartingValue + increment), nearest_higher_nice_number(highest.value(), increment))};
+    const uint_least64_t y_minimum{std::min(static_cast<uint64_t>(EloRatingStartingValue - increment), nearest_lower_nice_number(lowest.value(), increment))};
+    const uint_least64_t y_maximum{std::max(static_cast<uint64_t>(EloRatingStartingValue + increment), nearest_higher_nice_number(highest.value(), increment))};
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
