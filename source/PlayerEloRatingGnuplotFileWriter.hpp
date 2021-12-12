@@ -10,9 +10,9 @@ class PlayerEloRatingGnuplotFileWriter : public GnuplotFileWriter {
 public:
 
   PlayerEloRatingGnuplotFileWriter(const std::experimental::filesystem::path& path, const EloRating& lowest, const EloRating& highest) noexcept : GnuplotFileWriter(path) {
-    const uint_least64_t increment{100};
-    const uint_least64_t y_minimum{std::min((uint_least64_t)(EloRatingStartingValue - increment), nearest_lower_nice_number(lowest.value(), increment))};
-    const uint_least64_t y_maximum{std::max((uint_least64_t)(EloRatingStartingValue + increment), nearest_higher_nice_number(highest.value(), increment))};
+    const int64_t increment{100};
+    const int64_t y_minimum{std::min(static_cast<int64_t>(EloRatingStartingValue - increment), nearest_lower_nice_number(lowest.value(), increment))};
+    const int64_t y_maximum{std::max(static_cast<int64_t>(EloRatingStartingValue + increment), nearest_higher_nice_number(highest.value(), increment))};
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -28,7 +28,7 @@ public:
 
 protected:
 
-  virtual uint_least8_t x_column() const noexcept = 0;
+  virtual int8_t x_column() const noexcept = 0;
 
   void plot(const std::map<GameCategory, std::experimental::filesystem::path>& data) noexcept {
     plot(data, GameCategory::AnyNumberOfPlayers,  Color::BlueDarkWater, 4);
@@ -41,7 +41,7 @@ protected:
     const std::map<GameCategory, std::experimental::filesystem::path>& data,
     const GameCategory game_category,
     const std::string& color,
-    const uint_least8_t line_width
+    const int8_t line_width
   ) noexcept {
     const std::map<GameCategory, std::experimental::filesystem::path>::const_iterator found{data.find(game_category)};
     if (found != data.cend()) {
@@ -70,7 +70,7 @@ public:
 
 protected:
 
-  uint_least8_t x_column() const noexcept {
+  int8_t x_column() const noexcept {
     return 3;
   }
 
@@ -98,7 +98,7 @@ public:
 
 protected:
 
-  uint_least8_t x_column() const noexcept {
+  int8_t x_column() const noexcept {
     return 5;
   }
 

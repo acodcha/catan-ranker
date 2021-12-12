@@ -10,9 +10,9 @@ public:
 
   constexpr Points() noexcept {}
 
-  constexpr Points(const int_least64_t value) noexcept : value_(value) {}
+  constexpr Points(const int64_t value) noexcept : value_(value) {}
 
-  constexpr int_least64_t value() const noexcept {
+  constexpr int64_t value() const noexcept {
     return value_;
   }
 
@@ -48,7 +48,7 @@ public:
     return {value_ + other.value_};
   }
 
-  constexpr Points operator+(const int_least64_t number) const noexcept {
+  constexpr Points operator+(const int64_t number) const noexcept {
     return {value_ + number};
   }
 
@@ -56,7 +56,7 @@ public:
     value_ += other.value_;
   }
 
-  constexpr void operator+=(const int_least64_t number) noexcept {
+  constexpr void operator+=(const int64_t number) noexcept {
     value_ += number;
   }
 
@@ -64,7 +64,7 @@ public:
     return {value_ - other.value_};
   }
 
-  constexpr Points operator-(const int_least64_t number) const noexcept {
+  constexpr Points operator-(const int64_t number) const noexcept {
     return {value_ - number};
   }
 
@@ -72,23 +72,23 @@ public:
     value_ -= other.value_;
   }
 
-  constexpr void operator-=(const int_least64_t number) noexcept {
+  constexpr void operator-=(const int64_t number) noexcept {
     value_ -= number;
   }
 
-  constexpr Points operator*(const int_least64_t number) const noexcept {
+  constexpr Points operator*(const int64_t number) const noexcept {
     return {value_ * number};
   }
 
-  constexpr void operator*=(const int_least64_t number) noexcept {
+  constexpr void operator*=(const int64_t number) noexcept {
     value_ *= number;
   }
 
-  constexpr Points operator/(const int_least64_t number) const noexcept {
+  constexpr Points operator/(const int64_t number) const noexcept {
     return {value_ / number};
   }
 
-  constexpr void operator/=(const int_least64_t number) noexcept {
+  constexpr void operator/=(const int64_t number) noexcept {
     value_ /= number;
   }
 
@@ -100,7 +100,7 @@ public:
 
 protected:
 
-  int_least64_t value_{0};
+  int64_t value_{0};
 
 };
 
@@ -111,7 +111,7 @@ namespace std {
   template <> struct hash<CatanLeaderboardGenerator::Points> {
 
     size_t operator()(const CatanLeaderboardGenerator::Points& points) const {
-      return hash<int_least64_t>()(points.value());
+      return hash<int64_t>()(points.value());
     }
 
   };

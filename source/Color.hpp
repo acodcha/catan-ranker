@@ -54,15 +54,15 @@ const std::vector<std::string> ColorSequence{
   Color::Pink
 };
 
-std::string color(const uint_least64_t counter) noexcept {
+std::string color(const int64_t counter) noexcept {
   const std::size_t color_index{counter % ColorSequence.size()};
   return ColorSequence[color_index];
 }
 
-const std::vector<uint_least8_t> GnuplotPointTypeSequence{7, 5, 9, 13, 11, 2};
+const std::vector<int8_t> GnuplotPointTypeSequence{7, 5, 9, 13, 11, 2};
 
-uint_least8_t gnuplot_point_type(const uint_least64_t counter) noexcept {
-  const std::size_t gnuplot_point_type_index{(uint_least64_t)std::floor(counter / ColorSequence.size()) % GnuplotPointTypeSequence.size()};
+int8_t gnuplot_point_type(const int64_t counter) noexcept {
+  const std::size_t gnuplot_point_type_index{static_cast<int64_t>(std::floor(counter / ColorSequence.size())) % GnuplotPointTypeSequence.size()};
   return GnuplotPointTypeSequence[gnuplot_point_type_index];
 }
 

@@ -85,11 +85,11 @@ protected:
     const std::string space{"  "};
     message("Usage:");
     message(space + executable_name_ + " " + Arguments::GamesFilePattern + " " + Arguments::LeaderboardDirectoryPattern);
-    const uint_least64_t length{std::max({
+    const int64_t length{static_cast<int64_t>(std::max({
       Arguments::UsageInformation.length(),
       Arguments::GamesFilePattern.length(),
       Arguments::LeaderboardDirectoryPattern.length()
-    })};
+    }))};
     message("Arguments:");
     message(space + pad_to_length(Arguments::UsageInformation, length) + space + "Displays this information and exits.");
     message(space + pad_to_length(Arguments::GamesFilePattern, length) + space + "Path to the games file to be read. Required.");

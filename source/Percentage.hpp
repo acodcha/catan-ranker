@@ -17,7 +17,7 @@ public:
     return value_;
   }
 
-  std::string print(const uint_least8_t decimals = 0) const noexcept {
+  std::string print(const int8_t decimals = 0) const noexcept {
     if (value_ == 0.0) {
       return "0%";
     } else {

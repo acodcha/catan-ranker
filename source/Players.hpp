@@ -16,7 +16,7 @@ public:
       games_player_names.insert(game_player_names.cbegin(), game_player_names.cend());
     }
     // Initialize the players with a player name, color, and Gnuplot point type.
-    uint_least64_t counter{0};
+    int64_t counter{0};
     for (const PlayerName& player_name : games_player_names) {
       data_.insert({player_name, color(counter), gnuplot_point_type(counter)});
       ++counter;

@@ -11,11 +11,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install packages
-      run: sudo apt install -y cmake g++ gnuplot
+      run: sudo apt-get update && sudo apt-get install -y cmake g++ gnuplot
     - name: configure
       run: mkdir -p build && cd build && cmake ..
     - name: build
       run: cd build && make
     - name: test
       run: cd build && make test
-

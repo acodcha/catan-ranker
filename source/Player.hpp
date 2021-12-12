@@ -15,7 +15,7 @@ public:
   Player(const PlayerName& name) noexcept : name_(name) {}
 
   /// \brief Create a player for the first time.
-  Player(const PlayerName& name, const std::string& color, const uint_least8_t gnuplot_point_type) noexcept : name_(name), color_(color), gnuplot_point_type_(gnuplot_point_type) {}
+  Player(const PlayerName& name, const std::string& color, const int8_t gnuplot_point_type) noexcept : name_(name), color_(color), gnuplot_point_type_(gnuplot_point_type) {}
 
   /// \brief Update a player with a new game.
   Player(const Player& player, const Game& game, const std::map<PlayerName, std::map<GameCategory, EloRating>, PlayerName::sort>& previous_elo_ratings) noexcept : name_(player.name_), color_(player.color_), gnuplot_point_type_(player.gnuplot_point_type_), data_(player.data_) {
@@ -40,7 +40,7 @@ public:
     return color_;
   }
 
-  const uint_least8_t gnuplot_point_type() const noexcept {
+  const int8_t gnuplot_point_type() const noexcept {
     return gnuplot_point_type_;
   }
 
@@ -146,7 +146,7 @@ protected:
 
   std::string color_;
 
-  uint_least8_t gnuplot_point_type_{0};
+  int8_t gnuplot_point_type_{0};
 
   std::map<GameCategory, std::vector<PlayerProperties>> data_{
     {GameCategory::AnyNumberOfPlayers, {}},

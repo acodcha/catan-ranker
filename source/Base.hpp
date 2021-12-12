@@ -49,7 +49,7 @@ template <typename Type> std::string label(const Type type) noexcept {
   }
 }
 
-enum class GameCategory : uint_least8_t {
+enum class GameCategory : int8_t {
   AnyNumberOfPlayers,
   ThreeToFourPlayers,
   FiveToSixPlayers,
@@ -70,7 +70,7 @@ template <> const std::map<GameCategory, std::string> labels<GameCategory>{
   {GameCategory::SevenToEightPlayers, "7-8 Player Games"}
 };
 
-const std::map<uint_least8_t, GameCategory> game_categories{
+const std::map<int8_t, GameCategory> game_categories{
   {3, GameCategory::ThreeToFourPlayers},
   {4, GameCategory::ThreeToFourPlayers},
   {5, GameCategory::FiveToSixPlayers},
@@ -79,8 +79,8 @@ const std::map<uint_least8_t, GameCategory> game_categories{
   {8, GameCategory::SevenToEightPlayers}
 };
 
-GameCategory game_category(const uint_least8_t number_of_players) {
-  const std::map<uint_least8_t, GameCategory>::const_iterator found_game_category{game_categories.find(number_of_players)};
+GameCategory game_category(const int8_t number_of_players) {
+  const std::map<int8_t, GameCategory>::const_iterator found_game_category{game_categories.find(number_of_players)};
   if (found_game_category != game_categories.cend()) {
     return found_game_category->second;
   } else {
