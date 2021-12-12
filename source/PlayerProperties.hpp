@@ -141,12 +141,12 @@ protected:
   }
 
   void initialize_average_points_per_game(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous_same_game_category) noexcept {
-    const std::optional<Points> found_points{game.points(name)};
+    const std::optional<Points> found_points{game.points_limited_to_10(name)};
     if (found_points.has_value()) {
       if (previous_same_game_category.has_value()) {
         average_points_per_game_ = (previous_same_game_category.value().average_points_per_game_ * previous_same_game_category.value().player_game_category_game_number() + found_points.value().value()) / player_game_category_game_number();
       } else {
-        average_points_per_game_ = (double)found_points.value().value();
+        average_points_per_game_ = static_cast<double>(found_points.value().value());
       }
     } else {
       error("Player " + name.value() + " is not a participant in the game: " + game.print());
@@ -172,7 +172,7 @@ protected:
 
   void initialize_place_percentages() noexcept {
     for (const std::pair<Place, uint_least64_t>& element : place_counts_) {
-      place_percentages_.insert({element.first, {(double)element.second / player_game_category_game_number()}});
+      place_percentages_.insert({element.first, {static_cast<double>(element.second) / player_game_category_game_number()}});
     }
   }
 

@@ -44,7 +44,7 @@ public:
   }
 
   std::string print() const noexcept {
-    return std::to_string((int_least64_t)std::round(value_));
+    return std::to_string(static_cast<int64_t>(std::round(value_)));
   }
 
   constexpr bool operator==(const EloRating& other) const noexcept {

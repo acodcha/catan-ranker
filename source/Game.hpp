@@ -35,6 +35,16 @@ public:
     }
   }
 
+  std::optional<Points> points_limited_to_10(const PlayerName& player_name) const noexcept {
+    const std::optional<Points> raw_points{points(player_name)};
+    if (raw_points.has_value()) {
+      return {std::max(raw_points.value(), {10})};
+    } else {
+      std::optional<Points> no_data;
+      return no_data;
+    }
+  }
+
   std::optional<Points> points(const PlayerName& player_name) const noexcept {
     const std::map<PlayerName, Points, PlayerName::sort>::const_iterator element{player_names_to_points_.find(player_name)};
     if (element != player_names_to_points_.cend()) {
