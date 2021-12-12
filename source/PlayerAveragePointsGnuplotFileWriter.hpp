@@ -24,7 +24,7 @@ public:
 
 protected:
 
-  virtual uint8_t x_column() const noexcept = 0;
+  virtual int8_t x_column() const noexcept = 0;
 
   void plot(const std::map<GameCategory, std::experimental::filesystem::path>& data) noexcept {
     plot(data, GameCategory::AnyNumberOfPlayers,  Color::BlueDarkWater, 4);
@@ -37,7 +37,7 @@ protected:
     const std::map<GameCategory, std::experimental::filesystem::path>& data,
     const GameCategory game_category,
     const std::string& color,
-    const uint8_t line_width
+    const int8_t line_width
   ) noexcept {
     const std::map<GameCategory, std::experimental::filesystem::path>::const_iterator found{data.find(game_category)};
     if (found != data.cend()) {
@@ -64,7 +64,7 @@ public:
 
 protected:
 
-  uint8_t x_column() const noexcept {
+  int8_t x_column() const noexcept {
     return 3;
   }
 
@@ -90,7 +90,7 @@ public:
 
 protected:
 
-  uint8_t x_column() const noexcept {
+  int8_t x_column() const noexcept {
     return 5;
   }
 

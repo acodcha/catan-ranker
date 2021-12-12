@@ -62,9 +62,9 @@ protected:
         elo_rating.add_row(latest.value().elo_rating());
         average_elo_rating.add_row(latest.value().average_elo_rating());
         average_points_per_game.add_row(latest.value().average_points_per_game(), 3);
-        const uint64_t first_place_count{latest.value().place_count({1})};
-        const uint64_t second_place_count{latest.value().place_count({2})};
-        const uint64_t third_place_count{latest.value().place_count({3})};
+        const int64_t first_place_count{latest.value().place_count({1})};
+        const int64_t second_place_count{latest.value().place_count({2})};
+        const int64_t third_place_count{latest.value().place_count({3})};
         const Percentage first_place_percentage{latest.value().place_percentage({1})};
         const Percentage second_place_percentage{latest.value().place_percentage({2})};
         const Percentage third_place_percentage{latest.value().place_percentage({3})};
@@ -102,7 +102,7 @@ protected:
     Column date{"Date", Column::Alignment::Center};
     Column number_of_players{"Players", Column::Alignment::Center};
     Column results{"Results", Column::Alignment::Left};
-    uint64_t counter{0};
+    int64_t counter{0};
     for (std::vector<Game>::const_reverse_iterator game = games.crbegin(); game < games.crend(); ++game) {
       if ((game_category == GameCategory::AnyNumberOfPlayers || game_category == game->category()) && game->participant(player.name())) {
         ++counter;

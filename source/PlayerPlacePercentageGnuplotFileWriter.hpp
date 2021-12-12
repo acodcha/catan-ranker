@@ -24,7 +24,7 @@ public:
 
 protected:
 
-  virtual uint8_t x_column() const noexcept = 0;
+  virtual int8_t x_column() const noexcept = 0;
 
   void plot(const std::experimental::filesystem::path& data) noexcept {
     line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":9 w lp lw 4 pt 7 ps 1 lt rgb \"#" + Color::YellowWheat + "\" t \"1st Place\" , \\");
@@ -52,7 +52,7 @@ public:
 
 protected:
 
-  uint8_t x_column() const noexcept {
+  int8_t x_column() const noexcept {
     return 4;
   }
 
@@ -79,7 +79,7 @@ public:
 
 protected:
 
-  uint8_t x_column() const noexcept {
+  int8_t x_column() const noexcept {
     return 5;
   }
 

@@ -17,7 +17,7 @@ public:
       }
     }
     std::sort(data_.begin(), data_.end(), Game::sort());
-    std::map<GameCategory, uint64_t> game_category_game_index{
+    std::map<GameCategory, int64_t> game_category_game_index{
       {GameCategory::AnyNumberOfPlayers, 0},
       {GameCategory::ThreeToFourPlayers, 0},
       {GameCategory::FiveToSixPlayers, 0},

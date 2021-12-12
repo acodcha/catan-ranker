@@ -65,8 +65,8 @@ public:
     }
   }
 
-  uint8_t number_of_players() const noexcept {
-    return static_cast<uint8_t>(player_names_.size());
+  int8_t number_of_players() const noexcept {
+    return static_cast<int8_t>(player_names_.size());
   }
 
   GameCategory category() const noexcept {
@@ -96,27 +96,27 @@ public:
   }
 
   /// \brief Game index. Starts at 0.
-  constexpr uint64_t index() const noexcept {
+  constexpr int64_t index() const noexcept {
     return index_;
   }
 
   /// \brief Game number, such as 5th game globally. Starts at 1. Equals the game index plus one.
-  constexpr uint64_t number() const noexcept {
+  constexpr int64_t number() const noexcept {
     return index_ + 1;
   }
 
   /// \brief Game index within its game category. Starts at 0.
-  constexpr uint64_t category_index() const noexcept {
+  constexpr int64_t category_index() const noexcept {
     return category_index_;
   }
 
   /// \brief Game number within its game category, such as 5th game in the 5-6 player game category. Starts at 1. Equals the game category index plus one.
-  constexpr uint64_t category_number() const noexcept {
+  constexpr int64_t category_number() const noexcept {
     return category_index_ + 1;
   }
 
   /// \brief The games are not necessarily sorted when first constructed, so the index is set later by the Games class.
-  void set_indices(const uint64_t index, const uint64_t category_index) noexcept {
+  void set_indices(const int64_t index, const int64_t category_index) noexcept {
     index_ = index;
     category_index_ = category_index;
   }
@@ -187,10 +187,10 @@ protected:
   std::multimap<Place, PlayerName, Place::sort> places_to_player_names_;
 
   /// \brief Game index.
-  uint64_t index_{0};
+  int64_t index_{0};
 
   /// \brief Game index within its game category.
-  uint64_t category_index_{0};
+  int64_t category_index_{0};
 
   std::vector<std::string> split_date_from_the_rest(const std::string& date_with_player_names_and_points, const std::string& initialization_error_message) const {
     const std::vector<std::string> date_and_the_rest{split(remove_whitespace(date_with_player_names_and_points), ':')};
