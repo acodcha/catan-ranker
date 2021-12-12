@@ -1,5 +1,5 @@
-#include "../include/Instructions.hpp"
-#include "../include/Leaderboard.hpp"
+#include "Instructions.hpp"
+#include "Leaderboard.hpp"
 
 int main(int argc, char *argv[]) {
   const CatanLeaderboardGenerator::Instructions instructions(argc, argv);
