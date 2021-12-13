@@ -103,7 +103,7 @@ protected:
     Column winning_points{"Points", Column::Alignment::Center};
     Column number_of_players{"Players", Column::Alignment::Center};
     Column results{"Results", Column::Alignment::Left};
-    int64_t counter{0};
+    std::size_t counter{0};
     for (std::vector<Game>::const_reverse_iterator game = games.crbegin(); game < games.crend(); ++game) {
       if ((game_category == GameCategory::AnyNumberOfPlayers || game_category == game->category()) && game->participant(player.name())) {
         ++counter;
