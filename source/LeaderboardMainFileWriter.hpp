@@ -129,6 +129,7 @@ protected:
     subsection(section_title_games_tables_ + ": " + label(game_category));
     Column game_number{"Game", Column::Alignment::Center};
     Column date{"Date", Column::Alignment::Center};
+    Column winning_points{"Points", Column::Alignment::Center};
     Column number_of_players{"Players", Column::Alignment::Center};
     Column results{"Results", Column::Alignment::Left};
     int64_t counter{0};
@@ -141,12 +142,13 @@ protected:
       if (game_category == GameCategory::AnyNumberOfPlayers || game_category == game->category()) {
         game_number.add_row(counter);
         date.add_row(game->date());
+        winning_points.add_row(game->winning_points());
         number_of_players.add_row(game->number_of_players());
         results.add_row(game->print_results());
         --counter;
       }
     }
-    const Table data{{game_number, date, number_of_players, results}};
+    const Table data{{game_number, date, winning_points, number_of_players, results}};
     table(data);
   }
 

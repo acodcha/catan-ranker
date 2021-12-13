@@ -110,6 +110,7 @@ protected:
 
   Date date_;
 
+  /// \brief This is relative to a 10-point game. Other point counts are adjusted to a 10-point game.
   double average_points_per_game_{0.0};
 
   std::map<Place, int64_t, Place::sort> place_counts_;
@@ -141,12 +142,12 @@ protected:
   }
 
   void initialize_average_points_per_game(const PlayerName& name, const Game& game, const std::optional<PlayerProperties>& previous_same_game_category) noexcept {
-    const std::optional<Points> found_points{game.points_limited_to_10(name)};
+    const std::optional<double> found_points{game.adjusted_points(name)};
     if (found_points.has_value()) {
       if (previous_same_game_category.has_value()) {
-        average_points_per_game_ = (previous_same_game_category.value().average_points_per_game_ * previous_same_game_category.value().player_game_category_game_number() + found_points.value().value()) / player_game_category_game_number();
+        average_points_per_game_ = (previous_same_game_category.value().average_points_per_game_ * previous_same_game_category.value().player_game_category_game_number() + found_points.value()) / player_game_category_game_number();
       } else {
-        average_points_per_game_ = static_cast<double>(found_points.value().value());
+        average_points_per_game_ = found_points.value();
       }
     } else {
       error("Player " + name.value() + " is not a participant in the game: " + game.print());

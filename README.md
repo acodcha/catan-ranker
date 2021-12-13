@@ -55,18 +55,20 @@ catan_leaderboard_generator --games <path> --leaderboard <path>
 The games file is a plain text file with the following format:
 
 ```
-2020-03-15 : Alice 10 , Bob 8 , Claire 7 , David 5
-2020-03-15 : Alice 10 , Bob 9 , Claire 8
-2020-03-17 : Claire 10 , Bob 9 , Alice 9 , Francis 8 , Edith 8
-2020-03-18 : David 10 , Claire 9 , Alice 8 , Bob 8 , Edith 7 , Francis 6
-2020-03-20 : Claire 10 * , Alice 11 , Bob 7 , David 7 , Edith 5
-2020-03-21 : Bob 10 , Alice 7 , David 7 , Claire 6
+2020-03-15 : 10 : Alice 10 , Bob 8 , Claire 7 , David 5
+2020-03-15 : 13 : Alice 13 , Bob 11 , Claire 10
+2020-03-17 : 10 : Claire 10 , Bob 9 , Alice 9 , Francis 8 , Edith 8
+2020-03-18 : 10 : David 10 , Claire 9 , Alice 8 , Bob 8 , Edith 7 , Francis 6
+2020-03-20 : 10 : Claire 10 * , Alice 11 , Bob 7 , David 7 , Edith 5
+2020-03-21 : 14 : Bob 14 , Alice 13 , David 11 , Claire 9
 ```
 
 - Each line represents a game.
-- Each game consists of a date and a list of player names and points.
+- Each game consists of a date, a winning number of points, and a list of player names and points.
 - The date must be in the YYYY-MM-DD format.
-- A colon (`:`) is used to separate the date from the list of player names and points.
+- A colon (`:`) is used to separate the date from the winning number of points.
+- The winning number of points must always be specified, even for a standard 10-point game.
+- A colon (`:`) is used to separate the winning number of points from the list of player names and points.
 - Each player name is case-sensitive and must be followed by that player's points at game end.
 - A comma (`,`) is used to separate players.
 - Except for line breaks, all whitespace is ignored. However, as in the above example, the use of whitespace is recommended for readability.
