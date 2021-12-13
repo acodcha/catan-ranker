@@ -14,17 +14,22 @@ public:
   Game() noexcept {}
 
   /// \brief Constructor that takes a string containing a date and a list of player names and numbers of points such as "2020-03-15 : Alice 10 , Bob 8 , Claire 7 , David 6".
-  Game(const std::string& date_with_player_names_and_points) {
-    const std::string initialization_error_message{"Cannot parse '" + date_with_player_names_and_points + "' into a date with player names and numbers of points. Expected a format such as '2020-03-15 : Alice 10 , Bob 8 , Claire 7 , David 5'."};
-    const std::vector<std::string> date_and_the_rest{split_date_from_the_rest(date_with_player_names_and_points, initialization_error_message)};
-    date_ = {date_and_the_rest[0]};
-    initialize_player_names_and_points(date_and_the_rest[1], initialization_error_message);
+  Game(const std::string& date_with_winning_points_with_player_names_and_points) {
+    const std::string initialization_error_message{"Cannot parse '" + date_with_winning_points_with_player_names_and_points + "' into a date with player names and numbers of points. Expected a format such as '2020-03-15 : Alice 10 , Bob 8 , Claire 7 , David 5'."};
+    const std::vector<std::string> split_text{split_date_from_winning_points_from_player_names_and_points(date_with_winning_points_with_player_names_and_points, initialization_error_message)};
+    date_ = {split_text[0]};
+    initialize_winning_points(split_text[1], initialization_error_message);
+    initialize_player_names_and_points(split_text[2], initialization_error_message);
     initialize_player_names_and_places();
-    check_number_of_players(date_with_player_names_and_points);
+    check_number_of_players(date_with_winning_points_with_player_names_and_points);
   }
 
   constexpr const Date& date() const noexcept {
     return date_;
+  }
+
+  constexpr const Points& winning_points() const noexcept {
+    return winning_points_;
   }
 
   bool participant(const PlayerName& player_name) const noexcept {
@@ -35,12 +40,14 @@ public:
     }
   }
 
-  std::optional<Points> points_limited_to_10(const PlayerName& player_name) const noexcept {
+  /// \brief Ignores points in excess of the winning points and scales the points as if the game were a 10-point game.
+  std::optional<double> adjusted_points(const PlayerName& player_name) const noexcept {
     const std::optional<Points> raw_points{points(player_name)};
     if (raw_points.has_value()) {
-      return {std::max(raw_points.value(), {10})};
+      const Points limited_points{std::min(raw_points.value(), winning_points_)};
+      return static_cast<double>(limited_points.value()) / static_cast<double>(winning_points_.value()) * 10.0;
     } else {
-      std::optional<Points> no_data;
+      std::optional<double> no_data;
       return no_data;
     }
   }
@@ -135,7 +142,7 @@ public:
   }
 
   std::string print() const noexcept {
-    return date_.print() + " : " + print_results();
+    return date_.print() + " : " + winning_points_.print() + " : " + print_results();
   }
 
   struct sort {
@@ -176,6 +183,8 @@ protected:
 
   Date date_;
 
+  Points winning_points_{10};
+
   std::set<PlayerName, PlayerName::sort> player_names_;
 
   std::map<PlayerName, Points, PlayerName::sort> player_names_to_points_;
@@ -192,12 +201,21 @@ protected:
   /// \brief Game index within its game category.
   int64_t category_index_{0};
 
-  std::vector<std::string> split_date_from_the_rest(const std::string& date_with_player_names_and_points, const std::string& initialization_error_message) const {
-    const std::vector<std::string> date_and_the_rest{split(remove_whitespace(date_with_player_names_and_points), ':')};
-    if (date_and_the_rest.size() != 2) {
+  std::vector<std::string> split_date_from_winning_points_from_player_names_and_points(const std::string& date_with_winning_points_with_player_names_and_points, const std::string& initialization_error_message) const {
+    const std::vector<std::string> split_text{split(remove_whitespace(date_with_winning_points_with_player_names_and_points), ':')};
+    if (split_text.size() != 3) {
       error(initialization_error_message);
     }
-    return date_and_the_rest;
+    return split_text;
+  }
+
+  void initialize_winning_points(const std::string& winning_points, const std::string& initialization_error_message) {
+    const std::optional<int64_t> optional_winning_points{string_to_integer_number(winning_points)};
+    if (optional_winning_points.has_value() && optional_winning_points.value() > MinimumPoints.value() && optional_winning_points.value() < MaximumPoints.value()) {
+      winning_points_ = {optional_winning_points.value()};
+    } else {
+      error(initialization_error_message);
+    }
   }
 
   void initialize_player_names_and_points(const std::string& player_names_and_points, const std::string& initialization_error_message) {
@@ -223,7 +241,7 @@ protected:
       }
       const PlayerName player_name{player_name_string};
       const std::optional<int64_t> points_optional_number{string_to_integer_number(points_string)};
-      if (!points_optional_number.has_value() || (points_optional_number.has_value() && (points_optional_number.value() < 2 || points_optional_number.value() > 22))) {
+      if (!points_optional_number.has_value() || (points_optional_number.has_value() && (points_optional_number.value() < MinimumPoints.value() || points_optional_number.value() > MaximumPoints.value()))) {
         error(initialization_error_message);
       }
       const Points points{points_optional_number.value()};
@@ -244,7 +262,7 @@ protected:
   }
 
   void initialize_player_names_and_places() noexcept {
-    Points latest_points{100};
+    Points latest_points{MaximumPoints + 1};
     Place latest_place{0};
     PlayerName special_first_place_player;
     const std::multimap<Place, PlayerName, Place::sort>::const_iterator found_special_first_place{places_to_player_names_.find({1})};

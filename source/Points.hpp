@@ -104,6 +104,10 @@ protected:
 
 };
 
+constexpr const Points MinimumPoints{2};
+
+constexpr const Points MaximumPoints{50};
+
 } // namespace CatanLeaderboardGenerator
 
 namespace std {

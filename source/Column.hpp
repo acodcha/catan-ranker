@@ -2,6 +2,7 @@
 
 #include "EloRating.hpp"
 #include "Percentage.hpp"
+#include "Points.hpp"
 
 namespace CatanLeaderboardGenerator {
 
@@ -28,6 +29,10 @@ public:
 
   void add_row(const Percentage& value, const int8_t decimals) noexcept {
     rows_.push_back(value.print(decimals));
+  }
+
+  void add_row(const Points& value) noexcept {
+    rows_.push_back(value.print());
   }
 
   void add_row(const Date& value) noexcept {
