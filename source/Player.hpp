@@ -11,11 +11,11 @@ public:
 
   Player() noexcept {}
 
-  /// \brief Only used to quickly search for a player.
+  /// \brief Create a player who will not appear in plots.
   Player(const PlayerName& name) noexcept : name_(name) {}
 
-  /// \brief Create a player for the first time.
-  Player(const PlayerName& name, const std::string& color, const int8_t gnuplot_point_type) noexcept : name_(name), color_(color), gnuplot_point_type_(gnuplot_point_type) {}
+  /// \brief Create a player who will appear in plots.
+  Player(const PlayerName& name, const std::string& color) noexcept : name_(name), color_(color) {}
 
   /// \brief Update a player with a new game.
   Player(const Player& player, const Game& game, const std::map<PlayerName, std::map<GameCategory, EloRating>, PlayerName::sort>& previous_elo_ratings) noexcept : name_(player.name_), color_(player.color_), gnuplot_point_type_(player.gnuplot_point_type_), data_(player.data_) {

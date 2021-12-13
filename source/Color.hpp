@@ -7,8 +7,6 @@ namespace CatanLeaderboardGenerator {
 /// \brief Namespace containing colors from the Catan board game.
 namespace Color {
 
-const std::string BlackNumberFont{"004405"};
-
 const std::string BlueDarkWater{"0866A5"};
 
 const std::string BlueLightWater{"7FCFF5"};
@@ -24,8 +22,6 @@ const std::string GreenLightWool{"A3B801"};
 const std::string GreyOre{"B5BBB7"};
 
 const std::string OrangeBrick{"EA772F"};
-
-const std::string Pink{"FF7FED"};
 
 const std::string PurpleDevelopmentCard{"9066BA"};
 
@@ -49,21 +45,12 @@ const std::vector<std::string> ColorSequence{
   Color::BlueLightWater,
   Color::TanCoast,
   Color::BrownDarkPort,
-  Color::RedNumberFont,
-  Color::BlackNumberFont,
-  Color::Pink
+  Color::RedNumberFont
 };
 
-std::string color(const int64_t counter) noexcept {
+std::string color(const std::size_t counter) noexcept {
   const std::size_t color_index{counter % ColorSequence.size()};
   return ColorSequence[color_index];
-}
-
-const std::vector<int8_t> GnuplotPointTypeSequence{7, 5, 9, 13, 11, 2};
-
-int8_t gnuplot_point_type(const int64_t counter) noexcept {
-  const std::size_t gnuplot_point_type_index{static_cast<int64_t>(std::floor(counter / ColorSequence.size())) % GnuplotPointTypeSequence.size()};
-  return GnuplotPointTypeSequence[gnuplot_point_type_index];
 }
 
 } // namespace CatanLeaderboardGenerator

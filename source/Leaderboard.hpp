@@ -60,7 +60,7 @@ protected:
     for (const GameCategory game_category : GameCategories) {
       std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort> data_paths;
       for (const Player& player : players) {
-        if (!player[game_category].empty()) {
+        if (!player[game_category].empty() && !player.color().empty()) {
           data_paths.insert({
             player.name(),
             base_directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_file_name(game_category)
@@ -91,7 +91,8 @@ protected:
     for (const Player& player : players) {
       std::map<GameCategory, std::experimental::filesystem::path> data_paths;
       for (const GameCategory game_category : GameCategories) {
-        if (!player[game_category].empty()) {
+        // Only generate a plot if this player has at least 2 games in this game category.
+        if (player[game_category].size() >= 2) {
           data_paths.insert({
             game_category,
             base_directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_file_name(game_category)
@@ -109,7 +110,7 @@ protected:
         };
       }
       for (const GameCategory game_category : GameCategories) {
-        if (!player[game_category].empty()) {
+        if (player[game_category].size() >= 2) {
           PlayerPlacePercentageVsGameNumberGnuplotFileWriter{
             base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(game_category),
             base_directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_file_name(game_category),

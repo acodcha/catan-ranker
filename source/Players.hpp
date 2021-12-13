@@ -9,16 +9,32 @@ class Players {
 public:
 
   Players(const Games& games) noexcept {
-    // Obtain the player names.
-    std::set<PlayerName, PlayerName::sort> games_player_names;
+    // Obtain the player names and their total number of games played.
+    std::map<PlayerName, int64_t> player_names_and_number_of_games;
     for (const Game& game : games) {
       const std::set<PlayerName, PlayerName::sort> game_player_names{game.player_names()};
-      games_player_names.insert(game_player_names.cbegin(), game_player_names.cend());
+      for (const PlayerName& player_name : game_player_names) {
+        const std::map<PlayerName, int64_t>::iterator found{player_names_and_number_of_games.find(player_name)};
+        if (found != player_names_and_number_of_games.end()) {
+          ++found->second;
+        } else {
+          player_names_and_number_of_games.insert({player_name, 1});
+        }
+      }
     }
-    // Initialize the players with a player name, color, and Gnuplot point type.
-    int64_t counter{0};
-    for (const PlayerName& player_name : games_player_names) {
-      data_.insert({player_name, color(counter), gnuplot_point_type(counter)});
+    std::multimap<int64_t, PlayerName, std::greater<int64_t>> number_of_games_and_player_names;
+    for (const std::pair<PlayerName, int64_t>& player_name_and_number_of_games : player_names_and_number_of_games) {
+      number_of_games_and_player_names.insert({player_name_and_number_of_games.second, player_name_and_number_of_games.first});
+    }
+    // Initialize the players with a player name and color.
+    std::size_t counter{0};
+    for (const std::pair<int64_t, PlayerName>& number_of_games_and_player_name : number_of_games_and_player_names) {
+      // Only assign a color to a few players with the most games.
+      if (counter < ColorSequence.size()) {
+        data_.insert({number_of_games_and_player_name.second, color(counter)});
+      } else {
+        data_.insert({number_of_games_and_player_name.second});
+      }
       ++counter;
     }
     // Update all the players one game at a time.
