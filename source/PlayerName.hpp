@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.hpp"
+#include "Path.hpp"
 
 namespace CatanLeaderboardGenerator {
 
@@ -17,7 +17,7 @@ public:
   }
 
   std::experimental::filesystem::path directory_name() const noexcept {
-    return {value_};
+    return Path::PlayersDirectoryName / std::experimental::filesystem::path{value_};
   }
 
   bool operator==(const PlayerName& other) const noexcept {

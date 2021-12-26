@@ -42,7 +42,7 @@ protected:
 
   void link_back_to_main_page() noexcept {
     blank_line();
-    line("[(Back to Main Page)](../#)");
+    line("[(Back to Main Page)](../../#)");
   }
 
   void section(const std::string& title) noexcept {

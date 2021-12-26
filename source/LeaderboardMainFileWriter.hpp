@@ -16,9 +16,7 @@ public:
     const Players& players
   ) noexcept : MarkdownFileWriter(base_directory / Path::LeaderboardFileName, "Catan Leaderboard") {
     // Header.
-    line("Leaderboard for Catan games with friends! Uses https://github.com/acodcha/CatanLeaderboardGenerator to generate the leaderboard. Last updated " + current_utc_date_and_time() + ".");
-    blank_line();
-    line("If you wish to participate in updating the leaderboard, contact me and I will add you as a collaborator to this project. As a collaborator, to update the leaderboard with new games, simply edit the `games.txt` file and make a pull request. The build system will automatically generate an updated leaderboard. Once I accept and merge the pull request, the leaderboard will be updated with your changes. See https://github.com/acodcha/CatanLeaderboardGenerator for more information about the `games.txt` file.");
+    line("Last updated " + current_utc_date_and_time() + ".");
     blank_line();
     for (const GameCategory game_category : GameCategories) {
       list_link(label(game_category));

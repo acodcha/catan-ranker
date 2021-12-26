@@ -34,6 +34,7 @@ protected:
 
   void create_directories(const std::experimental::filesystem::path& base_directory, const Players& players) {
     create(base_directory);
+    create(base_directory / Path::PlayersDirectoryName);
     create(base_directory / Path::MainPlotsDirectoryName);
     for (const Player& player : players) {
       create(base_directory / player.name().directory_name());
