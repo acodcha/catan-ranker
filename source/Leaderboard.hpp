@@ -76,12 +76,10 @@ protected:
           base_directory / Path::MainPlotsDirectoryName / Path::main_average_points_vs_game_number_file_name(game_category),
           players, data_paths
         };
-        for (const Place& place : PlacesFirstSecondThird) {
-          MainPlacePercentageVsGameNumberGnuplotFileWriter{
-            base_directory / Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_game_number_file_name(game_category, place),
-            players, data_paths, game_category, place
-          };
-        }
+        MainPlacePercentageVsGameNumberGnuplotFileWriter{
+          base_directory / Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_game_number_file_name(game_category, {1}),
+          players, data_paths, game_category, {1}
+        };
       }
     }
     message("Wrote the main Gnuplot files.");
@@ -109,14 +107,12 @@ protected:
           data_paths
         };
       }
-      for (const GameCategory game_category : GameCategories) {
-        if (player[game_category].size() >= 2) {
-          PlayerPlacePercentageVsGameNumberGnuplotFileWriter{
-            base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(game_category),
-            base_directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_file_name(game_category),
-            game_category
-          };
-        }
+      if (player[GameCategory::AnyNumberOfPlayers].size() >= 2) {
+        PlayerPlacePercentageVsGameNumberGnuplotFileWriter{
+          base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(GameCategory::AnyNumberOfPlayers),
+          base_directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_file_name(GameCategory::AnyNumberOfPlayers),
+          GameCategory::AnyNumberOfPlayers
+        };
       }
     }
     message("Wrote the player Gnuplot files.");
