@@ -15,31 +15,56 @@ public:
     const Games& games,
     const Players& players
   ) noexcept : MarkdownFileWriter(base_directory / Path::LeaderboardFileName, "Catan Leaderboard") {
-    line("Last updated " + current_utc_date_and_time() + ".");
-    section(section_title_players_table_);
+    // Header.
+    line("Leaderboard for Catan games with friends! Uses https://github.com/acodcha/CatanLeaderboardGenerator to generate the leaderboard. Last updated " + current_utc_date_and_time() + ".");
+    blank_line();
+    line("If you wish to participate in updating the leaderboard, contact me and I will add you as a collaborator to this project. As a collaborator, to update the leaderboard with new games, simply edit the `games.txt` file and make a pull request. The build system will automatically generate an updated leaderboard. Once I accept and merge the pull request, the leaderboard will be updated with your changes. See https://github.com/acodcha/CatanLeaderboardGenerator for more information about the `games.txt` file.");
+    blank_line();
     for (const GameCategory game_category : GameCategories) {
-      players_table(players, game_category);
+      list_link(label(game_category));
     }
+    list_link("License");
     for (const GameCategory game_category : GameCategories) {
       section(label(game_category));
+      list_link(label(game_category) + " " + subsection_title_players_table_);
+      list_link(label(game_category) + " " + subsection_title_elo_rating_plot_);
+      list_link(label(game_category) + " " + subsection_title_average_points_plot_);
+      list_link(label(game_category) + " " + subsection_title_first_place_percentage_plot_);
+      list_link(label(game_category) + " " + subsection_title_games_table_);
+      link_back_to_top();
+      subsection(label(game_category) + " " + subsection_title_players_table_);
+      players_table(players, game_category);
+      link_back_to_section(label(game_category));
+      subsection(label(game_category) + " " + subsection_title_elo_rating_plot_);
       elo_rating_plot(base_directory, game_category);
+      link_back_to_section(label(game_category));
+      subsection(label(game_category) + " " + subsection_title_average_points_plot_);
       average_points_plot(base_directory, game_category);
-      for (const Place place : PlacesFirstSecondThird) {
-        place_percentage_plot(base_directory, game_category, place);
-      }
-    }
-    section(section_title_games_tables_);
-    for (const GameCategory game_category : GameCategories) {
+      link_back_to_section(label(game_category));
+      subsection(label(game_category) + " " + subsection_title_first_place_percentage_plot_);
+      place_percentage_plot(base_directory, game_category, {1});
+      link_back_to_section(label(game_category));
+      subsection(label(game_category) + " " + subsection_title_games_table_);
       games_table(games, game_category);
+      link_back_to_section(label(game_category));
     }
+    section("License");
+    line("This work is maintained by Alexandre Coderre-Chabot (https://github.com/acodcha) and licensed under the MIT License. For more details, see the `LICENSE` file or https://mit-license.org/. This work is based on the Catan board game (also known as Settlers of Catan) originally designed by Klaus Teuber. The contents, copyrights, and trademarks of everything involving Catan are exclusively held by its designers and publishers; I make no claim to any of these in any way.");
+    link_back_to_top();
     blank_line();
   }
 
 protected:
 
-  const std::string section_title_players_table_{"Players"};
+  const std::string subsection_title_players_table_{"Summary"};
 
-  const std::string section_title_games_tables_{"Game History"};
+  const std::string subsection_title_elo_rating_plot_{"Ratings"};
+
+  const std::string subsection_title_average_points_plot_{"Average Points"};
+
+  const std::string subsection_title_first_place_percentage_plot_{"Win Rates"};
+
+  const std::string subsection_title_games_table_{"History"};
 
   void players_table(const Players& players, const GameCategory game_category) noexcept {
     bool is_empty{true};
@@ -52,7 +77,6 @@ protected:
     if (is_empty) {
       return;
     }
-    subsection(section_title_players_table_ + ": " + label(game_category));
     Column name{"Player", Column::Alignment::Left};
     Column number_of_games{"Games", Column::Alignment::Center};
     Column elo_rating{"Current Rating", Column::Alignment::Center};
@@ -64,8 +88,7 @@ protected:
     for (const Player& player : players) {
       const std::optional<PlayerProperties> latest{player.latest_properties(game_category)};
       if (latest.has_value()) {
-        const std::experimental::filesystem::path leaderboard_file_path{player.name().directory_name() / Path::LeaderboardFileName};
-        name.add_row("[" + player.name().value() + "](" + leaderboard_file_path.string() + ")");
+        name.add_row("[" + player.name().value() + "](" + player.name().directory_name().string() + ")");
         number_of_games.add_row(latest.value().player_game_category_game_number());
         elo_rating.add_row(latest.value().elo_rating());
         average_elo_rating.add_row(latest.value().average_elo_rating());
@@ -90,8 +113,7 @@ protected:
       Path::MainPlotsDirectoryName / Path::main_elo_rating_vs_game_number_file_name(game_category)
     };
     if (std::experimental::filesystem::exists(base_directory / gnuplot_path)) {
-      subsection(label(game_category) + ": Ratings");
-      line("![Rating History Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
+      line("![Ratings History Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
     }
   }
 
@@ -100,8 +122,7 @@ protected:
       Path::MainPlotsDirectoryName / Path::main_average_points_vs_game_number_file_name(game_category)
     };
     if (std::experimental::filesystem::exists(base_directory / gnuplot_path)) {
-      subsection(label(game_category) + ": Average Points per Game");
-      line("![Average Points per Game History Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
+      line("![Average Points History Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
     }
   }
 
@@ -110,7 +131,6 @@ protected:
       Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_game_number_file_name(game_category, place)
     };
     if (std::experimental::filesystem::exists(base_directory / gnuplot_path)) {
-      subsection(label(game_category) + ": " + section_title_place_percentage_plots(place));
       line("![" + place.print() + " Place History Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
     }
   }
@@ -126,7 +146,6 @@ protected:
     if (is_empty) {
       return;
     }
-    subsection(section_title_games_tables_ + ": " + label(game_category));
     Column game_number{"Game", Column::Alignment::Center};
     Column date{"Date", Column::Alignment::Center};
     Column winning_points{"Points", Column::Alignment::Center};
@@ -150,10 +169,6 @@ protected:
     }
     const Table data{{game_number, date, winning_points, number_of_players, results}};
     table(data);
-  }
-
-  std::string section_title_place_percentage_plots(const Place place) const noexcept {
-    return place.print() + " Places";
   }
 
 };

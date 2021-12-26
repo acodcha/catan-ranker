@@ -17,33 +17,48 @@ public:
   ) noexcept : MarkdownFileWriter(base_directory / player.name().directory_name() / Path::LeaderboardFileName, player.name().value()) {
     line("Last updated " + current_utc_date_and_time() + ".");
     blank_line();
-    line("[Go back to all players.](../" + Path::LeaderboardFileName.string() + ")");
-    section("Overview");
+    list_link(section_title_players_table_);
+    list_link(section_title_elo_rating_plot_);
+    list_link(section_title_average_points_plot_);
+    list_link(section_title_place_percentage_plot_);
+    list_link(section_title_games_tables_);
+    link_back_to_main_page();
+    section(section_title_players_table_);
     player_table(player);
+    link_back_to_top();
     section(section_title_elo_rating_plot_);
     elo_rating_plot();
+    link_back_to_top();
     section(section_title_average_points_plot_);
     average_points_plot();
+    link_back_to_top();
     section(section_title_place_percentage_plot_);
-    for (const GameCategory game_category : GameCategories) {
-      place_percentage_plot(base_directory, player, game_category);
-    }
+    place_percentage_plot(base_directory, player, GameCategory::AnyNumberOfPlayers);
+    link_back_to_top();
     section(section_title_games_tables_);
     for (const GameCategory game_category : GameCategories) {
+      list_link(label(game_category) + " " + section_title_games_tables_);
+    }
+    link_back_to_top();
+    for (const GameCategory game_category : GameCategories) {
+      subsection(label(game_category) + " " + section_title_games_tables_);
       games_table(games, player, game_category);
+      link_back_to_section(section_title_games_tables_);
     }
     blank_line();
   }
 
 protected:
 
+  const std::string section_title_players_table_{"Summary"};
+
   const std::string section_title_elo_rating_plot_{"Ratings"};
 
-  const std::string section_title_average_points_plot_{"Average Points per Game"};
+  const std::string section_title_average_points_plot_{"Average Points"};
 
-  const std::string section_title_place_percentage_plot_{"Places"};
+  const std::string section_title_place_percentage_plot_{"Win Rates"};
 
-  const std::string section_title_games_tables_{"Game History"};
+  const std::string section_title_games_tables_{"History"};
 
   void player_table(const Player& player) noexcept {
     Column category{"Category", Column::Alignment::Center};
@@ -78,18 +93,17 @@ protected:
   }
 
   void elo_rating_plot() noexcept {
-    line("![Rating History Plot](" + Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerEloRatingVsGameNumberFileName).string() + ")");
+    line("![Ratings History Plot](" + Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerEloRatingVsGameNumberFileName).string() + ")");
   }
 
   void average_points_plot() noexcept {
-    line("![Average Points per Game History Plot](" + Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName).string() + ")");
+    line("![Average Points History Plot](" + Path::gnuplot_path_to_png_path(Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName).string() + ")");
   }
 
   void place_percentage_plot(const std::experimental::filesystem::path& base_directory, const Player& player, const GameCategory game_category) noexcept {
     const std::experimental::filesystem::path gnuplot_path{Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(game_category)};
     if (std::experimental::filesystem::exists(base_directory / player.name().directory_name() / gnuplot_path)) {
-      subsection(section_title_place_percentage_plot_ + ": " + label(game_category));
-      line("![Place History Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
+      line("![Win Rates Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
     }
   }
 
@@ -97,7 +111,6 @@ protected:
     if (player[game_category].empty()) {
       return;
     }
-    subsection(section_title_games_tables_ + ": " + label(game_category));
     Column game_number{"Game", Column::Alignment::Center};
     Column date{"Date", Column::Alignment::Center};
     Column winning_points{"Points", Column::Alignment::Center};
