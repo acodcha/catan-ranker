@@ -3,13 +3,13 @@
 #include "EloRating.hpp"
 #include "GnuplotFileWriter.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
-class PlayerEloRatingGnuplotFileWriter : public GnuplotFileWriter {
+class IndividualEloRatingGnuplotFileWriter : public GnuplotFileWriter {
 
 public:
 
-  PlayerEloRatingGnuplotFileWriter(const std::experimental::filesystem::path& path, const EloRating& lowest, const EloRating& highest) noexcept : GnuplotFileWriter(path) {
+  IndividualEloRatingGnuplotFileWriter(const std::experimental::filesystem::path& path, const EloRating& lowest, const EloRating& highest) noexcept : GnuplotFileWriter(path) {
     const int64_t increment{100};
     const int64_t y_minimum{std::min(static_cast<int64_t>(EloRatingStartingValue - increment), nearest_lower_nice_number(lowest.value(), increment))};
     const int64_t y_maximum{std::max(static_cast<int64_t>(EloRatingStartingValue + increment), nearest_higher_nice_number(highest.value(), increment))};
@@ -51,16 +51,16 @@ protected:
 
 };
 
-class PlayerEloRatingVsGameNumberGnuplotFileWriter : public PlayerEloRatingGnuplotFileWriter {
+class IndividualEloRatingVsGameNumberGnuplotFileWriter : public IndividualEloRatingGnuplotFileWriter {
 
 public:
 
-  PlayerEloRatingVsGameNumberGnuplotFileWriter(
+  IndividualEloRatingVsGameNumberGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const std::map<GameCategory, std::experimental::filesystem::path>& data,
     const EloRating& lowest,
     const EloRating& highest
-  ) noexcept : PlayerEloRatingGnuplotFileWriter(path, lowest, highest) {
+  ) noexcept : IndividualEloRatingGnuplotFileWriter(path, lowest, highest) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -76,16 +76,16 @@ protected:
 
 };
 
-class PlayerEloRatingVsDateGnuplotFileWriter : public PlayerEloRatingGnuplotFileWriter {
+class IndividualEloRatingVsDateGnuplotFileWriter : public IndividualEloRatingGnuplotFileWriter {
 
 public:
 
-  PlayerEloRatingVsDateGnuplotFileWriter(
+  IndividualEloRatingVsDateGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const std::map<GameCategory, std::experimental::filesystem::path>& data,
     const EloRating& lowest,
     const EloRating& highest
-  ) noexcept : PlayerEloRatingGnuplotFileWriter(path, lowest, highest) {
+  ) noexcept : IndividualEloRatingGnuplotFileWriter(path, lowest, highest) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");
@@ -104,4 +104,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

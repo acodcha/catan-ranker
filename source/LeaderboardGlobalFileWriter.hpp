@@ -4,13 +4,13 @@
 #include "Path.hpp"
 #include "Players.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
-class LeaderboardMainFileWriter : public MarkdownFileWriter {
+class LeaderboardGlobalFileWriter : public MarkdownFileWriter {
 
 public:
 
-  LeaderboardMainFileWriter(
+  LeaderboardGlobalFileWriter(
     const std::experimental::filesystem::path& base_directory,
     const Games& games,
     const Players& players
@@ -108,7 +108,7 @@ protected:
 
   void elo_rating_plot(const std::experimental::filesystem::path& base_directory, const GameCategory game_category) noexcept {
     const std::experimental::filesystem::path gnuplot_path{
-      Path::MainPlotsDirectoryName / Path::main_elo_rating_vs_game_number_file_name(game_category)
+      Path::MainPlotsDirectoryName / Path::global_elo_rating_vs_game_number_file_name(game_category)
     };
     if (std::experimental::filesystem::exists(base_directory / gnuplot_path)) {
       line("![Ratings History Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
@@ -117,7 +117,7 @@ protected:
 
   void average_points_plot(const std::experimental::filesystem::path& base_directory, const GameCategory game_category) noexcept {
     const std::experimental::filesystem::path gnuplot_path{
-      Path::MainPlotsDirectoryName / Path::main_average_points_vs_game_number_file_name(game_category)
+      Path::MainPlotsDirectoryName / Path::global_average_points_vs_game_number_file_name(game_category)
     };
     if (std::experimental::filesystem::exists(base_directory / gnuplot_path)) {
       line("![Average Points History Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
@@ -126,7 +126,7 @@ protected:
 
   void place_percentage_plot(const std::experimental::filesystem::path& base_directory, const GameCategory game_category, const Place& place) noexcept {
     const std::experimental::filesystem::path gnuplot_path{
-      Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_game_number_file_name(game_category, place)
+      Path::MainPlotsDirectoryName / Path::global_place_percentage_vs_game_number_file_name(game_category, place)
     };
     if (std::experimental::filesystem::exists(base_directory / gnuplot_path)) {
       line("![" + place.print() + " Place History Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
@@ -171,4 +171,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

@@ -2,7 +2,7 @@
 
 #include "File.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 /// \brief General-purpose file writer base class.
 class FileWriter : public File<std::ofstream> {
@@ -33,4 +33,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

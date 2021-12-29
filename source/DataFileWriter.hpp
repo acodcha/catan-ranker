@@ -3,7 +3,7 @@
 #include "Table.hpp"
 #include "TextFileWriter.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 class DataFileWriter : public TextFileWriter {
 
@@ -16,4 +16,4 @@ public:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

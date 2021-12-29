@@ -2,13 +2,13 @@
 
 #include "GnuplotFileWriter.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
-class PlayerAveragePointsGnuplotFileWriter : public GnuplotFileWriter {
+class IndividualAveragePointsGnuplotFileWriter : public GnuplotFileWriter {
 
 public:
 
-  PlayerAveragePointsGnuplotFileWriter(const std::experimental::filesystem::path& path) noexcept : GnuplotFileWriter(path) {
+  IndividualAveragePointsGnuplotFileWriter(const std::experimental::filesystem::path& path) noexcept : GnuplotFileWriter(path) {
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -47,14 +47,14 @@ protected:
 
 };
 
-class PlayerAveragePointsVsGameNumberGnuplotFileWriter : public PlayerAveragePointsGnuplotFileWriter {
+class IndividualAveragePointsVsGameNumberGnuplotFileWriter : public IndividualAveragePointsGnuplotFileWriter {
 
 public:
 
-  PlayerAveragePointsVsGameNumberGnuplotFileWriter(
+  IndividualAveragePointsVsGameNumberGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const std::map<GameCategory, std::experimental::filesystem::path>& data
-  ) noexcept : PlayerAveragePointsGnuplotFileWriter(path) {
+  ) noexcept : IndividualAveragePointsGnuplotFileWriter(path) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -70,14 +70,14 @@ protected:
 
 };
 
-class PlayerAveragePointsVsDateGnuplotFileWriter : public PlayerAveragePointsGnuplotFileWriter {
+class IndividualAveragePointsVsDateGnuplotFileWriter : public IndividualAveragePointsGnuplotFileWriter {
 
 public:
 
-  PlayerAveragePointsVsDateGnuplotFileWriter(
+  IndividualAveragePointsVsDateGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const std::map<GameCategory, std::experimental::filesystem::path>& data
-  ) noexcept : PlayerAveragePointsGnuplotFileWriter(path) {
+  ) noexcept : IndividualAveragePointsGnuplotFileWriter(path) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");
@@ -96,4 +96,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

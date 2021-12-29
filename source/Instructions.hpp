@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 /// \brief Namespace listing the program's command-line argument keywords.
 namespace Arguments {
@@ -129,4 +129,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

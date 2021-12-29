@@ -2,7 +2,7 @@
 
 #include "Path.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 class PlayerName {
 
@@ -56,13 +56,13 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification
 
 namespace std {
 
-  template <> struct hash<CatanLeaderboardGenerator::PlayerName> {
+  template <> struct hash<catan_stratification::PlayerName> {
 
-    size_t operator()(const CatanLeaderboardGenerator::PlayerName& player_name) const {
+    size_t operator()(const catan_stratification::PlayerName& player_name) const {
       return hash<string>()(player_name.value());
     }
 

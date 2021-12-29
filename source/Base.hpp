@@ -3,16 +3,16 @@
 #include "Color.hpp"
 #include "String.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 /// \brief Namespace containing information about the program and its compilation.
 namespace Program {
 
-const std::string Title{"Catan Leaderboard Generator"};
+const std::string Title{"Catan Stratification"};
 
 const std::string CompilationDateAndTime{std::string{__DATE__} + ", " + std::string{__TIME__}};
 
-const std::string Description{"Generates a simple leaderboard for Catan games."};
+const std::string Description{"Leaderboard generator for the Catan board game originally designed by Klaus Teuber."};
 
 } // namespace Program
 
@@ -114,4 +114,4 @@ std::string current_utc_date_and_time() noexcept {
   return date_and_time(current) + " UTC";
 }
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

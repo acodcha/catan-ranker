@@ -1,16 +1,16 @@
 #pragma once
 
 #include "DataFileWriter.hpp"
-#include "LeaderboardMainFileWriter.hpp"
-#include "LeaderboardPlayerFileWriter.hpp"
-#include "MainAveragePointsGnuplotFileWriter.hpp"
-#include "MainEloRatingGnuplotFileWriter.hpp"
-#include "MainPlacePercentageGnuplotFileWriter.hpp"
-#include "PlayerAveragePointsGnuplotFileWriter.hpp"
-#include "PlayerEloRatingGnuplotFileWriter.hpp"
-#include "PlayerPlacePercentageGnuplotFileWriter.hpp"
+#include "GlobalAveragePointsGnuplotFileWriter.hpp"
+#include "GlobalEloRatingGnuplotFileWriter.hpp"
+#include "GlobalPlacePercentageGnuplotFileWriter.hpp"
+#include "IndividualAveragePointsGnuplotFileWriter.hpp"
+#include "IndividualEloRatingGnuplotFileWriter.hpp"
+#include "IndividualPlacePercentageGnuplotFileWriter.hpp"
+#include "LeaderboardGlobalFileWriter.hpp"
+#include "LeaderboardIndividualFileWriter.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 /// \brief Class that writes all leaderboard files given games and players data.
 class Leaderboard {
@@ -20,12 +20,12 @@ public:
   Leaderboard(const std::experimental::filesystem::path& base_directory, const Games& games, const Players& players) {
     if (!base_directory.empty()) {
       create_directories(base_directory, players);
-      write_player_data_files(base_directory, players);
-      write_main_gnuplot_files(base_directory, players);
+      write_data_files(base_directory, players);
+      write_global_gnuplot_files(base_directory, players);
       write_player_gnuplot_files(base_directory, players);
-      write_main_leaderboard_file(base_directory, games, players);
+      write_global_leaderboard_file(base_directory, games, players);
       write_player_leaderboard_files(base_directory, games, players);
-      generate_main_plots(base_directory);
+      generate_global_plots(base_directory);
       generate_player_plots(base_directory, players);
     }
   }
@@ -43,7 +43,7 @@ protected:
     }
   }
 
-  void write_player_data_files(const std::experimental::filesystem::path& base_directory, const Players& players) noexcept {
+  void write_data_files(const std::experimental::filesystem::path& base_directory, const Players& players) noexcept {
     for (const Player& player : players) {
       for (const GameCategory game_category : GameCategories) {
         if (!player[game_category].empty()) {
@@ -57,7 +57,7 @@ protected:
     message("Wrote the data files.");
   }
 
-  void write_main_gnuplot_files(const std::experimental::filesystem::path& base_directory, const Players& players) noexcept {
+  void write_global_gnuplot_files(const std::experimental::filesystem::path& base_directory, const Players& players) noexcept {
     for (const GameCategory game_category : GameCategories) {
       std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort> data_paths;
       for (const Player& player : players) {
@@ -69,21 +69,21 @@ protected:
         }
       }
       if (!data_paths.empty()) {
-        MainEloRatingVsGameNumberGnuplotFileWriter{
-          base_directory / Path::MainPlotsDirectoryName / Path::main_elo_rating_vs_game_number_file_name(game_category),
+        GlobalEloRatingVsGameNumberGnuplotFileWriter{
+          base_directory / Path::MainPlotsDirectoryName / Path::global_elo_rating_vs_game_number_file_name(game_category),
           players, data_paths, game_category
         };
-        MainAveragePointsVsGameNumberGnuplotFileWriter{
-          base_directory / Path::MainPlotsDirectoryName / Path::main_average_points_vs_game_number_file_name(game_category),
+        GlobalAveragePointsVsGameNumberGnuplotFileWriter{
+          base_directory / Path::MainPlotsDirectoryName / Path::global_average_points_vs_game_number_file_name(game_category),
           players, data_paths
         };
-        MainPlacePercentageVsGameNumberGnuplotFileWriter{
-          base_directory / Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_game_number_file_name(game_category, {1}),
+        GlobalPlacePercentageVsGameNumberGnuplotFileWriter{
+          base_directory / Path::MainPlotsDirectoryName / Path::global_place_percentage_vs_game_number_file_name(game_category, {1}),
           players, data_paths, game_category, {1}
         };
       }
     }
-    message("Wrote the main Gnuplot files.");
+    message("Wrote the global Gnuplot files.");
   }
 
   void write_player_gnuplot_files(const std::experimental::filesystem::path& base_directory, const Players& players) noexcept {
@@ -99,60 +99,60 @@ protected:
         }
       }
       if (!data_paths.empty()) {
-        PlayerEloRatingVsGameNumberGnuplotFileWriter{
+        IndividualEloRatingVsGameNumberGnuplotFileWriter{
           base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerEloRatingVsGameNumberFileName,
           data_paths, player.lowest_elo_rating(), player.highest_elo_rating()
         };
-        PlayerAveragePointsVsGameNumberGnuplotFileWriter{
+        IndividualAveragePointsVsGameNumberGnuplotFileWriter{
           base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName,
           data_paths
         };
       }
       if (player[GameCategory::AnyNumberOfPlayers].size() >= 2) {
-        PlayerPlacePercentageVsGameNumberGnuplotFileWriter{
-          base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(GameCategory::AnyNumberOfPlayers),
+        IndividualPlacePercentageVsGameNumberGnuplotFileWriter{
+          base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::individual_place_percentage_vs_game_number_file_name(GameCategory::AnyNumberOfPlayers),
           base_directory / player.name().directory_name() / Path::PlayerDataDirectoryName / Path::player_data_file_name(GameCategory::AnyNumberOfPlayers),
           GameCategory::AnyNumberOfPlayers
         };
       }
     }
-    message("Wrote the player Gnuplot files.");
+    message("Wrote the individual player Gnuplot files.");
   }
 
-  void write_main_leaderboard_file(const std::experimental::filesystem::path& base_directory, const Games& games, const Players& players) noexcept {
-    LeaderboardMainFileWriter{base_directory, games, players};
-    message("Wrote the main leaderboard Markdown file.");
+  void write_global_leaderboard_file(const std::experimental::filesystem::path& base_directory, const Games& games, const Players& players) noexcept {
+    LeaderboardGlobalFileWriter{base_directory, games, players};
+    message("Wrote the global leaderboard Markdown file.");
   }
 
   void write_player_leaderboard_files(const std::experimental::filesystem::path& base_directory, const Games& games, const Players& players) noexcept {
     for (const Player& player : players) {
-      LeaderboardPlayerFileWriter{base_directory, games, player};
+      LeaderboardIndividualFileWriter{base_directory, games, player};
     }
-    message("Wrote the player leaderboard Markdown files.");
+    message("Wrote the individual player leaderboard Markdown files.");
   }
 
-  void generate_main_plots(const std::experimental::filesystem::path& base_directory) const {
-    message("Generating the main plots...");
+  void generate_global_plots(const std::experimental::filesystem::path& base_directory) const {
+    message("Generating the global plots...");
     for (const GameCategory game_category : GameCategories) {
-      generate_plot(base_directory / Path::MainPlotsDirectoryName / Path::main_elo_rating_vs_game_number_file_name(game_category));
-      generate_plot(base_directory / Path::MainPlotsDirectoryName / Path::main_average_points_vs_game_number_file_name(game_category));
+      generate_plot(base_directory / Path::MainPlotsDirectoryName / Path::global_elo_rating_vs_game_number_file_name(game_category));
+      generate_plot(base_directory / Path::MainPlotsDirectoryName / Path::global_average_points_vs_game_number_file_name(game_category));
       for (const Place& place : PlacesFirstSecondThird) {
-        generate_plot(base_directory / Path::MainPlotsDirectoryName / Path::main_place_percentage_vs_game_number_file_name(game_category, place));
+        generate_plot(base_directory / Path::MainPlotsDirectoryName / Path::global_place_percentage_vs_game_number_file_name(game_category, place));
       }
     }
-    message("Generated the main plots.");
+    message("Generated the global plots.");
   }
 
   void generate_player_plots(const std::experimental::filesystem::path& base_directory, const Players& players) const {
-    message("Generating the player plots...");
+    message("Generating the individual player plots...");
     for (const Player& player : players) {
       generate_plot(base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerAveragePointsVsGameNumberFileName);
       generate_plot(base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::PlayerEloRatingVsGameNumberFileName);
       for (const GameCategory game_category : GameCategories) {
-        generate_plot(base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(game_category));
+        generate_plot(base_directory / player.name().directory_name() / Path::PlayerPlotsDirectoryName / Path::individual_place_percentage_vs_game_number_file_name(game_category));
       }
     }
-    message("Generated the player plots.");
+    message("Generated the individual player plots.");
   }
 
   /// \brief Generate a plot using Gnuplot. If the path points to a file that does not exist, no plot is generated.
@@ -202,4 +202,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

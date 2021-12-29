@@ -3,13 +3,13 @@
 #include "GnuplotFileWriter.hpp"
 #include "Players.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
-class MainPlacePercentageGnuplotFileWriter : public GnuplotFileWriter {
+class GlobalPlacePercentageGnuplotFileWriter : public GnuplotFileWriter {
 
 public:
 
-  MainPlacePercentageGnuplotFileWriter(
+  GlobalPlacePercentageGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const GameCategory game_category,
     const Place& place
@@ -43,17 +43,17 @@ protected:
 
 };
 
-class MainPlacePercentageVsGameNumberGnuplotFileWriter : public MainPlacePercentageGnuplotFileWriter {
+class GlobalPlacePercentageVsGameNumberGnuplotFileWriter : public GlobalPlacePercentageGnuplotFileWriter {
 
 public:
 
-  MainPlacePercentageVsGameNumberGnuplotFileWriter(
+  GlobalPlacePercentageVsGameNumberGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const Players& players,
     const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data,
     const GameCategory game_category,
     const Place& place
-  ) noexcept : MainPlacePercentageGnuplotFileWriter(path, game_category, place) {
+  ) noexcept : GlobalPlacePercentageGnuplotFileWriter(path, game_category, place) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -69,17 +69,17 @@ protected:
 
 };
 
-class MainPlacePercentageVsDateGnuplotFileWriter : public MainPlacePercentageGnuplotFileWriter {
+class GlobalPlacePercentageVsDateGnuplotFileWriter : public GlobalPlacePercentageGnuplotFileWriter {
 
 public:
 
-  MainPlacePercentageVsDateGnuplotFileWriter(
+  GlobalPlacePercentageVsDateGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const Players& players,
     const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data,
     const GameCategory game_category,
     const Place& place
-  ) noexcept : MainPlacePercentageGnuplotFileWriter(path, game_category, place) {
+  ) noexcept : GlobalPlacePercentageGnuplotFileWriter(path, game_category, place) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");
@@ -98,4 +98,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

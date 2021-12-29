@@ -2,7 +2,7 @@
 
 #include "Player.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 class Players {
 
@@ -166,4 +166,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

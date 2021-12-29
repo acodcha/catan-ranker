@@ -3,13 +3,13 @@
 #include "GnuplotFileWriter.hpp"
 #include "Players.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
-class MainAveragePointsGnuplotFileWriter : public GnuplotFileWriter {
+class GlobalAveragePointsGnuplotFileWriter : public GnuplotFileWriter {
 
 public:
 
-  MainAveragePointsGnuplotFileWriter(const std::experimental::filesystem::path& path) noexcept : GnuplotFileWriter(path) {
+  GlobalAveragePointsGnuplotFileWriter(const std::experimental::filesystem::path& path) noexcept : GnuplotFileWriter(path) {
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -35,15 +35,15 @@ protected:
 
 };
 
-class MainAveragePointsVsGameNumberGnuplotFileWriter : public MainAveragePointsGnuplotFileWriter {
+class GlobalAveragePointsVsGameNumberGnuplotFileWriter : public GlobalAveragePointsGnuplotFileWriter {
 
 public:
 
-  MainAveragePointsVsGameNumberGnuplotFileWriter(
+  GlobalAveragePointsVsGameNumberGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const Players& players,
     const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data
-  ) noexcept : MainAveragePointsGnuplotFileWriter(path) {
+  ) noexcept : GlobalAveragePointsGnuplotFileWriter(path) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -59,15 +59,15 @@ protected:
 
 };
 
-class MainAveragePointsVsDateGnuplotFileWriter : public MainAveragePointsGnuplotFileWriter {
+class GlobalAveragePointsVsDateGnuplotFileWriter : public GlobalAveragePointsGnuplotFileWriter {
 
 public:
 
-  MainAveragePointsVsDateGnuplotFileWriter(
+  GlobalAveragePointsVsDateGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const Players& players,
     const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data
-  ) noexcept : MainAveragePointsGnuplotFileWriter(path) {
+  ) noexcept : GlobalAveragePointsGnuplotFileWriter(path) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");
@@ -86,4 +86,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

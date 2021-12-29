@@ -2,7 +2,7 @@
 
 #include "Column.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 /// \brief General-purpose table for printing out. All values are stored internally as strings.
 class Table {
@@ -118,4 +118,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

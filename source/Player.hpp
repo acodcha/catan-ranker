@@ -3,7 +3,7 @@
 #include "Games.hpp"
 #include "PlayerProperties.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 class Player {
 
@@ -189,14 +189,14 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification
 
 namespace std {
 
-  template <> struct hash<CatanLeaderboardGenerator::Player> {
+  template <> struct hash<catan_stratification::Player> {
 
-    size_t operator()(const CatanLeaderboardGenerator::Player& player) const {
-      return hash<CatanLeaderboardGenerator::PlayerName>()(player.name());
+    size_t operator()(const catan_stratification::Player& player) const {
+      return hash<catan_stratification::PlayerName>()(player.name());
     }
 
   };

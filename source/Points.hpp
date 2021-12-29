@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 class Points {
 
@@ -108,13 +108,13 @@ constexpr const Points MinimumPoints{2};
 
 constexpr const Points MaximumPoints{50};
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification
 
 namespace std {
 
-  template <> struct hash<CatanLeaderboardGenerator::Points> {
+  template <> struct hash<catan_stratification::Points> {
 
-    size_t operator()(const CatanLeaderboardGenerator::Points& points) const {
+    size_t operator()(const catan_stratification::Points& points) const {
       return hash<int64_t>()(points.value());
     }
 

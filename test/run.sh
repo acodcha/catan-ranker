@@ -2,5 +2,4 @@
 set -e
 cd "${0%/*}"
 ./clear.sh
-../build/bin/catan_leaderboard_generator --games games.txt --leaderboard leaderboard
-
+../build/bin/catan-stratification --games games.txt --leaderboard leaderboard

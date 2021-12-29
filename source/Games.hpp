@@ -3,7 +3,7 @@
 #include "Game.hpp"
 #include "TextFileReader.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 class Games {
 
@@ -94,4 +94,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

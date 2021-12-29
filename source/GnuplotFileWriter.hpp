@@ -3,7 +3,7 @@
 #include "Path.hpp"
 #include "TextFileWriter.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 class GnuplotFileWriter : public TextFileWriter {
 
@@ -38,4 +38,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification
