@@ -2,7 +2,7 @@
 
 #include "FileReader.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 class TextFileReader : public FileReader {
 
@@ -47,4 +47,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

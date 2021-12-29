@@ -1,7 +1,6 @@
-# Catan Leaderboard Generator
-![build and test](https://github.com/acodcha/CatanLeaderboardGenerator/workflows/build%20and%20test/badge.svg?branch=main)
+![build and test](https://github.com/acodcha/catan-stratification/workflows/build%20and%20test/badge.svg?branch=main)
 
-Generates a simple leaderboard for Catan games. The leaderboard consists of Markdown files containing tables and plots. See https://github.com/acodcha/CatanLeaderboard for an example of a leaderboard that uses this program.
+Leaderboard generator for the Catan board game originally designed by Klaus Teuber. The leaderboard consists of Markdown files containing tables and plots. See https://github.com/acodcha/catan-leaderboard for an example of a leaderboard that uses this program.
 
 - [Setup](#setup)
 - [Usage](#usage)
@@ -23,7 +22,7 @@ cmake ..
 make
 ```
 
-This builds the `build/bin/catan_leaderboard_generator` program.
+This builds the `build/bin/catan-stratification` program.
 
 You can optionally run tests from the `build` directory with:
 
@@ -37,7 +36,7 @@ You can optionally install the program from the `build` directory with:
 sudo make install
 ```
 
-This installs the program to `/usr/local/bin/catan_leaderboard_generator`. To uninstall the program, simply delete it.
+This installs the program to `/usr/local/bin/catan-stratification`. To uninstall the program, simply delete it.
 
 ## Usage
 Run with no arguments or with the `--help` argument to obtain usage information.
@@ -45,7 +44,7 @@ Run with no arguments or with the `--help` argument to obtain usage information.
 Otherwise, for regular use, run with:
 
 ```
-catan_leaderboard_generator --games <path> --leaderboard <path>
+catan-stratification --games <path> --leaderboard <path>
 ```
 
 - `--games <path>` specifies the path to the games file to be read. Required.

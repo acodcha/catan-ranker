@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 class Place {
 
@@ -104,13 +104,13 @@ protected:
 
 const std::set<Place> PlacesFirstSecondThird{{1}, {2}, {3}};
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification
 
 namespace std {
 
-  template <> struct hash<CatanLeaderboardGenerator::Place> {
+  template <> struct hash<catan_stratification::Place> {
 
-    size_t operator()(const CatanLeaderboardGenerator::Place& place) const {
+    size_t operator()(const catan_stratification::Place& place) const {
       return hash<int8_t>()(place.value());
     }
 

@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 /// \brief Year-month-day date class.
 /// \details C++20 will have a std::chrono::year_month_day class. Until then, use this class.
@@ -144,4 +144,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

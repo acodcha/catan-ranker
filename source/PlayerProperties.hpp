@@ -3,7 +3,7 @@
 #include "EloRating.hpp"
 #include "Percentage.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
 class PlayerProperties {
 
@@ -195,4 +195,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

@@ -2,13 +2,13 @@
 
 #include "GnuplotFileWriter.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
-class PlayerPlacePercentageGnuplotFileWriter : public GnuplotFileWriter {
+class IndividualPlacePercentageGnuplotFileWriter : public GnuplotFileWriter {
 
 public:
 
-  PlayerPlacePercentageGnuplotFileWriter(const std::experimental::filesystem::path& path, const GameCategory game_category) noexcept : GnuplotFileWriter(path) {
+  IndividualPlacePercentageGnuplotFileWriter(const std::experimental::filesystem::path& path, const GameCategory game_category) noexcept : GnuplotFileWriter(path) {
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -34,15 +34,15 @@ protected:
 
 };
 
-class PlayerPlacePercentageVsGameNumberGnuplotFileWriter : public PlayerPlacePercentageGnuplotFileWriter {
+class IndividualPlacePercentageVsGameNumberGnuplotFileWriter : public IndividualPlacePercentageGnuplotFileWriter {
 
 public:
 
-  PlayerPlacePercentageVsGameNumberGnuplotFileWriter(
+  IndividualPlacePercentageVsGameNumberGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const std::experimental::filesystem::path& data_path,
     const GameCategory game_category
-  ) noexcept : PlayerPlacePercentageGnuplotFileWriter(path, game_category) {
+  ) noexcept : IndividualPlacePercentageGnuplotFileWriter(path, game_category) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -58,15 +58,15 @@ protected:
 
 };
 
-class PlayerPlacePercentageVsDateGnuplotFileWriter : public PlayerPlacePercentageGnuplotFileWriter {
+class IndividualPlacePercentageVsDateGnuplotFileWriter : public IndividualPlacePercentageGnuplotFileWriter {
 
 public:
 
-  PlayerPlacePercentageVsDateGnuplotFileWriter(
+  IndividualPlacePercentageVsDateGnuplotFileWriter(
     const std::experimental::filesystem::path& path,
     const std::experimental::filesystem::path& data_path,
     const GameCategory game_category
-  ) noexcept : PlayerPlacePercentageGnuplotFileWriter(path, game_category) {
+  ) noexcept : IndividualPlacePercentageGnuplotFileWriter(path, game_category) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");
@@ -85,4 +85,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification

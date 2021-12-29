@@ -4,13 +4,13 @@
 #include "Path.hpp"
 #include "Player.hpp"
 
-namespace CatanLeaderboardGenerator {
+namespace catan_stratification {
 
-class LeaderboardPlayerFileWriter : public MarkdownFileWriter {
+class LeaderboardIndividualFileWriter : public MarkdownFileWriter {
 
 public:
 
-  LeaderboardPlayerFileWriter(
+  LeaderboardIndividualFileWriter(
     const std::experimental::filesystem::path& base_directory,
     const Games& games,
     const Player& player
@@ -101,7 +101,7 @@ protected:
   }
 
   void place_percentage_plot(const std::experimental::filesystem::path& base_directory, const Player& player, const GameCategory game_category) noexcept {
-    const std::experimental::filesystem::path gnuplot_path{Path::PlayerPlotsDirectoryName / Path::player_place_percentage_vs_game_number_file_name(game_category)};
+    const std::experimental::filesystem::path gnuplot_path{Path::PlayerPlotsDirectoryName / Path::individual_place_percentage_vs_game_number_file_name(game_category)};
     if (std::experimental::filesystem::exists(base_directory / player.name().directory_name() / gnuplot_path)) {
       line("![Win Rates Plot](" + Path::gnuplot_path_to_png_path(gnuplot_path).string() + ")");
     }
@@ -138,4 +138,4 @@ protected:
 
 };
 
-} // namespace CatanLeaderboardGenerator
+} // namespace catan_stratification
