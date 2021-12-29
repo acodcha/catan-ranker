@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 /// \brief General-purpose percentage value. For example, Percentage{0.42}.print() returns "42%".
 class Percentage {
@@ -112,13 +112,13 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker
 
 namespace std {
 
-  template <> struct hash<catan_stratification::Percentage> {
+  template <> struct hash<CatanRanker::Percentage> {
 
-    size_t operator()(const catan_stratification::Percentage& percentage) const {
+    size_t operator()(const CatanRanker::Percentage& percentage) const {
       return hash<double>()(percentage.value());
     }
 

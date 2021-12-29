@@ -2,7 +2,7 @@
 
 #include "Include.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 /// \brief Namespace containing colors from the Catan board game.
 namespace Color {
@@ -53,4 +53,4 @@ std::string color(const std::size_t counter) noexcept {
   return ColorSequence[color_index];
 }
 
-} // namespace catan_stratification
+} // namespace CatanRanker

@@ -3,7 +3,7 @@
 #include "Games.hpp"
 #include "PlayerProperties.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class Player {
 
@@ -189,14 +189,14 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker
 
 namespace std {
 
-  template <> struct hash<catan_stratification::Player> {
+  template <> struct hash<CatanRanker::Player> {
 
-    size_t operator()(const catan_stratification::Player& player) const {
-      return hash<catan_stratification::PlayerName>()(player.name());
+    size_t operator()(const CatanRanker::Player& player) const {
+      return hash<CatanRanker::PlayerName>()(player.name());
     }
 
   };

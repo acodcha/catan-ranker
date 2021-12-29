@@ -4,7 +4,7 @@
 #include "Percentage.hpp"
 #include "Points.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 /// \brief General-purpose column of a table for printing out. All data is stored internally as strings.
 class Column {
@@ -121,4 +121,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

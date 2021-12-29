@@ -2,7 +2,7 @@
 
 #include "Include.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 /// \brief Split a string into words using whitespace as a delimiter.
 std::vector<std::string> split_by_whitespace(const std::string& text) noexcept {
@@ -126,4 +126,4 @@ std::optional<double> string_to_real_number(const std::string& text) noexcept {
   return no_value;
 }
 
-} // namespace catan_stratification
+} // namespace CatanRanker

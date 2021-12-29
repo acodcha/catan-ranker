@@ -3,7 +3,7 @@
 #include "EloRating.hpp"
 #include "Percentage.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class PlayerProperties {
 
@@ -195,4 +195,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

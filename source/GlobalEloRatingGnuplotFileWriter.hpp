@@ -3,7 +3,7 @@
 #include "GnuplotFileWriter.hpp"
 #include "Players.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class GlobalEloRatingGnuplotFileWriter : public GnuplotFileWriter {
 
@@ -91,4 +91,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

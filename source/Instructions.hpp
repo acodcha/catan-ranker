@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 /// \brief Namespace listing the program's command-line argument keywords.
 namespace Arguments {
@@ -129,4 +129,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

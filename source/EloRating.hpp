@@ -2,7 +2,7 @@
 
 #include "Game.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 constexpr const double EloRatingStartingValue{1000.0};
 
@@ -170,13 +170,13 @@ EloRating update_elo_rating(
   return player_elo_rating;
 }
 
-} // namespace catan_stratification
+} // namespace CatanRanker
 
 namespace std {
 
-  template <> struct hash<catan_stratification::EloRating> {
+  template <> struct hash<CatanRanker::EloRating> {
 
-    size_t operator()(const catan_stratification::EloRating& elo_rating) const {
+    size_t operator()(const CatanRanker::EloRating& elo_rating) const {
       return hash<double>()(elo_rating.value());
     }
 

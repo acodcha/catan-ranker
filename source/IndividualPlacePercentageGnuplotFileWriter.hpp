@@ -2,7 +2,7 @@
 
 #include "GnuplotFileWriter.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class IndividualPlacePercentageGnuplotFileWriter : public GnuplotFileWriter {
 
@@ -85,4 +85,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

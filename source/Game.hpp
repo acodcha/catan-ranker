@@ -5,7 +5,7 @@
 #include "PlayerName.hpp"
 #include "Points.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class Game {
 
@@ -290,4 +290,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

@@ -3,7 +3,7 @@
 #include "EloRating.hpp"
 #include "GnuplotFileWriter.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class IndividualEloRatingGnuplotFileWriter : public GnuplotFileWriter {
 
@@ -104,4 +104,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

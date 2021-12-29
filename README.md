@@ -1,14 +1,17 @@
-![build and test](https://github.com/acodcha/catan-stratification/workflows/build%20and%20test/badge.svg?branch=main)
+[![build and test](https://github.com/acodcha/catan-ranker/actions/workflows/build_and_test.yml/badge.svg?branch=main)](https://github.com/acodcha/catan-ranker/actions/workflows/build_and_test.yml)
 
 Leaderboard generator for the Catan board game originally designed by Klaus Teuber. The leaderboard consists of Markdown files containing tables and plots. See https://github.com/acodcha/catan-leaderboard for an example of a leaderboard that uses this program.
 
 - [Setup](#setup)
 - [Usage](#usage)
+- [Games File](#games-file)
 - [Documentation](#documentation)
 - [License](#license)
 
-## Setup
+# Setup
+
 The following packages are required:
+
 - **C++17 Compiler:** Any C++17 compiler will do, such as GCC or Clang. On Ubuntu, install GCC with `sudo apt install g++` or Clang with `sudo apt install clang`.
 - **CMake:** On Ubuntu, install with `sudo apt install cmake`.
 - **Gnuplot:** On Ubuntu, install with `sudo apt install gnuplot`.
@@ -22,7 +25,7 @@ cmake ..
 make
 ```
 
-This builds the `build/bin/catan-stratification` program.
+This builds the `build/bin/catan-ranker` program.
 
 You can optionally run tests from the `build` directory with:
 
@@ -36,21 +39,27 @@ You can optionally install the program from the `build` directory with:
 sudo make install
 ```
 
-This installs the program to `/usr/local/bin/catan-stratification`. To uninstall the program, simply delete it.
+This installs the program to `/usr/local/bin/catan-ranker`. To uninstall the program, simply delete it.
 
-## Usage
+[(Back to Top)](#)
+
+# Usage
+
 Run with no arguments or with the `--help` argument to obtain usage information.
 
 Otherwise, for regular use, run with:
 
 ```
-catan-stratification --games <path> --leaderboard <path>
+catan-ranker --games <path> --leaderboard <path>
 ```
 
 - `--games <path>` specifies the path to the games file to be read. Required.
 - `--leaderboard <path>` specifies the path to the directory in which the leaderboard will be written. Optional. If omitted, no leaderboard is written.
 
-### Games File
+[(Back to Top)](#)
+
+# Games File
+
 The games file is a plain text file with the following format:
 
 ```
@@ -75,13 +84,17 @@ The games file is a plain text file with the following format:
 - The ordering of players in a game is unimportant. The winning player is the first player to reach 10 points during their turn. Players can be tied for 2nd place, 3rd place, and so on depending on their points.
 - In 5+ player games, because of the special build phase and because a player can only win during their turn, it is possible for the winning player to be tied for most points or to not have the most points. In such cases, identify the winning player by placing an asterisk (`*`) after their points, as in the above example for the game played on 2020-03-20.
 
-## Documentation
-Building the documentation is optional and requires additional packages:
+[(Back to Top)](#)
+
+# Documentation
+
+Building the documentation requires additional packages:
+
 - **Doxygen:** On Ubuntu, install with `sudo apt install doxygen`.
 - **Graphviz:** On Ubuntu, install with `sudo apt install graphviz`.
 - **TeX Live:** On Ubuntu, install with `sudo apt install texlive texlive-fonts-extra`.
 
-Documentation is disabled by default but can be generated from the `build` directory with:
+Documentation is optional and disabled by default but can be generated from the `build` directory with:
 
 ```
 cmake .. -DBUILD_DOCS=ON
@@ -90,5 +103,10 @@ make docs
 
 This generates HTML documentation using Doxygen. The documentation is located in `docs/html`. Open the `docs/html/index.html` file in any web browser to view the documentation.
 
-## License
+[(Back to Top)](#)
+
+# License
+
 This work is maintained by Alexandre Coderre-Chabot (<https://github.com/acodcha>) and licensed under the MIT License. For more details, see the [LICENSE](LICENSE) file or <https://mit-license.org/>. This work is based on the Catan board game (also known as Settlers of Catan) originally designed by Klaus Teuber. The contents, copyrights, and trademarks of everything involving Catan are exclusively held by its designers and publishers; I make no claim to any of these in any way.
+
+[(Back to Top)](#)

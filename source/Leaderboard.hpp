@@ -10,7 +10,7 @@
 #include "LeaderboardGlobalFileWriter.hpp"
 #include "LeaderboardIndividualFileWriter.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 /// \brief Class that writes all leaderboard files given games and players data.
 class Leaderboard {
@@ -202,4 +202,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

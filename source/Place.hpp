@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class Place {
 
@@ -104,13 +104,13 @@ protected:
 
 const std::set<Place> PlacesFirstSecondThird{{1}, {2}, {3}};
 
-} // namespace catan_stratification
+} // namespace CatanRanker
 
 namespace std {
 
-  template <> struct hash<catan_stratification::Place> {
+  template <> struct hash<CatanRanker::Place> {
 
-    size_t operator()(const catan_stratification::Place& place) const {
+    size_t operator()(const CatanRanker::Place& place) const {
       return hash<int8_t>()(place.value());
     }
 

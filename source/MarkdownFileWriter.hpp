@@ -3,7 +3,7 @@
 #include "Table.hpp"
 #include "TextFileWriter.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class MarkdownFileWriter : public TextFileWriter {
 
@@ -69,4 +69,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

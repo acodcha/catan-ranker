@@ -3,7 +3,7 @@
 #include "Game.hpp"
 #include "TextFileReader.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class Games {
 
@@ -94,4 +94,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

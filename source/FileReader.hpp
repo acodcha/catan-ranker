@@ -2,7 +2,7 @@
 
 #include "File.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 /// \brief General-purpose file reader base class.
 class FileReader : public File<std::ifstream> {
@@ -13,4 +13,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker
