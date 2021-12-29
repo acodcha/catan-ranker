@@ -2,7 +2,7 @@
 
 #include "GnuplotFileWriter.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class IndividualAveragePointsGnuplotFileWriter : public GnuplotFileWriter {
 
@@ -96,4 +96,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

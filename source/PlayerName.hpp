@@ -2,7 +2,7 @@
 
 #include "Path.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class PlayerName {
 
@@ -56,13 +56,13 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker
 
 namespace std {
 
-  template <> struct hash<catan_stratification::PlayerName> {
+  template <> struct hash<CatanRanker::PlayerName> {
 
-    size_t operator()(const catan_stratification::PlayerName& player_name) const {
+    size_t operator()(const CatanRanker::PlayerName& player_name) const {
       return hash<string>()(player_name.value());
     }
 

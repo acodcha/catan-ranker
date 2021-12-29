@@ -3,7 +3,7 @@
 #include "GnuplotFileWriter.hpp"
 #include "Players.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class GlobalPlacePercentageGnuplotFileWriter : public GnuplotFileWriter {
 
@@ -98,4 +98,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

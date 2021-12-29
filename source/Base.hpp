@@ -3,12 +3,12 @@
 #include "Color.hpp"
 #include "String.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 /// \brief Namespace containing information about the program and its compilation.
 namespace Program {
 
-const std::string Title{"Catan Stratification"};
+const std::string Title{"Catan Ranker"};
 
 const std::string CompilationDateAndTime{std::string{__DATE__} + ", " + std::string{__TIME__}};
 
@@ -114,4 +114,4 @@ std::string current_utc_date_and_time() noexcept {
   return date_and_time(current) + " UTC";
 }
 
-} // namespace catan_stratification
+} // namespace CatanRanker

@@ -2,7 +2,7 @@
 
 #include "Player.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class Players {
 
@@ -166,4 +166,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

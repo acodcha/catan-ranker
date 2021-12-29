@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class Points {
 
@@ -108,13 +108,13 @@ constexpr const Points MinimumPoints{2};
 
 constexpr const Points MaximumPoints{50};
 
-} // namespace catan_stratification
+} // namespace CatanRanker
 
 namespace std {
 
-  template <> struct hash<catan_stratification::Points> {
+  template <> struct hash<CatanRanker::Points> {
 
-    size_t operator()(const catan_stratification::Points& points) const {
+    size_t operator()(const CatanRanker::Points& points) const {
       return hash<int64_t>()(points.value());
     }
 

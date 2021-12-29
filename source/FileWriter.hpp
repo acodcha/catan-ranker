@@ -2,7 +2,7 @@
 
 #include "File.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 /// \brief General-purpose file writer base class.
 class FileWriter : public File<std::ofstream> {
@@ -33,4 +33,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

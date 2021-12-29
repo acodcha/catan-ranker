@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 namespace Path {
 
@@ -52,4 +52,4 @@ std::experimental::filesystem::path individual_place_percentage_vs_game_number_f
 
 } // namespace Path
 
-} // namespace catan_stratification
+} // namespace CatanRanker

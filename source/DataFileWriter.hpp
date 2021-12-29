@@ -3,7 +3,7 @@
 #include "Table.hpp"
 #include "TextFileWriter.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class DataFileWriter : public TextFileWriter {
 
@@ -16,4 +16,4 @@ public:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

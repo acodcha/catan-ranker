@@ -4,7 +4,7 @@
 #include "Path.hpp"
 #include "Player.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class LeaderboardIndividualFileWriter : public MarkdownFileWriter {
 
@@ -138,4 +138,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

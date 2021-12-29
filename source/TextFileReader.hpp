@@ -2,7 +2,7 @@
 
 #include "FileReader.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class TextFileReader : public FileReader {
 
@@ -47,4 +47,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

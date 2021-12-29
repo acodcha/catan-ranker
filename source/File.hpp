@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 /// \brief General-purpose file handler base class.
 template <class FileStream> class File {
@@ -36,4 +36,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker

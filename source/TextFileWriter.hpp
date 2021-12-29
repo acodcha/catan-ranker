@@ -2,7 +2,7 @@
 
 #include "FileWriter.hpp"
 
-namespace catan_stratification {
+namespace CatanRanker {
 
 class TextFileWriter : public FileWriter {
 
@@ -22,4 +22,4 @@ protected:
 
 };
 
-} // namespace catan_stratification
+} // namespace CatanRanker
