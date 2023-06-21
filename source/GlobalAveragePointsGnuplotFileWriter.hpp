@@ -6,10 +6,10 @@
 namespace CatanRanker {
 
 class GlobalAveragePointsGnuplotFileWriter : public GnuplotFileWriter {
-
 public:
-
-  GlobalAveragePointsGnuplotFileWriter(const std::experimental::filesystem::path& path) noexcept : GnuplotFileWriter(path) {
+  GlobalAveragePointsGnuplotFileWriter(
+      const std::experimental::filesystem::path& path) noexcept
+    : GnuplotFileWriter(path) {
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -24,26 +24,30 @@ public:
   }
 
 protected:
-
   virtual int8_t x_column() const noexcept = 0;
 
-  void plot(const Players& players, const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data) noexcept {
-    for (const std::pair<PlayerName, std::experimental::filesystem::path>& datum : data) {
-      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column()) + ":8 w lp lw 2 pt " + std::to_string(players.find(datum.first).gnuplot_point_type()) + " ps 1 lt rgb \"#" + players.find(datum.first).color() + "\" t \"" + datum.first.value() + "\" , \\");
+  void plot(const Players& players,
+            const std::map<PlayerName, std::experimental::filesystem::path,
+                           PlayerName::sort>& data) noexcept {
+    for (const std::pair<const PlayerName, std::experimental::filesystem::path>&
+             datum : data) {
+      line("  \"" + datum.second.string() + "\" u " + std::to_string(x_column())
+           + ":8 w lp lw 2 pt "
+           + std::to_string(players.find(datum.first).gnuplot_point_type())
+           + " ps 1 lt rgb \"#" + players.find(datum.first).color() + "\" t \""
+           + datum.first.value() + "\" , \\");
     }
   }
-
 };
 
-class GlobalAveragePointsVsGameNumberGnuplotFileWriter : public GlobalAveragePointsGnuplotFileWriter {
-
+class GlobalAveragePointsVsGameNumberGnuplotFileWriter
+  : public GlobalAveragePointsGnuplotFileWriter {
 public:
-
   GlobalAveragePointsVsGameNumberGnuplotFileWriter(
-    const std::experimental::filesystem::path& path,
-    const Players& players,
-    const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data
-  ) noexcept : GlobalAveragePointsGnuplotFileWriter(path) {
+      const std::experimental::filesystem::path& path, const Players& players,
+      const std::map<PlayerName, std::experimental::filesystem::path,
+                     PlayerName::sort>& data) noexcept
+    : GlobalAveragePointsGnuplotFileWriter(path) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -52,22 +56,17 @@ public:
   }
 
 protected:
-
-  int8_t x_column() const noexcept {
-    return 2;
-  }
-
+  int8_t x_column() const noexcept { return 2; }
 };
 
-class GlobalAveragePointsVsDateGnuplotFileWriter : public GlobalAveragePointsGnuplotFileWriter {
-
+class GlobalAveragePointsVsDateGnuplotFileWriter
+  : public GlobalAveragePointsGnuplotFileWriter {
 public:
-
   GlobalAveragePointsVsDateGnuplotFileWriter(
-    const std::experimental::filesystem::path& path,
-    const Players& players,
-    const std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>& data
-  ) noexcept : GlobalAveragePointsGnuplotFileWriter(path) {
+      const std::experimental::filesystem::path& path, const Players& players,
+      const std::map<PlayerName, std::experimental::filesystem::path,
+                     PlayerName::sort>& data) noexcept
+    : GlobalAveragePointsGnuplotFileWriter(path) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");
@@ -79,11 +78,7 @@ public:
   }
 
 protected:
-
-  int8_t x_column() const noexcept {
-    return 5;
-  }
-
+  int8_t x_column() const noexcept { return 5; }
 };
 
-} // namespace CatanRanker
+}  // namespace CatanRanker

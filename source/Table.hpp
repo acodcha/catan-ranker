@@ -4,11 +4,10 @@
 
 namespace CatanRanker {
 
-/// \brief General-purpose table for printing out. All values are stored internally as strings.
+/// \brief General-purpose table for printing out. All values are stored
+/// internally as strings.
 class Table {
-
 public:
-
   Table() noexcept {}
 
   Table(const std::vector<Column>& columns) noexcept : columns_(columns) {}
@@ -34,12 +33,11 @@ public:
   }
 
   struct const_iterator : public std::vector<Column>::const_iterator {
-    const_iterator(const std::vector<Column>::const_iterator i) noexcept : std::vector<Column>::const_iterator(i) {}
+    const_iterator(const std::vector<Column>::const_iterator i) noexcept
+      : std::vector<Column>::const_iterator(i) {}
   };
 
-  std::size_t number_of_columns() const noexcept {
-    return columns_.size();
-  }
+  std::size_t number_of_columns() const noexcept { return columns_.size(); }
 
   std::size_t number_of_rows() const noexcept {
     std::size_t maximum{0};
@@ -52,23 +50,18 @@ public:
   }
 
   const_iterator cbegin() const noexcept {
-   return const_iterator(columns_.cbegin());
+    return const_iterator(columns_.cbegin());
   }
 
-  const_iterator begin() const noexcept {
-   return cbegin();
-  }
+  const_iterator begin() const noexcept { return cbegin(); }
 
   const_iterator cend() const noexcept {
-   return const_iterator(columns_.cend());
+    return const_iterator(columns_.cend());
   }
 
-  const_iterator end() const noexcept {
-   return cend();
-  }
+  const_iterator end() const noexcept { return cend(); }
 
-protected:
-
+private:
   std::vector<Column> columns_;
 
   std::string print_header_as_data() const noexcept {
@@ -95,11 +88,16 @@ protected:
     std::stringstream stream;
     stream << "|";
     for (const Column& column : columns_) {
-      stream << " " << pad_to_length(column.header_bold(), column.width_markdown()) << " |";
+      stream << " "
+             << pad_to_length(column.header_bold(), column.width_markdown())
+             << " |";
     }
     stream << std::endl << "|";
     for (const Column& column : columns_) {
-      stream << " " << pad_to_length(column.alignment_markdown(), column.width_markdown()) << " |";
+      stream
+          << " "
+          << pad_to_length(column.alignment_markdown(), column.width_markdown())
+          << " |";
     }
     return stream.str();
   }
@@ -108,14 +106,14 @@ protected:
     std::string text{"|"};
     for (const Column& column : columns_) {
       if (index < column.number_of_rows()) {
-        text += " " + pad_to_length(column[index], column.width_markdown()) + " |";
+        text +=
+            " " + pad_to_length(column[index], column.width_markdown()) + " |";
       } else {
         text += " " + pad_to_length({}, column.width_markdown()) + " |";
       }
     }
     return text;
   }
-
 };
 
-} // namespace CatanRanker
+}  // namespace CatanRanker

@@ -5,10 +5,11 @@
 namespace CatanRanker {
 
 class IndividualPlacePercentageGnuplotFileWriter : public GnuplotFileWriter {
-
 public:
-
-  IndividualPlacePercentageGnuplotFileWriter(const std::experimental::filesystem::path& path, const GameCategory game_category) noexcept : GnuplotFileWriter(path) {
+  IndividualPlacePercentageGnuplotFileWriter(
+      const std::experimental::filesystem::path& path,
+      const GameCategory game_category) noexcept
+    : GnuplotFileWriter(path) {
     line("set title \"\"");
     line("set grid xtics ytics mxtics mytics");
     line("set key horizontal center top outside");
@@ -23,26 +24,29 @@ public:
   }
 
 protected:
-
   virtual int8_t x_column() const noexcept = 0;
 
   void plot(const std::experimental::filesystem::path& data) noexcept {
-    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":9 w lp lw 4 pt 0 ps 1 lt rgb \"#" + Color::YellowWheat + "\" t \"1st Place\" , \\");
-    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":10 w lp lw 3 pt 0 ps 1 lt rgb \"#" + Color::GreyOre + "\" t \"2nd Place\" , \\");
-    line("  \"" + data.string() + "\" u " + std::to_string(x_column()) + ":11 w lp lw 2 pt 0 ps 1 lt rgb \"#" + Color::BrownDarkPort + "\" t \"3rd Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column())
+         + ":9 w lp lw 4 pt 0 ps 1 lt rgb \"#" + Color::YellowWheat
+         + "\" t \"1st Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column())
+         + ":10 w lp lw 3 pt 0 ps 1 lt rgb \"#" + Color::GreyOre
+         + "\" t \"2nd Place\" , \\");
+    line("  \"" + data.string() + "\" u " + std::to_string(x_column())
+         + ":11 w lp lw 2 pt 0 ps 1 lt rgb \"#" + Color::BrownDarkPort
+         + "\" t \"3rd Place\" , \\");
   }
-
 };
 
-class IndividualPlacePercentageVsGameNumberGnuplotFileWriter : public IndividualPlacePercentageGnuplotFileWriter {
-
+class IndividualPlacePercentageVsGameNumberGnuplotFileWriter
+  : public IndividualPlacePercentageGnuplotFileWriter {
 public:
-
   IndividualPlacePercentageVsGameNumberGnuplotFileWriter(
-    const std::experimental::filesystem::path& path,
-    const std::experimental::filesystem::path& data_path,
-    const GameCategory game_category
-  ) noexcept : IndividualPlacePercentageGnuplotFileWriter(path, game_category) {
+      const std::experimental::filesystem::path& path,
+      const std::experimental::filesystem::path& data_path,
+      const GameCategory game_category) noexcept
+    : IndividualPlacePercentageGnuplotFileWriter(path, game_category) {
     line("set xlabel \"Game Number\"");
     line("set xtics nomirror out");
     line("set mxtics 1");
@@ -51,22 +55,17 @@ public:
   }
 
 protected:
-
-  int8_t x_column() const noexcept {
-    return 4;
-  }
-
+  int8_t x_column() const noexcept { return 4; }
 };
 
-class IndividualPlacePercentageVsDateGnuplotFileWriter : public IndividualPlacePercentageGnuplotFileWriter {
-
+class IndividualPlacePercentageVsDateGnuplotFileWriter
+  : public IndividualPlacePercentageGnuplotFileWriter {
 public:
-
   IndividualPlacePercentageVsDateGnuplotFileWriter(
-    const std::experimental::filesystem::path& path,
-    const std::experimental::filesystem::path& data_path,
-    const GameCategory game_category
-  ) noexcept : IndividualPlacePercentageGnuplotFileWriter(path, game_category) {
+      const std::experimental::filesystem::path& path,
+      const std::experimental::filesystem::path& data_path,
+      const GameCategory game_category) noexcept
+    : IndividualPlacePercentageGnuplotFileWriter(path, game_category) {
     line("set timefmt \"%Y-%m-%d\"");
     line("set xlabel \"Date\"");
     line("set xdata time");
@@ -78,11 +77,7 @@ public:
   }
 
 protected:
-
-  int8_t x_column() const noexcept {
-    return 5;
-  }
-
+  int8_t x_column() const noexcept { return 5; }
 };
 
-} // namespace CatanRanker
+}  // namespace CatanRanker

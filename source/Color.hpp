@@ -31,21 +31,15 @@ const std::string TanCoast{"E0B568"};
 
 const std::string YellowWheat{"FEC53E"};
 
-} // namespace Color
+}  // namespace Color
 
 const std::vector<std::string> ColorSequence{
-  Color::OrangeBrick,
-  Color::GreenDarkLumber,
-  Color::YellowWheat,
-  Color::GreenLightWool,
-  Color::GreyOre,
-  Color::BlueDarkWater,
-  Color::BrownLightDesert,
-  Color::PurpleDevelopmentCard,
-  Color::BlueLightWater,
-  Color::TanCoast,
-  Color::BrownDarkPort,
-  Color::RedNumberFont
+    Color::OrangeBrick,      Color::GreenDarkLumber,
+    Color::YellowWheat,      Color::GreenLightWool,
+    Color::GreyOre,          Color::BlueDarkWater,
+    Color::BrownLightDesert, Color::PurpleDevelopmentCard,
+    Color::BlueLightWater,   Color::TanCoast,
+    Color::BrownDarkPort,    Color::RedNumberFont,
 };
 
 std::string color(const std::size_t counter) noexcept {
@@ -53,4 +47,4 @@ std::string color(const std::size_t counter) noexcept {
   return ColorSequence[color_index];
 }
 
-} // namespace CatanRanker
+}  // namespace CatanRanker

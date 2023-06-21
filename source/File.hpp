@@ -5,10 +5,8 @@
 namespace CatanRanker {
 
 /// \brief General-purpose file handler base class.
-template <class FileStream> class File {
-
+template<class FileStream> class File {
 public:
-
   ~File() noexcept {
     if (stream_.is_open()) {
       stream_.close();
@@ -20,8 +18,8 @@ public:
   }
 
 protected:
-
-  constexpr File(const std::experimental::filesystem::path& path) : path_(path) {
+  constexpr File(const std::experimental::filesystem::path& path)
+    : path_(path) {
     if (!path_.empty()) {
       stream_.open(path_.string());
       if (!stream_.is_open()) {
@@ -33,7 +31,6 @@ protected:
   std::experimental::filesystem::path path_;
 
   FileStream stream_;
-
 };
 
-} // namespace CatanRanker
+}  // namespace CatanRanker
