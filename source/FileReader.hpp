@@ -6,11 +6,9 @@ namespace CatanRanker {
 
 /// \brief General-purpose file reader base class.
 class FileReader : public File<std::ifstream> {
-
 protected:
-
-  constexpr FileReader(const std::experimental::filesystem::path& path) noexcept : File(path) {}
-
+  constexpr FileReader(const std::experimental::filesystem::path& path) noexcept
+    : File(path) {}
 };
 
-} // namespace CatanRanker
+}  // namespace CatanRanker

@@ -6,15 +6,14 @@
 namespace CatanRanker {
 
 class MarkdownFileWriter : public TextFileWriter {
-
 public:
-
-  MarkdownFileWriter(const std::experimental::filesystem::path& path, const std::string& title) noexcept : TextFileWriter(path) {
+  MarkdownFileWriter(const std::experimental::filesystem::path& path,
+                     const std::string& title) noexcept
+    : TextFileWriter(path) {
     this->title(title);
   }
 
 protected:
-
   void title(const std::string& text) noexcept {
     if (!text.empty()) {
       line("# " + text);
@@ -23,16 +22,19 @@ protected:
   }
 
   void list_link(const std::string title) noexcept {
-    line("- [" + title + "](#" + lowercase(replace_character(title, ' ', '-')) + ")");
+    line("- [" + title + "](#" + lowercase(replace_character(title, ' ', '-'))
+         + ")");
   }
 
   void nested_list_link(const std::string title) noexcept {
-    line("    - [" + title + "](#" + lowercase(replace_character(title, ' ', '-')) + ")");
+    line("    - [" + title + "](#"
+         + lowercase(replace_character(title, ' ', '-')) + ")");
   }
 
   void link_back_to_section(const std::string title) noexcept {
     blank_line();
-    line("[(Back to " + title + ")](#" + lowercase(replace_character(title, ' ', '-')) + ")");
+    line("[(Back to " + title + ")](#"
+         + lowercase(replace_character(title, ' ', '-')) + ")");
   }
 
   void link_back_to_top() noexcept {
@@ -63,10 +65,7 @@ protected:
     blank_line();
   }
 
-  void table(const Table& table) noexcept {
-    line(table.print_as_markdown());
-  }
-
+  void table(const Table& table) noexcept { line(table.print_as_markdown()); }
 };
 
-} // namespace CatanRanker
+}  // namespace CatanRanker

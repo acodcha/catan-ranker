@@ -6,9 +6,7 @@
 namespace CatanRanker {
 
 class Games {
-
 public:
-
   Games(const TextFileReader& file) noexcept {
     message("Reading the games file...");
     for (const std::string& line : file) {
@@ -18,13 +16,15 @@ public:
     }
     std::sort(data_.begin(), data_.end(), Game::sort());
     std::map<GameCategory, int64_t> game_category_game_index{
-      {GameCategory::AnyNumberOfPlayers, 0},
-      {GameCategory::ThreeToFourPlayers, 0},
-      {GameCategory::FiveToSixPlayers, 0},
-      {GameCategory::SevenToEightPlayers, 0}
+        {GameCategory::AnyNumberOfPlayers,  0},
+        {GameCategory::ThreeToFourPlayers,  0},
+        {GameCategory::FiveToSixPlayers,    0},
+        {GameCategory::SevenToEightPlayers, 0}
     };
     for (Game& game : data_) {
-      game.set_indices(game_category_game_index[GameCategory::AnyNumberOfPlayers], game_category_game_index[game.category()]);
+      game.set_indices(
+          game_category_game_index[GameCategory::AnyNumberOfPlayers],
+          game_category_game_index[game.category()]);
       ++game_category_game_index[GameCategory::AnyNumberOfPlayers];
       ++game_category_game_index[game.category()];
     }
@@ -38,60 +38,50 @@ public:
     std::stringstream stream;
     stream << "There are " << data_.size() << " games:";
     for (const Game& game : data_) {
-      stream << std::endl << "- " << std::to_string(game.number()) << ": " << game.print();
-
+      stream << std::endl
+             << "- " << std::to_string(game.number()) << ": " << game.print();
     }
     return stream.str();
   }
 
   struct const_iterator : public std::vector<Game>::const_iterator {
-    const_iterator(const std::vector<Game>::const_iterator i) noexcept : std::vector<Game>::const_iterator(i) {}
+    const_iterator(const std::vector<Game>::const_iterator i) noexcept
+      : std::vector<Game>::const_iterator(i) {}
   };
 
-  struct const_reverse_iterator : public std::vector<Game>::const_reverse_iterator {
-    const_reverse_iterator(const std::vector<Game>::const_reverse_iterator i) noexcept : std::vector<Game>::const_reverse_iterator(i) {}
+  struct const_reverse_iterator
+    : public std::vector<Game>::const_reverse_iterator {
+    const_reverse_iterator(
+        const std::vector<Game>::const_reverse_iterator i) noexcept
+      : std::vector<Game>::const_reverse_iterator(i) {}
   };
 
-  std::size_t size() const noexcept {
-    return data_.size();
-  }
+  std::size_t size() const noexcept { return data_.size(); }
 
   const_iterator cbegin() const noexcept {
-   return const_iterator(data_.cbegin());
+    return const_iterator(data_.cbegin());
   }
 
-  const_iterator begin() const noexcept {
-   return cbegin();
-  }
+  const_iterator begin() const noexcept { return cbegin(); }
 
   const_reverse_iterator crbegin() const noexcept {
-   return const_reverse_iterator(data_.crbegin());
+    return const_reverse_iterator(data_.crbegin());
   }
 
-  const_reverse_iterator rbegin() const noexcept {
-   return crbegin();
-  }
+  const_reverse_iterator rbegin() const noexcept { return crbegin(); }
 
-  const_iterator cend() const noexcept {
-   return const_iterator(data_.cend());
-  }
+  const_iterator cend() const noexcept { return const_iterator(data_.cend()); }
 
-  const_iterator end() const noexcept {
-   return cend();
-  }
+  const_iterator end() const noexcept { return cend(); }
 
   const_reverse_iterator crend() const noexcept {
-   return const_reverse_iterator(data_.crend());
+    return const_reverse_iterator(data_.crend());
   }
 
-  const_reverse_iterator rend() const noexcept {
-   return crend();
-  }
+  const_reverse_iterator rend() const noexcept { return crend(); }
 
-protected:
-
+private:
   std::vector<Game> data_;
-
 };
 
-} // namespace CatanRanker
+}  // namespace CatanRanker
