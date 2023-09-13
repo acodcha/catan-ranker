@@ -69,7 +69,9 @@ public:
   }
 
 protected:
-  int8_t x_column() const noexcept { return 2; }
+  int8_t x_column() const noexcept {
+    return 2;
+  }
 };
 
 class GlobalEloRatingVsDateGnuplotFileWriter
@@ -94,7 +96,9 @@ public:
   }
 
 protected:
-  int8_t x_column() const noexcept { return 5; }
+  int8_t x_column() const noexcept {
+    return 5;
+  }
 };
 
 }  // namespace CatanRanker

@@ -49,11 +49,17 @@ public:
     }
   }
 
-  constexpr int64_t year() const noexcept { return year_; }
+  constexpr int64_t year() const noexcept {
+    return year_;
+  }
 
-  constexpr int8_t month_number() const noexcept { return month_number_; }
+  constexpr int8_t month_number() const noexcept {
+    return month_number_;
+  }
 
-  constexpr int8_t day_number() const noexcept { return day_number_; }
+  constexpr int8_t day_number() const noexcept {
+    return day_number_;
+  }
 
   std::string print() const noexcept {
     const std::string month_number{

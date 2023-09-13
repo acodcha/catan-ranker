@@ -14,9 +14,11 @@ public:
   /// \brief Constructor that takes a string containing a date and a list of
   /// player names and numbers of points such as "2020-03-15 : Alice 10 , Bob 8
   /// , Claire 7 , David 6".
-  Game(
-      const std::string& date_with_winning_points_with_player_names_and_points) {
-    const std::string initialization_error_message{"Cannot parse '" + date_with_winning_points_with_player_names_and_points + "' into a date with player names and numbers of points. Expected a format such as '2020-03-15 : Alice 10, Bob 8, Claire 7, David 5'."};
+  Game(const std::string&
+           date_with_winning_points_with_player_names_and_points) {
+    const std::string initialization_error_message{
+      "Cannot parse '" + date_with_winning_points_with_player_names_and_points +
+      "' into a date with player names and numbers of points. Expected a format such as '2020-03-15 : Alice 10, Bob 8, Claire 7, David 5'."};
     const std::vector<std::string> split_text{
         split_date_from_winning_points_from_player_names_and_points(
             date_with_winning_points_with_player_names_and_points,
@@ -30,7 +32,9 @@ public:
         date_with_winning_points_with_player_names_and_points);
   }
 
-  constexpr const Date& date() const noexcept { return date_; }
+  constexpr const Date& date() const noexcept {
+    return date_;
+  }
 
   constexpr const Points& winning_points() const noexcept {
     return winning_points_;
@@ -61,8 +65,8 @@ public:
   }
 
   std::optional<Points> points(const PlayerName& player_name) const noexcept {
-    const std::map<PlayerName, Points, PlayerName::sort>::const_iterator element{
-        player_names_to_points_.find(player_name)};
+    const std::map<PlayerName, Points, PlayerName::sort>::const_iterator
+        element{player_names_to_points_.find(player_name)};
     if (element != player_names_to_points_.cend()) {
       return element->second;
     } else {
@@ -115,14 +119,20 @@ public:
   }
 
   /// \brief Game index. Starts at 0.
-  constexpr int64_t index() const noexcept { return index_; }
+  constexpr int64_t index() const noexcept {
+    return index_;
+  }
 
   /// \brief Game number, such as 5th game globally. Starts at 1. Equals the
   /// game index plus one.
-  constexpr int64_t number() const noexcept { return index_ + 1; }
+  constexpr int64_t number() const noexcept {
+    return index_ + 1;
+  }
 
   /// \brief Game index within its game category. Starts at 0.
-  constexpr int64_t category_index() const noexcept { return category_index_; }
+  constexpr int64_t category_index() const noexcept {
+    return category_index_;
+  }
 
   /// \brief Game number within its game category, such as 5th game in the 5-6
   /// player game category. Starts at 1. Equals the game category index plus
@@ -173,9 +183,13 @@ public:
       : std::set<PlayerName, PlayerName::sort>::const_iterator(i) {}
   };
 
-  bool empty() const noexcept { return player_names_.empty(); }
+  bool empty() const noexcept {
+    return player_names_.empty();
+  }
 
-  std::size_t size() const noexcept { return player_names_.size(); }
+  std::size_t size() const noexcept {
+    return player_names_.size();
+  }
 
   const_iterator cbegin() const noexcept {
     return const_iterator(player_names_.cbegin());
@@ -321,7 +335,8 @@ private:
   void check_number_of_players(
       const std::string& date_with_player_names_and_points) const {
     if (player_names_.size() < 3 || player_names_.size() > 8) {
-      error("The game '" + date_with_player_names_and_points + "' has an invalid number of players. A Catan game must have 3 to 8 players.");
+      error("The game '" + date_with_player_names_and_points +
+      "' has an invalid number of players. A Catan game must have 3 to 8 players.");
     }
   }
 };

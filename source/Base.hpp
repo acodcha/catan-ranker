@@ -31,7 +31,9 @@ inline void warning(const std::string& text) noexcept {
 }
 
 /// \brief Throw an exception.
-inline void error(const std::string& text) { throw std::runtime_error(text); }
+inline void error(const std::string& text) {
+  throw std::runtime_error(text);
+}
 
 void create(const std::experimental::filesystem::path& directory) {
   std::experimental::filesystem::create_directory(directory);
@@ -41,9 +43,11 @@ void create(const std::experimental::filesystem::path& directory) {
   }
 }
 
-template<typename Type> const std::map<Type, std::string> labels;
+template <typename Type>
+const std::map<Type, std::string> labels;
 
-template<typename Type> std::string label(const Type type) noexcept {
+template <typename Type>
+std::string label(const Type type) noexcept {
   const typename std::map<Type, std::string>::const_iterator found{
       labels<Type>.find(type)};
   if (found != labels<Type>.cend()) {
@@ -64,7 +68,8 @@ const std::set<GameCategory> GameCategories{
     GameCategory::AnyNumberOfPlayers, GameCategory::ThreeToFourPlayers,
     GameCategory::FiveToSixPlayers, GameCategory::SevenToEightPlayers};
 
-template<> const std::map<GameCategory, std::string> labels<GameCategory>{
+template <>
+const std::map<GameCategory, std::string> labels<GameCategory>{
     {GameCategory::AnyNumberOfPlayers,  "All Games"       },
     {GameCategory::ThreeToFourPlayers,  "3-4 Player Games"},
     {GameCategory::FiveToSixPlayers,    "5-6 Player Games"},

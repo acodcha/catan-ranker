@@ -12,7 +12,9 @@ public:
 
   constexpr Percentage(const double value) noexcept : value_(value) {}
 
-  constexpr double value() const noexcept { return value_; }
+  constexpr double value() const noexcept {
+    return value_;
+  }
 
   std::string print(const int8_t decimals = 0) const noexcept {
     if (value_ == 0.0) {
@@ -61,7 +63,9 @@ public:
     value_ += other.value_;
   }
 
-  constexpr void operator+=(const double number) noexcept { value_ += number; }
+  constexpr void operator+=(const double number) noexcept {
+    value_ += number;
+  }
 
   constexpr Percentage operator-(const Percentage& other) const noexcept {
     return {value_ - other.value_};
@@ -75,19 +79,25 @@ public:
     value_ -= other.value_;
   }
 
-  constexpr void operator-=(const double number) noexcept { value_ -= number; }
+  constexpr void operator-=(const double number) noexcept {
+    value_ -= number;
+  }
 
   constexpr Percentage operator*(const double number) const noexcept {
     return {value_ * number};
   }
 
-  constexpr void operator*=(const double number) noexcept { value_ *= number; }
+  constexpr void operator*=(const double number) noexcept {
+    value_ *= number;
+  }
 
   constexpr Percentage operator/(const double number) const noexcept {
     return {value_ / number};
   }
 
-  constexpr void operator/=(const double number) noexcept { value_ /= number; }
+  constexpr void operator/=(const double number) noexcept {
+    value_ /= number;
+  }
 
   struct sort {
     bool operator()(const Percentage& percentage_1,
@@ -104,7 +114,8 @@ private:
 
 namespace std {
 
-template<> struct hash<CatanRanker::Percentage> {
+template <>
+struct hash<CatanRanker::Percentage> {
   size_t operator()(const CatanRanker::Percentage& percentage) const {
     return hash<double>()(percentage.value());
   }

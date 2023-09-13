@@ -9,28 +9,22 @@ constexpr const double EloRatingStartingValue{1000.0};
 constexpr const double EloRatingStandardMaximumUpdateFactor{64.0};
 
 const std::map<int8_t, double> NumberOfPlayersToEloRatingMaximumUpdateFactor{
-    // Each player faces off against 2 other players. There are 3 2-player
-    // pairs.
+    // Each player faces off against 2 others. There are 3 2-player pairs.
     {3, EloRatingStandardMaximumUpdateFactor / 2},
 
-    // Each player faces off against 3 other players. There are 6 2-player
-    // pairs.
+    // Each player faces off against 3 others. There are 6 2-player pairs.
     {4, EloRatingStandardMaximumUpdateFactor / 3},
 
-    // Each player faces off against 4 other players. There are 10 2-player
-    // pairs.
+    // Each player faces off against 4 others. There are 10 2-player pairs.
     {5, EloRatingStandardMaximumUpdateFactor / 4},
 
-    // Each player faces off against 5 other players. There are 15 2-player
-    // pairs.
+    // Each player faces off against 5 others. There are 15 2-player pairs.
     {6, EloRatingStandardMaximumUpdateFactor / 5},
 
-    // Each player faces off against 6 other players. There are 21 2-player
-    // pairs.
+    // Each player faces off against 6 others. There are 21 2-player pairs.
     {7, EloRatingStandardMaximumUpdateFactor / 6},
 
-    // Each player faces off against 7 other players. There are 28 2-player
-    // pairs.
+    // Each player faces off against 7 others. There are 28 2-player pairs.
     {8, EloRatingStandardMaximumUpdateFactor / 7},
 };
 
@@ -51,7 +45,9 @@ public:
 
   constexpr EloRating(const double value) noexcept : value_(value) {}
 
-  constexpr double value() const noexcept { return value_; }
+  constexpr double value() const noexcept {
+    return value_;
+  }
 
   /// \brief The expected outcome depends on the difference in Elo rating
   /// between two opponents.
@@ -101,7 +97,9 @@ public:
     value_ += other.value_;
   }
 
-  constexpr void operator+=(const double number) noexcept { value_ += number; }
+  constexpr void operator+=(const double number) noexcept {
+    value_ += number;
+  }
 
   constexpr EloRating operator-(const EloRating& other) const noexcept {
     return {value_ - other.value_};
@@ -115,19 +113,25 @@ public:
     value_ -= other.value_;
   }
 
-  constexpr void operator-=(const double number) noexcept { value_ -= number; }
+  constexpr void operator-=(const double number) noexcept {
+    value_ -= number;
+  }
 
   constexpr EloRating operator*(const double number) const noexcept {
     return {value_ * number};
   }
 
-  constexpr void operator*=(const double number) noexcept { value_ *= number; }
+  constexpr void operator*=(const double number) noexcept {
+    value_ *= number;
+  }
 
   constexpr EloRating operator/(const double number) const noexcept {
     return {value_ / number};
   }
 
-  constexpr void operator/=(const double number) noexcept { value_ /= number; }
+  constexpr void operator/=(const double number) noexcept {
+    value_ /= number;
+  }
 
   struct sort {
     bool operator()(const EloRating& elo_rating_1,
@@ -191,7 +195,8 @@ EloRating update_elo_rating(
 
 namespace std {
 
-template<> struct hash<CatanRanker::EloRating> {
+template <>
+struct hash<CatanRanker::EloRating> {
   size_t operator()(const CatanRanker::EloRating& elo_rating) const {
     return hash<double>()(elo_rating.value());
   }

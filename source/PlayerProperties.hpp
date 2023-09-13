@@ -30,7 +30,9 @@ public:
   }
 
   /// \brief Game number of this game.
-  constexpr int64_t game_number() const noexcept { return game_index_ + 1; }
+  constexpr int64_t game_number() const noexcept {
+    return game_index_ + 1;
+  }
 
   /// \brief Game number within its game category of this game.
   constexpr int64_t game_category_game_number() const noexcept {
@@ -47,7 +49,9 @@ public:
     return player_game_category_game_index_ + 1;
   }
 
-  constexpr const Date& date() const noexcept { return date_; }
+  constexpr const Date& date() const noexcept {
+    return date_;
+  }
 
   constexpr double average_points_per_game() const noexcept {
     return average_points_per_game_;
@@ -75,7 +79,9 @@ public:
     }
   }
 
-  constexpr const EloRating& elo_rating() const noexcept { return elo_rating_; }
+  constexpr const EloRating& elo_rating() const noexcept {
+    return elo_rating_;
+  }
 
   constexpr const EloRating& average_elo_rating() const noexcept {
     return average_elo_rating_;

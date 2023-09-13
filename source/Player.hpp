@@ -25,7 +25,9 @@ public:
     add_game(game, previous_elo_ratings);
   }
 
-  const PlayerName& name() const noexcept { return name_; }
+  const PlayerName& name() const noexcept {
+    return name_;
+  }
 
   const std::optional<PlayerProperties> latest_properties(
       const GameCategory game_category) const noexcept {
@@ -39,7 +41,9 @@ public:
     }
   }
 
-  const std::string& color() const noexcept { return color_; }
+  const std::string& color() const noexcept {
+    return color_;
+  }
 
   const int8_t gnuplot_point_type() const noexcept {
     return gnuplot_point_type_;
@@ -127,24 +131,31 @@ public:
   struct const_iterator
     : public std::map<GameCategory,
                       std::vector<PlayerProperties>>::const_iterator {
-    const_iterator(
-        const std::map<GameCategory,
-                       std::vector<PlayerProperties>>::const_iterator i) noexcept
+    const_iterator(const std::map<GameCategory, std::vector<PlayerProperties>>::
+                       const_iterator i) noexcept
       : std::map<GameCategory, std::vector<PlayerProperties>>::const_iterator(
           i) {}
   };
 
-  std::size_t size() const noexcept { return data_.size(); }
+  std::size_t size() const noexcept {
+    return data_.size();
+  }
 
   const_iterator cbegin() const noexcept {
     return const_iterator(data_.cbegin());
   }
 
-  const_iterator begin() const noexcept { return cbegin(); }
+  const_iterator begin() const noexcept {
+    return cbegin();
+  }
 
-  const_iterator cend() const noexcept { return const_iterator(data_.cend()); }
+  const_iterator cend() const noexcept {
+    return const_iterator(data_.cend());
+  }
 
-  const_iterator end() const noexcept { return cend(); }
+  const_iterator end() const noexcept {
+    return cend();
+  }
 
 private:
   PlayerName name_;
@@ -218,7 +229,8 @@ private:
 
 namespace std {
 
-template<> struct hash<CatanRanker::Player> {
+template <>
+struct hash<CatanRanker::Player> {
   size_t operator()(const CatanRanker::Player& player) const {
     return hash<CatanRanker::PlayerName>()(player.name());
   }

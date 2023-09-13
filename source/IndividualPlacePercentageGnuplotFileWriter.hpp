@@ -55,7 +55,9 @@ public:
   }
 
 protected:
-  int8_t x_column() const noexcept { return 4; }
+  int8_t x_column() const noexcept {
+    return 4;
+  }
 };
 
 class IndividualPlacePercentageVsDateGnuplotFileWriter
@@ -77,7 +79,9 @@ public:
   }
 
 protected:
-  int8_t x_column() const noexcept { return 5; }
+  int8_t x_column() const noexcept {
+    return 5;
+  }
 };
 
 }  // namespace CatanRanker

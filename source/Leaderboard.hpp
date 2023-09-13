@@ -65,7 +65,8 @@ private:
       const std::experimental::filesystem::path& base_directory,
       const Players& players) noexcept {
     for (const GameCategory game_category : GameCategories) {
-      std::map<PlayerName, std::experimental::filesystem::path, PlayerName::sort>
+      std::map<PlayerName, std::experimental::filesystem::path,
+               PlayerName::sort>
           data_paths;
       for (const Player& player : players) {
         if (!player[game_category].empty() && !player.color().empty()) {

@@ -10,7 +10,9 @@ public:
 
   constexpr Place(const int8_t value) noexcept : value_(value) {}
 
-  constexpr int8_t value() const noexcept { return value_; }
+  constexpr int8_t value() const noexcept {
+    return value_;
+  }
 
   /// \brief The outcome of a game between a pair of players is 1, 0.5, or 0 in
   /// the case of a higher place, an equal place, or a lower place than the
@@ -104,7 +106,8 @@ const std::set<Place> PlacesFirstSecondThird{{1}, {2}, {3}};
 
 namespace std {
 
-template<> struct hash<CatanRanker::Place> {
+template <>
+struct hash<CatanRanker::Place> {
   size_t operator()(const CatanRanker::Place& place) const {
     return hash<int8_t>()(place.value());
   }

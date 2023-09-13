@@ -65,7 +65,9 @@ protected:
     blank_line();
   }
 
-  void table(const Table& table) noexcept { line(table.print_as_markdown()); }
+  void table(const Table& table) noexcept {
+    line(table.print_as_markdown());
+  }
 };
 
 }  // namespace CatanRanker

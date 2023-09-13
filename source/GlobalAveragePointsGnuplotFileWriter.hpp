@@ -56,7 +56,9 @@ public:
   }
 
 protected:
-  int8_t x_column() const noexcept { return 2; }
+  int8_t x_column() const noexcept {
+    return 2;
+  }
 };
 
 class GlobalAveragePointsVsDateGnuplotFileWriter
@@ -78,7 +80,9 @@ public:
   }
 
 protected:
-  int8_t x_column() const noexcept { return 5; }
+  int8_t x_column() const noexcept {
+    return 5;
+  }
 };
 
 }  // namespace CatanRanker

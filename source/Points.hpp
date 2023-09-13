@@ -10,9 +10,13 @@ public:
 
   constexpr Points(const int64_t value) noexcept : value_(value) {}
 
-  constexpr int64_t value() const noexcept { return value_; }
+  constexpr int64_t value() const noexcept {
+    return value_;
+  }
 
-  std::string print() const noexcept { return std::to_string(value_); }
+  std::string print() const noexcept {
+    return std::to_string(value_);
+  }
 
   constexpr bool operator==(const Points other) const noexcept {
     return value_ == other.value_;
@@ -50,7 +54,9 @@ public:
     value_ += other.value_;
   }
 
-  constexpr void operator+=(const int64_t number) noexcept { value_ += number; }
+  constexpr void operator+=(const int64_t number) noexcept {
+    value_ += number;
+  }
 
   constexpr Points operator-(const Points& other) const noexcept {
     return {value_ - other.value_};
@@ -64,19 +70,25 @@ public:
     value_ -= other.value_;
   }
 
-  constexpr void operator-=(const int64_t number) noexcept { value_ -= number; }
+  constexpr void operator-=(const int64_t number) noexcept {
+    value_ -= number;
+  }
 
   constexpr Points operator*(const int64_t number) const noexcept {
     return {value_ * number};
   }
 
-  constexpr void operator*=(const int64_t number) noexcept { value_ *= number; }
+  constexpr void operator*=(const int64_t number) noexcept {
+    value_ *= number;
+  }
 
   constexpr Points operator/(const int64_t number) const noexcept {
     return {value_ / number};
   }
 
-  constexpr void operator/=(const int64_t number) noexcept { value_ /= number; }
+  constexpr void operator/=(const int64_t number) noexcept {
+    value_ /= number;
+  }
 
   struct sort {
     bool operator()(
@@ -97,7 +109,8 @@ constexpr const Points MaximumPoints{50};
 
 namespace std {
 
-template<> struct hash<CatanRanker::Points> {
+template <>
+struct hash<CatanRanker::Points> {
   size_t operator()(const CatanRanker::Points& points) const {
     return hash<int64_t>()(points.value());
   }
