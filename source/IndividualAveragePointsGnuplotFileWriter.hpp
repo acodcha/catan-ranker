@@ -65,7 +65,9 @@ public:
   }
 
 protected:
-  int8_t x_column() const noexcept { return 3; }
+  int8_t x_column() const noexcept {
+    return 3;
+  }
 };
 
 class IndividualAveragePointsVsDateGnuplotFileWriter
@@ -87,7 +89,9 @@ public:
   }
 
 protected:
-  int8_t x_column() const noexcept { return 5; }
+  int8_t x_column() const noexcept {
+    return 5;
+  }
 };
 
 }  // namespace CatanRanker

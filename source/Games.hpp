@@ -56,29 +56,41 @@ public:
       : std::vector<Game>::const_reverse_iterator(i) {}
   };
 
-  std::size_t size() const noexcept { return data_.size(); }
+  std::size_t size() const noexcept {
+    return data_.size();
+  }
 
   const_iterator cbegin() const noexcept {
     return const_iterator(data_.cbegin());
   }
 
-  const_iterator begin() const noexcept { return cbegin(); }
+  const_iterator begin() const noexcept {
+    return cbegin();
+  }
 
   const_reverse_iterator crbegin() const noexcept {
     return const_reverse_iterator(data_.crbegin());
   }
 
-  const_reverse_iterator rbegin() const noexcept { return crbegin(); }
+  const_reverse_iterator rbegin() const noexcept {
+    return crbegin();
+  }
 
-  const_iterator cend() const noexcept { return const_iterator(data_.cend()); }
+  const_iterator cend() const noexcept {
+    return const_iterator(data_.cend());
+  }
 
-  const_iterator end() const noexcept { return cend(); }
+  const_iterator end() const noexcept {
+    return cend();
+  }
 
   const_reverse_iterator crend() const noexcept {
     return const_reverse_iterator(data_.crend());
   }
 
-  const_reverse_iterator rend() const noexcept { return crend(); }
+  const_reverse_iterator rend() const noexcept {
+    return crend();
+  }
 
 private:
   std::vector<Game> data_;

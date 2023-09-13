@@ -11,7 +11,9 @@ public:
   PlayerName(const std::string& value) noexcept
     : value_(remove_non_alphabetic_characters(value)) {}
 
-  const std::string& value() const noexcept { return value_; }
+  const std::string& value() const noexcept {
+    return value_;
+  }
 
   std::experimental::filesystem::path directory_name() const noexcept {
     return Path::PlayersDirectoryName
@@ -57,7 +59,8 @@ private:
 
 namespace std {
 
-template<> struct hash<CatanRanker::PlayerName> {
+template <>
+struct hash<CatanRanker::PlayerName> {
   size_t operator()(const CatanRanker::PlayerName& player_name) const {
     return hash<string>()(player_name.value());
   }

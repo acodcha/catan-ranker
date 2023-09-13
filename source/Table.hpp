@@ -37,7 +37,9 @@ public:
       : std::vector<Column>::const_iterator(i) {}
   };
 
-  std::size_t number_of_columns() const noexcept { return columns_.size(); }
+  std::size_t number_of_columns() const noexcept {
+    return columns_.size();
+  }
 
   std::size_t number_of_rows() const noexcept {
     std::size_t maximum{0};
@@ -53,13 +55,17 @@ public:
     return const_iterator(columns_.cbegin());
   }
 
-  const_iterator begin() const noexcept { return cbegin(); }
+  const_iterator begin() const noexcept {
+    return cbegin();
+  }
 
   const_iterator cend() const noexcept {
     return const_iterator(columns_.cend());
   }
 
-  const_iterator end() const noexcept { return cend(); }
+  const_iterator end() const noexcept {
+    return cend();
+  }
 
 private:
   std::vector<Column> columns_;
@@ -88,9 +94,9 @@ private:
     std::stringstream stream;
     stream << "|";
     for (const Column& column : columns_) {
-      stream << " "
-             << pad_to_length(column.header_bold(), column.width_markdown())
-             << " |";
+      stream
+          << " " << pad_to_length(column.header_bold(), column.width_markdown())
+          << " |";
     }
     stream << std::endl << "|";
     for (const Column& column : columns_) {

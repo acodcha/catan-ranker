@@ -14,7 +14,9 @@ public:
     line("set output \"" + png_file_path().string() + "\"");
   }
 
-  ~GnuplotFileWriter() noexcept { blank_line(); }
+  ~GnuplotFileWriter() noexcept {
+    blank_line();
+  }
 
 protected:
   std::experimental::filesystem::path png_file_path() const noexcept {

@@ -5,7 +5,8 @@
 namespace CatanRanker {
 
 /// \brief General-purpose file handler base class.
-template<class FileStream> class File {
+template <class FileStream>
+class File {
 public:
   ~File() noexcept {
     if (stream_.is_open()) {
